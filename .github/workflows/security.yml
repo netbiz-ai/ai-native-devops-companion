@@ -21,6 +21,17 @@ jobs:
         with:
           languages: python
       - uses: github/codeql-action/analyze@v4
+        with:
+          # Private repositories without GitHub Advanced Security cannot upload
+          # to code scanning, so retain the portable SARIF as run evidence.
+          output: codeql-results
+          upload: false
+          upload-database: false
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codeql-sarif-${{ github.sha }}
+          path: codeql-results/*.sarif
+          retention-days: 30
 
   dependencies:
     name: Dependencies
