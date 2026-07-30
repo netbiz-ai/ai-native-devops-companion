@@ -18,7 +18,7 @@ jobs:
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: staging
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Validate staging handoff
         env:
           IMAGE_DIGEST: ${{ needs.candidate.outputs.digest }}
