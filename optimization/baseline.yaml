@@ -1,0 +1,23 @@
+experiment_id: reference-app-resources-001
+environment: disposable
+service_target:
+  route: /
+  success_ratio_min: 0.99
+  p95_latency_ms_max: 500
+  minimum_requests: 100
+baseline:
+  cpu_request: 25m
+  memory_request: 32Mi
+  cpu_limit: 250m
+  memory_limit: 128Mi
+candidate:
+  cpu_request: 20m
+  memory_request: 32Mi
+  cpu_limit: 200m
+  memory_limit: 128Mi
+stop_conditions:
+  - readiness failure
+  - error ratio above 0.01
+  - p95 latency above 500ms
+  - memory pressure or restart
+decision: pending

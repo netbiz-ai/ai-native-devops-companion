@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ai-native-devops
+  namespace: argocd
+spec:
+  sourceRepos:
+    - https://github.com/netbiz-ai/ai-native-devops-companion.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: reference-staging
+    - server: https://kubernetes.default.svc
+      namespace: reference-production
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  clusterResourceWhitelist: []
+  namespaceResourceBlacklist:
+    - group: rbac.authorization.k8s.io
+      kind: "*"

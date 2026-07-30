@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate offline baseline
+        run: ./scripts/validate-offline.sh
+
+  image:
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build reviewed image
+        run: docker build -t reference-app:${{ github.sha }} reference-app
+      - name: Run as non-root
+        run: |
+          test "$(docker image inspect reference-app:${{ github.sha }} --format '{{.Config.User}}')" = "10001:10001"
+      - name: Exercise health contract
+        run: |
+          container_id="$(docker run -d -p 127.0.0.1::8080 reference-app:${{ github.sha }})"
+          trap 'docker rm -f "$container_id"' EXIT
+          port="$(docker port "$container_id" 8080/tcp | awk -F: '{print $NF}')"
+          for attempt in $(seq 1 20); do
+            curl --fail --silent "http://127.0.0.1:${port}/health" && exit 0
+            sleep 1
+          done
+          docker logs "$container_id"
+          exit 1

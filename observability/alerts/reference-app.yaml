@@ -1,0 +1,15 @@
+groups:
+  - name: reference-app-alerts
+    rules:
+      - alert: ReferenceAppHighLatency
+        expr: |
+          job:http_requests:rate5m{environment="staging"} > 0.1
+          and
+          job:http_request_duration_seconds:p95_5m{environment="staging"} > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          owner: platform-learning
+        annotations:
+          summary: Reference app staging latency exceeds the lab threshold
+          runbook_url: docs://observability/runbooks/high-latency.md

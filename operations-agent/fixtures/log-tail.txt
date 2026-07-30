@@ -1,0 +1,2 @@
+service=reference-app environment=reference-staging listening=http://0.0.0.0:8080
+http_request: "GET /wrong-ready HTTP/1.1" 404 -

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Operations agent proposal approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["proposal_id", "action", "target", "approver", "decision", "expires_at"],
+  "properties": {
+    "proposal_id": {"type": "string", "minLength": 1},
+    "action": {"const": "review-gitops-readiness-probe"},
+    "target": {"const": "reference-staging/reference-app"},
+    "approver": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["approved-for-human-execution", "rejected"]},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "notes": {"type": "string"}
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "items": [
+    {
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "message": "Readiness probe failed: HTTP probe returned statuscode: 404",
+      "involvedObject": {
+        "kind": "Pod",
+        "name": "reference-app-fixture"
+      }
+    }
+  ]
+}

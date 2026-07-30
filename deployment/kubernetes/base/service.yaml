@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reference-app
+  namespace: reference
+spec:
+  selector:
+    app.kubernetes.io/name: reference-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

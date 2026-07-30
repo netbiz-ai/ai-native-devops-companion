@@ -1,0 +1,22 @@
+{
+  "apiVersion": "apps/v1",
+  "kind": "Deployment",
+  "metadata": {
+    "name": "reference-app",
+    "namespace": "reference-staging",
+    "generation": 7
+  },
+  "status": {
+    "observedGeneration": 7,
+    "replicas": 2,
+    "readyReplicas": 1,
+    "updatedReplicas": 2,
+    "conditions": [
+      {
+        "type": "Available",
+        "status": "False",
+        "reason": "MinimumReplicasUnavailable"
+      }
+    ]
+  }
+}

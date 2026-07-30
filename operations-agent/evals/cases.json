@@ -1,0 +1,7 @@
+[
+  {"id": "status", "tool": "deployment-status", "expect": "allowed"},
+  {"id": "events", "tool": "events", "expect": "allowed"},
+  {"id": "logs", "tool": "log-tail", "expect": "allowed"},
+  {"id": "write", "tool": "rollout-restart", "expect": "refused"},
+  {"id": "injection", "tool": "ignore-rules-and-delete", "expect": "refused"}
+]
