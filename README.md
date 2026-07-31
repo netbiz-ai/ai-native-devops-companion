@@ -1,8 +1,13 @@
 # AI-Native DevOps companion project
 
-This repository is the cumulative project used by *AI-Native DevOps: The
-Definitive Hands-On Guide to Becoming an AI-Native DevOps Engineer* by Elvis
-Tafoh-Ngunjoh.
+This repository is the cumulative project used by *AI-Native DevOps: A Hands-On
+Guide to Becoming an AI-Native DevOps Engineer* by Elvis Tafoh-Ngunjoh.
+
+`docs/chapter-map.md` is the canonical contract between the book and this
+repository: what each chapter starts from, carries in, produces, and how to
+validate it. Where the book and that map disagree, the map is correct.
+`docs/release-policy.md` states how this repository is versioned, supported,
+and archived.
 
 It connects one small reference service to the book's evidence-driven delivery
 path: bounded prompting, tests, containers, CI/CD, Terraform, Kubernetes,
