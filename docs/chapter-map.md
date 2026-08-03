@@ -42,6 +42,27 @@ A chapter that uses a different name for the same thing is wrong.
 | Argo CD declarations | `deployment/gitops/argocd` |
 | Incident evidence carried into Chapter 14 | `incident-evidence/` |
 
+## How a chapter reaches its starting state
+
+A chapter prints `make chNN-start`, never a git command. The Makefile target
+resolves the name through `scripts/start-chapter.sh`, so this repository can be
+restructured without invalidating a printed page. If the handoff tag has not
+been cut, the target says so and exits 3 rather than failing obscurely.
+
+## Path aliases
+
+Some chapters name a path that differs from where the file lives here. This map
+is authoritative, per the statement at the top of this file. These are the known
+differences; a chapter naming the left-hand path means the right-hand file.
+
+| Named in the book | Actual path here | Chapters |
+|---|---|---|
+| `src/app.py`, `src/telemetry.py` | `reference-app/src/` | 3, 4, 10 |
+| `docs/incidents/incident-template.md` | `incidents/templates/facts-incident-record.md` | 12 |
+| `docs/incidents/post-incident-review.md` | `incidents/templates/post-incident-review.md` | 12 |
+| `docs/optimization/scorecard-template.md` | `optimization/scorecard-template.md` | 13 |
+| `docs/security/finding-disposition.yaml` | `security/finding-disposition-template.yaml` | 11 |
+
 ## Known gaps in this contract
 
 These are recorded rather than hidden, and each one blocks the chapter step
@@ -58,6 +79,21 @@ that depends on it.
   `incident-evidence/decision-boundaries.yml` as its starting state. Chapter 12
   produces them, so a reader who has not run Chapter 12 has no input for
   Chapter 14.
+- **Chapter 11's security documents are not written.** The chapter names
+  `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
+  `docs/security/trace-review.md`. `.github/workflows/security.yml` exists, but
+  those three do not. The first two are configuration this repository can carry;
+  the third records a review that has to be performed before it can be written.
+- **Chapter 13's measured outputs are not written.** `docs/decisions/adr-template.md`
+  and `docs/optimization/experiment-template.md` are now provided. The filled
+  documents the chapter also names, `docs/decisions/adr-ch13-capacity.md` and
+  `docs/optimization/ch13-scaling-experiment.md`, state measured results and are
+  only written from an executed experiment. `scripts/ch13/` does not exist.
+- **`reference-app/src/telemetry.py` is not provided.** Chapter 10 has the reader
+  implement it and then compare against the reviewed reference. That reference is
+  the content of `ch10-complete`, so it is deliberately absent from `main`.
+- **`observability/test-receiver.yaml` is not provided.** Chapter 10 names it as
+  the local collector target used before any cluster is involved.
 - **Environment overlays carry a kustomization only.** The namespace and
   fault-injection files that Chapters 9 and 10 name under
   `deployment/gitops/overlays/` are not yet in the repository.
