@@ -19,6 +19,12 @@ REQUIRED = [
     "operations-assistant/src/assistant.py",
     "operations-agent/src/agent.py",
     "docs/capstone/evidence-manifest.yaml",
+    "docs/chapter-map.md",
+    "scripts/start-chapter.sh",
+    "templates/verification-checklist.md",
+    "docs/decisions/adr-template.md",
+    "docs/optimization/experiment-template.md",
+    "queries/endpoint-ready.jsonpath",
 ]
 JSON_FILES = [
     "observability/dashboard.json",
@@ -27,6 +33,7 @@ JSON_FILES = [
     "operations-assistant/evals/cases.json",
     "operations-agent/evals/cases.json",
     "operations-agent/policy/approval.schema.json",
+    "patches/sync-policy.json",
 ]
 SECRET_PATTERNS = {
     "AWS access key": re.compile("AKIA" + r"[0-9A-Z]{16}"),
