@@ -25,7 +25,7 @@ jobs:
       # the exact resolved set recorded in the repository, which is also the
       # set Chapter 11's dependency scan reports against.
       - name: Install reference-app dependencies
-        run: pip install --require-hashes=false -r reference-app/requirements.lock
+        run: pip install -r reference-app/requirements.lock
       - name: Validate offline baseline
         run: ./scripts/validate-offline.sh
 
