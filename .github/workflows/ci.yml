@@ -44,7 +44,7 @@ jobs:
           container_id="$(docker run -d -p 127.0.0.1::8080 reference-app:${{ github.sha }})"
           trap 'docker rm -f "$container_id"' EXIT
           port="$(docker port "$container_id" 8080/tcp | awk -F: '{print $NF}')"
-          for attempt in $(seq 1 20); do
+          for _ in $(seq 1 20); do
             curl --fail --silent "http://127.0.0.1:${port}/health" && exit 0
             sleep 1
           done
