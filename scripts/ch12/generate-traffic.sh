@@ -29,11 +29,18 @@ case "$duration" in
   ''|*[!0-9]*) echo "--duration must be a positive integer" >&2; exit 2 ;;
 esac
 
-kubectl -n "$namespace" get pod reference-client >/dev/null 2>&1 || {
-  echo "reference-client is not running in ${namespace}" >&2
+client_phase="$(kubectl -n "$namespace" get pod reference-client \
+  -o jsonpath='{.status.phase}' 2>/dev/null || true)"
+if [[ "$client_phase" != "Running" ]]; then
+  if [[ -z "$client_phase" ]]; then
+    echo "reference-client is not present in ${namespace}" >&2
+  else
+    echo "reference-client is ${client_phase}, not Running, in ${namespace}" >&2
+    echo "the supplied client sleeps for one hour and then Succeeds" >&2
+  fi
   echo "apply deployment/kubernetes/tests/client.yaml into that namespace" >&2
   exit 1
-}
+fi
 
 started="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 

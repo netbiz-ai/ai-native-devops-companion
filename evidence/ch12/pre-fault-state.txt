@@ -1,0 +1,4 @@
+namespace=reference-incident
+pre_fault_latency_ms=0
+image=reference-app:ch12
+observed_generation=10
