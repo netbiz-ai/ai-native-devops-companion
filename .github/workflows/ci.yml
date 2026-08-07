@@ -21,6 +21,11 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+      # Installed from the lock rather than requirements.txt so CI validates
+      # the exact resolved set recorded in the repository, which is also the
+      # set Chapter 11's dependency scan reports against.
+      - name: Install reference-app dependencies
+        run: pip install --require-hashes=false -r reference-app/requirements.lock
       - name: Validate offline baseline
         run: ./scripts/validate-offline.sh
 

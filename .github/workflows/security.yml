@@ -67,6 +67,15 @@ jobs:
           scan-ref: .
           exit-code: "1"
           severity: HIGH,CRITICAL
+          # One file, named exactly, and only because it is not a manifest.
+          # ch10-lab-faults.yaml is a strategic-merge patch: a container stanza
+          # carrying two environment variables and nothing else. Trivy reads it
+          # as a standalone Deployment and reports the security context it does
+          # not restate, which the base it patches already sets. Restating the
+          # context here to satisfy the scanner would duplicate the base and
+          # invite the two to drift apart, which is a worse outcome than this
+          # line. Kustomize renders the patched result; scan that, not the patch.
+          skip-files: deployment/gitops/overlays/staging/ch10-lab-faults.yaml
 
   image:
     name: Image
