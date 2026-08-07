@@ -1,0 +1,11 @@
+# Chapter 10 introduces the first runtime dependencies this application has.
+# Everything before it is standard library on purpose, and that is worth
+# keeping in mind: instrumentation is the thing that earned an exception.
+#
+# Pinned exactly, not floated. The chapter asks the reader to record the SDK
+# version alongside the emitted metric names, because a semantic-convention
+# bump can rename an attribute and leave a dashboard rendering nothing. A
+# floating range makes that record a guess.
+opentelemetry-api==1.38.0
+opentelemetry-sdk==1.38.0
+opentelemetry-exporter-otlp-proto-http==1.38.0

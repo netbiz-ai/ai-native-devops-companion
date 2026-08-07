@@ -1,0 +1,124 @@
+# Chapter 10 alert sink. Staging only.
+#
+# An alert that fires into nothing has not been tested. This receiver is the
+# cheapest honest end of the delivery path: it accepts the webhook Alertmanager
+# posts and writes it where a reader can read it back, which is enough to prove
+# the alert left the system and carried its runbook link with it.
+#
+# It is not a notifier. Replace it with a reviewed, authenticated destination
+# before any of this reaches a real on-call rotation - the same rule the
+# telemetry contract applies to Collector exporters.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observability
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ch10-alert-sink
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: ch10-alert-sink
+    app.kubernetes.io/part-of: reference-app-observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ch10-alert-sink
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ch10-alert-sink
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: sink
+          image: python:3.12-alpine
+          imagePullPolicy: IfNotPresent
+          # Echoes each received alert to stdout, so `kubectl logs` is the
+          # whole inspection story and the lab needs no extra tooling.
+          command: ["python", "-c"]
+          args:
+            - |
+              from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+              class Sink(BaseHTTPRequestHandler):
+                  def do_POST(self):
+                      size = int(self.headers.get("Content-Length", "0"))
+                      print("alert_received: " + self.rfile.read(size).decode("utf-8"), flush=True)
+                      self.send_response(204)
+                      self.end_headers()
+
+                  def do_GET(self):
+                      self.send_response(200)
+                      self.send_header("Content-Length", "2")
+                      self.end_headers()
+                      self.wfile.write(b"ok")
+
+                  def log_message(self, *args):
+                      pass
+
+              ThreadingHTTPServer(("0.0.0.0", 9099), Sink).serve_forever()
+          ports:
+            - name: webhook
+              containerPort: 9099
+          readinessProbe:
+            httpGet:
+              path: /
+              port: webhook
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ch10-alert-sink
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: ch10-alert-sink
+spec:
+  selector:
+    app.kubernetes.io/name: ch10-alert-sink
+  ports:
+    - name: webhook
+      port: 9099
+      targetPort: webhook
+---
+# The Alertmanager route that points at the sink. The receiver name matches the
+# alert's `owner` label so the mapping from alert to destination stays readable.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ch10-alertmanager-config
+  namespace: observability
+data:
+  alertmanager.yml: |
+    route:
+      receiver: platform-learning
+      group_by: ["alertname", "environment"]
+      group_wait: 10s
+      repeat_interval: 1h
+    receivers:
+      - name: platform-learning
+        webhook_configs:
+          - url: http://ch10-alert-sink.observability.svc.cluster.local:9099/
+            send_resolved: true
