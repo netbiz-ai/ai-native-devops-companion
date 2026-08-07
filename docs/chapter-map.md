@@ -65,38 +65,51 @@ differences; a chapter naming the left-hand path means the right-hand file.
 
 ## Known gaps in this contract
 
-These are recorded rather than hidden, and each one blocks the chapter step
-that depends on it.
+These are recorded rather than hidden. A gap here is something the book names
+that this repository does not supply; an artifact the reader is meant to write
+is listed in the section below instead, because calling it a gap told readers
+their lab was blocked when it was not.
 
-- **Per-chapter handoff tags do not exist.** The book refers to immutable
-  `chNN-start` and `chNN-complete` tags. This repository currently carries one
-  release tag. Treat any step requiring a `chNN-*` tag as blocked, exactly as
-  the chapter's own execution status says. When those tags are cut they will
-  follow `docs/release-policy.md`: immutable, never moved, and named for the
-  chapter state they capture.
-- **`incident-evidence/` is not populated.** Chapter 14 reads
-  `incident-evidence/checkout-summary.md` and
-  `incident-evidence/decision-boundaries.yml` as its starting state. Chapter 12
-  produces them, so a reader who has not run Chapter 12 has no input for
-  Chapter 14.
-- **Chapter 11's security documents are not written.** The chapter names
-  `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
-  `docs/security/trace-review.md`. `.github/workflows/security.yml` exists, but
-  those three do not. The first two are configuration this repository can carry;
-  the third records a review that has to be performed before it can be written.
-- **Chapter 13's measured outputs are not written.** `docs/decisions/adr-template.md`
-  and `docs/optimization/experiment-template.md` are now provided. The filled
-  documents the chapter also names, `docs/decisions/adr-ch13-capacity.md` and
-  `docs/optimization/ch13-scaling-experiment.md`, state measured results and are
-  only written from an executed experiment. `scripts/ch13/` does not exist.
-- **`reference-app/src/telemetry.py` is not provided.** Chapter 10 has the reader
-  implement it and then compare against the reviewed reference. That reference is
-  the content of `ch10-complete`, so it is deliberately absent from `main`.
-- **`observability/test-receiver.yaml` is not provided.** Chapter 10 names it as
-  the local collector target used before any cluster is involved.
-- **Environment overlays carry a kustomization only.** The namespace and
-  fault-injection files that Chapters 9 and 10 name under
-  `deployment/gitops/overlays/` are not yet in the repository.
+- **Nothing in this repository is validated against a live cloud account.**
+  `scripts/validate-offline.sh` reports
+  `live_cloud_cluster_delivery_cleanup=not_evaluated`, and that is accurate.
+  The cluster work in Chapters 10 to 13 was verified on a local kind cluster.
+  Chapter 7's Terraform takes the no-apply route unless you supply and approve
+  your own sandbox.
+
+## What the reader writes, and when
+
+These paths appear in chapters and are absent here by design. They are the
+reader's output, and a chapter that names one is telling you to create it, not
+reporting a missing file. Where one chapter reads another's output, the
+ordering is what matters.
+
+- `incident-evidence/checkout-summary.md` and
+  `incident-evidence/decision-boundaries.yml` - written in Chapter 12,
+  read as Chapter 14's starting state. Chapter 14 has no input until
+  Chapter 12 has been run.
+- `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
+  `docs/security/trace-review.md` - written in Chapter 11. The ruleset encodes
+  the bypass actors and required checks of one specific repository, so it
+  belongs to yours rather than to this one; `scripts/verify-security-ruleset.sh`
+  reads it and is supplied here.
+- `docs/decisions/adr-ch13-capacity.md` and
+  `docs/optimization/ch13-scaling-experiment.md` - written in Chapter 13 from
+  an executed experiment. The templates they are written from,
+  `docs/decisions/adr-template.md` and
+  `docs/optimization/experiment-template.md`, are supplied here.
+- `reference-app/src/telemetry.py` - implemented in Chapter 10 against the
+  reviewed reference. It is absent from `ch10-start` for that reason, and
+  present from `ch10-complete` onward, including on `main`. Start the chapter
+  from the tag, not from `main`, or the exercise is already solved for you.
+
+## Handoff tags
+
+Chapters 10 to 13 name immutable `chNN-start` and `chNN-complete` tags, and
+all eight are cut: `ch10-start`, `ch10-complete`, `ch11-start`,
+`ch11-complete`, `ch12-start`, `ch12-complete`, `ch13-start`, `ch13-complete`.
+No other chapter refers to a handoff tag. Tags follow `docs/release-policy.md`:
+immutable, never moved, and named for the chapter state they capture.
 
 ## What the offline validator does not prove
 
