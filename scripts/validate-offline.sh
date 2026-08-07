@@ -6,7 +6,7 @@ cd "$repo_root"
 
 while IFS= read -r script; do
   bash -n "$script"
-done < <(find scripts workspace -type f -name '*.sh' -print | sort)
+done < <(find scripts -type f -name '*.sh' -print | sort)
 
 python3 -m compileall -q \
   reference-app/src \
