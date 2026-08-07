@@ -75,7 +75,12 @@ jobs:
           # context here to satisfy the scanner would duplicate the base and
           # invite the two to drift apart, which is a worse outcome than this
           # line. Kustomize renders the patched result; scan that, not the patch.
-          skip-files: deployment/gitops/overlays/staging/ch10-lab-faults.yaml
+          # Chapter 12s fault is the same shape as Chapter 10s: a container
+          # stanza carrying one environment variable. It was added without
+          # this line and turned Security red from f149211 onward.
+          skip-files: |
+            deployment/gitops/overlays/staging/ch10-lab-faults.yaml
+            deployment/gitops/overlays/incident/ch12-latency-fault.yaml
 
   image:
     name: Image
