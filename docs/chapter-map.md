@@ -12,7 +12,7 @@ Report the difference through the errata channel named in
 |---:|---|---|---|---|---|
 | 1 | Empty workspace | Nothing | `workspace/` | A verified script with an observed success and failure path, and a recorded decision | `./scripts/validate-offline.sh` |
 | 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/` | Reusable prompts with deterministic evaluation cases | `./scripts/validate-offline.sh` |
-| 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `python3 -m pytest reference-app/tests` |
+| 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `cd reference-app && python3 -m unittest discover -s tests` |
 | 4 | Chapter 3 service | `reference-app/src` | `reference-app/Dockerfile`, `reference-app/.dockerignore` | A non-root image measured against a single-stage baseline | The chapter's `docker build` and label assertions |
 | 5 | Chapter 4 image | The Dockerfile and tests | `.github/workflows/ci.yml` | Required checks enforced on `main` for one revision | `actionlint .github/workflows/ci.yml` |
 | 6 | Chapter 5 CI | The required check names | `.github/workflows/delivery.yml`, `.github/workflows/rollback.yml` | One immutable digest promoted through human approval, and a tested rollback | `actionlint .github/workflows/*.yml` |
@@ -23,8 +23,8 @@ Report the difference through the errata channel named in
 | 11 | Chapter 10 telemetry | The release identity | `security/`, CI jobs | Findings that carry a disposition and an owner | `./scripts/validate-offline.sh` |
 | 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `scripts/ch12/` | A controlled failure diagnosed and restored under human control | `scripts/ch12/validate.sh` |
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
-| 14 | Chapter 12 sanitized summary | `incident-evidence/` | `operations-assistant/` | Cited read-only answers with tested refusals | `python3 -m pytest operations-assistant/tests` |
-| 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `python3 -m pytest operations-agent/tests` |
+| 14 | Chapter 12 sanitized summary | `incident-evidence/` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
+| 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
 | 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `scripts/capstone-verify.sh` | CAP-01 to CAP-07 visible and evidence-linked | `scripts/capstone-verify.sh` |
 
 ## Canonical names
