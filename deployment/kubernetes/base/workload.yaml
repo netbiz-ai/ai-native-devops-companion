@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reference-app
-  namespace: reference
+  namespace: reference-dev
   labels:
     app.kubernetes.io/name: reference-app
 spec:

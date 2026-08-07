@@ -6,7 +6,7 @@ resources:
 patches:
   - target:
       kind: Namespace
-      name: reference
+      name: reference-dev
     patch: |-
       - op: replace
         path: /metadata/name
