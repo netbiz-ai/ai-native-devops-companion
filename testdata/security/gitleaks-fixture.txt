@@ -1,0 +1,26 @@
+# Chapter 11 secret-gate fixture. Not a credential.
+#
+# The value below is invented. It matches the shape of an AWS access key id so
+# that a secret scanner recognises it, and it authenticates to nothing: no such
+# account exists, and the key was never issued by anyone.
+#
+# This file is allowlisted by .gitleaks.toml at exactly this path. Copy it to
+# testdata/security/fake.env on a disposable branch, as the chapter instructs,
+# and the copy is not allowlisted - which is how the gate proves it works.
+#
+# Expected detector identity: gitleaks rule `aws-access-token`, verified against
+# gitleaks v8.30.1. Record that identity in the Security Finding Review record
+# for the failing run. If your run reports a different rule id, the scanner
+# version has changed and the recorded identity needs re-establishing before the
+# evidence means anything.
+#
+# The value is not arbitrary, and this is worth knowing before you edit it. A
+# key of the right shape is not necessarily detected: gitleaks stopwords
+# low-entropy and well-known strings, so AWS's own documented example key
+# AKIAIOSFODNN7EXAMPLE is silently ignored, as was an earlier invented value
+# here. A fixture nothing detects makes the whole lab pass while proving
+# nothing. Re-verify after any change:
+#   docker run --rm -v "$PWD:/repo" -w /repo zricethezav/gitleaks:latest \
+#     dir testdata/security --no-banner
+
+AWS_ACCESS_KEY_ID=AKIAZ7XQWV3MNPKL5RTY
