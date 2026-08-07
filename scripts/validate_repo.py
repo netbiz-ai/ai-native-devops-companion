@@ -25,6 +25,8 @@ REQUIRED = [
     "docs/decisions/adr-template.md",
     "docs/optimization/experiment-template.md",
     "queries/endpoint-ready.jsonpath",
+    "infrastructure/terraform/fixtures/ch07-dev-plan.txt",
+    "infrastructure/terraform/fixtures/README.md",
 ]
 JSON_FILES = [
     "observability/dashboard.json",
