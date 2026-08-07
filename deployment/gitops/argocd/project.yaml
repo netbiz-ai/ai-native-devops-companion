@@ -11,10 +11,21 @@ spec:
       namespace: reference-staging
     - server: https://kubernetes.default.svc
       namespace: reference-production
-  namespaceResourceWhitelist:
+  # Namespace is cluster-scoped. It was listed as a namespaced resource while
+  # clusterResourceWhitelist was empty, so the controller refused to create it
+  # and refused every namespaced kind besides, because none were listed. Every
+  # sync failed with "is not permitted in project".
+  clusterResourceWhitelist:
     - group: ""
       kind: Namespace
-  clusterResourceWhitelist: []
+  # Exactly what the overlays render, and nothing else.
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: networking.k8s.io
+      kind: NetworkPolicy
   namespaceResourceBlacklist:
     - group: rbac.authorization.k8s.io
       kind: "*"
