@@ -1,0 +1,38 @@
+# Chapter 12's controlled fault. Not applied by the overlay.
+#
+# Step 2 applies this as its own change, and Step 6 restores by reverting it.
+# That separation is the whole point: an incident restored by editing a value
+# back leaves no reviewable record of what changed, and "we set it back" is
+# not an artifact anyone can audit afterwards.
+#
+# 800ms is chosen to sit in a specific window, and both edges matter.
+#
+# It is under the incident overlay's one-second readiness timeout, so the
+# faulted pods pass their probe and enter the Service. The first version of
+# this fault used 1500ms and produced no incident at all: the probe failed,
+# the new pod never became ready, and the rolling update kept the old healthy
+# pods serving. The deployment stalled and users saw nothing. That is
+# Kubernetes protecting the service correctly, and it leaves a reader with an
+# outage to diagnose that never reached anyone.
+#
+# It is above the 0.5s p95 threshold in observability/alerts/reference-app.yaml,
+# so ReferenceAppHighLatency fires - the alert the reader built in Chapter 10,
+# now earning its keep. The incident is a real, served degradation: every
+# request succeeds and every one of them is slow, which is the failure mode
+# that hides behind a green deployment.
+#
+# Apply:   kubectl -n reference-incident patch deployment reference-app \
+#            --type strategic --patch-file this-file
+# Restore: scripts/ch12/restore.sh
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reference-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          env:
+            - name: CH12_INJECTED_LATENCY_MS
+              value: "800"

@@ -1,15 +1,61 @@
 #!/usr/bin/env bash
+# Chapter 12 preflight.
+#
+# The previous version checked four files existed and printed mode=design-only.
+# The templates it checked for are still checked, because an incident record
+# written from memory afterwards is not evidence - but the lab now runs, so
+# this also verifies the things a running lab needs.
 set -euo pipefail
 
-required=(
-  incidents/templates/facts-incident-record.md
-  incidents/templates/post-incident-review.md
-  observability/runbooks/high-latency.md
-  deployment/gitops/overlays/staging/kustomization.yaml
-)
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$repo_root"
 
-for path in "${required[@]}"; do
-  test -s "$path" || { printf 'missing=%s\n' "$path" >&2; exit 1; }
+namespace="${CH12_NAMESPACE:-reference-incident}"
+failed=0
+
+pass() { printf '  ok    %s\n' "$1"; }
+skip() { printf '  skip  %s\n' "$1"; }
+bad()  { printf '  FAIL  %s\n' "$1" >&2; failed=1; }
+
+printf 'assets\n'
+for path in \
+  incidents/templates/facts-incident-record.md \
+  incidents/templates/post-incident-review.md \
+  observability/runbooks/high-latency.md \
+  deployment/gitops/overlays/incident/kustomization.yaml \
+  deployment/gitops/overlays/incident/ch12-latency-fault.yaml; do
+  if [[ -s "$path" ]]; then pass "$path"; else bad "missing: $path"; fi
 done
 
-printf 'incident_preflight=pass mode=design-only\n'
+printf 'scripts\n'
+for script in inject-failure restore generate-traffic capture-evidence validate; do
+  if [[ -x "scripts/ch12/${script}.sh" ]]; then
+    bash -n "scripts/ch12/${script}.sh" && pass "scripts/ch12/${script}.sh"
+  else
+    bad "not executable: scripts/ch12/${script}.sh"
+  fi
+done
+
+printf 'environment\n'
+if ! command -v kubectl >/dev/null 2>&1 || ! kubectl cluster-info >/dev/null 2>&1; then
+  skip "no cluster in reach - the lab cannot run here"
+  [[ $failed -eq 0 ]] && printf '\nincident_preflight=pass mode=assets-only\n'
+  exit $failed
+fi
+pass "cluster reachable"
+
+if kubectl get namespace "$namespace" >/dev/null 2>&1; then
+  pass "namespace ${namespace} exists"
+else
+  skip "namespace ${namespace} absent - Step 1 creates it"
+fi
+
+# Refusing to start an incident lab in a protected namespace is the one check
+# here worth more than the rest of the script combined.
+case "$namespace" in
+  *production*|*prod) bad "refusing: ${namespace} looks like a production namespace" ;;
+  *) pass "namespace is disposable" ;;
+esac
+
+[[ $failed -eq 0 ]] && printf '\nincident_preflight=pass mode=runnable\n'
+exit $failed

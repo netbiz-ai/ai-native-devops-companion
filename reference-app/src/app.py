@@ -12,6 +12,12 @@ import telemetry
 # delay is a denial of service the reader would be installing on themselves.
 MAX_DELAY_MS = 1000
 
+# Chapter 12's injected latency is allowed to exceed Chapter 10's per-request
+# bound, because the incident it stages has to be bad enough to fail a
+# readiness probe rather than merely slow. It is still bounded: an unbounded
+# value would take the pod out and leave nothing to diagnose.
+MAX_INJECTED_LATENCY_MS = 5000
+
 # Environments where the fault gate may never be enabled, whatever the config
 # says. The gate exists to break correlation on purpose; a production cluster
 # is not a place to do that, and a misapplied overlay should fail closed.
@@ -20,6 +26,41 @@ PROTECTED_ENVIRONMENTS = frozenset({"production", "reference-production", "prod"
 
 def _flag(name: str) -> bool:
     return os.getenv(name, "false").strip().lower() in {"1", "true", "yes"}
+
+
+def _injected_latency(environment: str) -> int:
+    """Chapter 12's injected latency, in milliseconds.
+
+    Refuses outright in a protected environment, and refuses a value it cannot
+    read. Chapter 10's per-request header ignores a malformed value because a
+    fat-fingered lab header should not fail a real request; this one is the
+    opposite case. It arrives through a reviewed deployment change, so an
+    unreadable value means the change under review is not the change being
+    applied, and starting anyway would leave an operator restoring a fault
+    whose size nobody knows.
+    """
+    raw = os.getenv("CH12_INJECTED_LATENCY_MS", "0").strip()
+    if not raw:
+        return 0
+    try:
+        latency = int(raw)
+    except ValueError as exc:
+        raise ValueError(
+            f"CH12_INJECTED_LATENCY_MS must be an integer, got {raw!r}"
+        ) from exc
+    if latency == 0:
+        return 0
+    if environment in PROTECTED_ENVIRONMENTS:
+        raise ValueError(
+            f"CH12_INJECTED_LATENCY_MS must not be set in {environment}; "
+            "the incident lab runs in a disposable namespace"
+        )
+    if not 0 <= latency <= MAX_INJECTED_LATENCY_MS:
+        raise ValueError(
+            f"CH12_INJECTED_LATENCY_MS must be between 0 and "
+            f"{MAX_INJECTED_LATENCY_MS}, got {latency}"
+        )
+    return latency
 
 
 @dataclass(frozen=True)
@@ -33,6 +74,12 @@ class Settings:
     # normally behaving service.
     omit_trace_id: bool = False
     fault_gate_enabled: bool = False
+    # Chapter 12's incident. Unlike Chapter 10's gate, which delays only the
+    # requests that ask for it, this delays every request - including the
+    # readiness probe. That is the point: it is a deployment-level change that
+    # degrades the service for everyone, which is what an incident looks like
+    # and what makes restoring it a GitOps action rather than a client choice.
+    injected_latency_ms: int = 0
 
     @classmethod
     def from_environment(cls) -> "Settings":
@@ -57,6 +104,7 @@ class Settings:
             port=port,
             omit_trace_id=_flag("CH10_OMIT_TRACE_ID"),
             fault_gate_enabled=fault_gate,
+            injected_latency_ms=_injected_latency(environment),
         )
 
 
@@ -120,6 +168,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         # the duration series must not silently omit.
         status = 500
         try:
+            # The incident first: it applies to every request, including the
+            # readiness probe, so the degradation is the service's and not the
+            # caller's. Chapter 10's opt-in delay stacks on top of it, which is
+            # what lets a reader keep probing a degraded service.
+            if settings.injected_latency_ms:
+                time.sleep(settings.injected_latency_ms / 1000)
             delay_ms = requested_delay_ms(self.headers.get("X-CH10-Delay-Ms"), settings)
             if delay_ms:
                 time.sleep(delay_ms / 1000)
@@ -157,7 +211,8 @@ def main() -> None:
         f"environment={settings.environment} "
         f"listening=http://{settings.host}:{settings.port} "
         f"fault_gate={'on' if settings.fault_gate_enabled else 'off'} "
-        f"trace_header={'omitted' if settings.omit_trace_id else 'on'}"
+        f"trace_header={'omitted' if settings.omit_trace_id else 'on'} "
+        f"injected_latency_ms={settings.injected_latency_ms}"
     )
     try:
         server.serve_forever()
