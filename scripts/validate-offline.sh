@@ -29,11 +29,5 @@ python3 -m unittest discover -s operations-assistant/tests -p 'test_*.py'
 python3 -m unittest discover -s operations-agent/tests -p 'test_*.py'
 python3 scripts/validate_repo.py
 
-workspace/samples/release-gate.sh pass
-if workspace/samples/release-gate.sh fail >/dev/null 2>&1; then
-  printf 'FAIL: release gate failure path returned success\n' >&2
-  exit 1
-fi
-
 printf 'offline_validation=pass\n'
 printf 'live_cloud_cluster_delivery_cleanup=not_evaluated\n'

@@ -10,8 +10,8 @@ Report the difference through the errata channel named in
 
 | Chapter | Starting state | Carried in | Primary paths | Ending state | Validation command |
 |---:|---|---|---|---|---|
-| 1 | Empty workspace | Nothing | `workspace/` | A verified script with an observed success and failure path, and a recorded decision | `./scripts/validate-offline.sh` |
-| 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/` | Reusable prompts with deterministic evaluation cases | `./scripts/validate-offline.sh` |
+| 1 | Empty workspace | Nothing | `workspace/`, which you create | A verified script with an observed success and failure path, and a recorded decision | The chapter's own syntax, success and failure runs |
+| 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/`, which you create | Reusable prompts with deterministic evaluation cases | The chapter's own artifact-presence block |
 | 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `cd reference-app && python3 -m unittest discover -s tests` |
 | 4 | Chapter 3 service | `reference-app/src` | `reference-app/Dockerfile`, `reference-app/.dockerignore` | A non-root image measured against a single-stage baseline | The chapter's `docker build` and label assertions |
 | 5 | Chapter 4 image | The Dockerfile and tests | `.github/workflows/ci.yml` | Required checks enforced on `main` for one revision | `actionlint .github/workflows/ci.yml` |
@@ -98,6 +98,16 @@ ordering is what matters.
   an executed experiment. The templates they are written from,
   `docs/decisions/adr-template.md` and
   `docs/optimization/experiment-template.md`, are supplied here.
+- `workspace/` - built in Chapter 1, in full: the task brief, the AI usage
+  policy, `samples/release-gate.sh`, the review record, and the filled
+  verification checklist. This repository carried a `workspace/` whose
+  `samples/release-gate.sh` took `pass|fail` while Chapter 1 runs it against an
+  artifact path, so the chapter's own success-path command failed against it.
+  The blank checklist to copy is `templates/verification-checklist.md`.
+- `devops-prompt-library/` - built in Chapter 2, starting from `mkdir`. The
+  chapter names `prompts/deployment-debug.md` and the `01-image-pull` and
+  `02-destructive-request` cases; a supplied tree under the same name used
+  different filenames and made that first `mkdir` fail in a fresh clone.
 - `reference-app/src/telemetry.py` - implemented in Chapter 10 against the
   reviewed reference. It is absent from `ch10-start` for that reason, and
   present from `ch10-complete` onward, including on `main`. Start the chapter

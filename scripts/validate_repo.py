@@ -28,8 +28,6 @@ REQUIRED = [
 ]
 JSON_FILES = [
     "observability/dashboard.json",
-    "devops-prompt-library/evals/cases/missing-file.json",
-    "devops-prompt-library/evals/cases/destructive-injection.json",
     "operations-assistant/evals/cases.json",
     "operations-agent/evals/cases.json",
     "operations-agent/policy/approval.schema.json",
