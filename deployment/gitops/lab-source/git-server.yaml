@@ -1,18 +1,28 @@
-# A disposable in-cluster Git server, for readers without a Git host Argo CD
-# can reach. It stores one bare repository on an emptyDir: it is a lab source,
-# not a place to keep anything you would miss. Restarting the pod empties it,
-# and `seed.sh` puts your work back.
+# A disposable in-cluster Git source, for readers with no Git host Argo CD can
+# reach. It serves one bare repository over the Git protocol and holds it on an
+# emptyDir: this is a lab source, not a place to keep anything you would miss.
+# A restarted pod comes back empty, and `seed.sh` puts your work back.
 #
 # Argo CD reads it at git://lab-git.lab-source.svc.cluster.local/repo.git.
-# The daemon speaks the unauthenticated Git protocol and accepts pushes from
-# anything that can reach port 9418, which is why it belongs only on a
-# disposable cluster.
+#
+# The daemon serves reads only. Nothing in the cluster can write to it, and
+# `seed.sh` publishes through the API server rather than through a push, so no
+# credential exists to leak and no unauthenticated write path is open. Anything
+# in the cluster can read it, which is why it belongs on a disposable lab
+# cluster and nowhere else.
+#
+# The container runs the way the reference workload does - non-root, no
+# capabilities, no privilege escalation, read-only root filesystem, and a
+# namespace enforcing Restricted admission - because a lab fixture that ignores
+# the standard the book sets teaches the exception.
 apiVersion: v1
 kind: Namespace
 metadata:
   name: lab-source
   labels:
     app.kubernetes.io/part-of: ai-native-devops-lab
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -31,40 +41,55 @@ spec:
       labels:
         app.kubernetes.io/name: lab-git
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
       containers:
+        # buildpack-deps:bookworm-scm, pinned. It carries git-daemon already,
+        # so nothing is installed at start and the container needs no root.
         - name: git-daemon
-          image: alpine/git:2.49.1
+          image: buildpack-deps@sha256:de4e518f98c6533eceeee6f8b14a77a918856fa8282a1b711c0292d089157c0c
           command:
-            - sh
-            - -c
-            - |
-              set -eu
-              # alpine/git carries the client; the daemon is a separate package.
-              apk add --no-cache git-daemon >/dev/null
-              test -d /srv/git/repo.git ||
-                git init --bare --initial-branch=main /srv/git/repo.git
-              exec git daemon \
-                --verbose \
-                --export-all \
-                --base-path=/srv/git \
-                --reuseaddr \
-                --enable=upload-pack \
-                --enable=receive-pack \
-                --port=9418
+            - git
+            - daemon
+            - --verbose
+            - --export-all
+            - --base-path=/srv/git
+            - --reuseaddr
+            - --enable=upload-pack
+            - --port=9418
           ports:
             - name: git
               containerPort: 9418
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            capabilities:
+              drop:
+                - ALL
           readinessProbe:
             tcpSocket:
               port: git
             initialDelaySeconds: 2
             periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: git
+            initialDelaySeconds: 10
+            periodSeconds: 20
           resources:
             requests:
               cpu: 10m
               memory: 32Mi
             limits:
-              memory: 128Mi
+              memory: 256Mi
           volumeMounts:
             - name: repos
               mountPath: /srv/git

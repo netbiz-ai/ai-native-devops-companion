@@ -16,18 +16,26 @@ What follows is the fallback, and it is deliberately disposable.
 
 `git-server.yaml` declares a namespace `lab-source`, a single-replica
 `lab-git` deployment running `git daemon`, and a service on port 9418.
-Storage is an `emptyDir`, and the daemon is unauthenticated: anything that can
-reach port 9418 can read and write it.
-That is acceptable on a disposable lab cluster and nowhere else.
-A restarted pod comes back empty, and `seed.sh` refills it.
+Storage is an `emptyDir`, so a restarted pod comes back empty and `seed.sh`
+refills it.
+
+The daemon serves reads only, and `seed.sh` writes through the API server
+rather than through a push, so the server holds no credential and opens no
+unauthenticated write path.
+Anything in the cluster can read it, which is the part that keeps it to a
+disposable lab cluster.
+It runs as the reference workload does - non-root, no capabilities, no
+privilege escalation, read-only root filesystem, in a namespace enforcing
+Restricted admission - and its image is pinned by digest, because a lab fixture
+that ignores the standard the book sets teaches the exception.
 
 ```bash
 kubectl apply -f deployment/gitops/lab-source/git-server.yaml
 deployment/gitops/lab-source/seed.sh
 ```
 
-`seed.sh` pushes the commit you have checked out - not your uncommitted edits -
-through `kubectl port-forward`, then prints the two fields to set:
+`seed.sh` publishes the commit you have checked out - not your uncommitted
+edits - then prints the two fields to set:
 
 ```yaml
 repoURL: git://lab-git.lab-source.svc.cluster.local/repo.git
@@ -40,6 +48,15 @@ from your copy.
 Commit and re-run `seed.sh` for every later change you want reconciled;
 promotion between environments is still the Chapter 9 exercise, and this server
 changes nothing about it.
+
+If an application was created before the source was seeded, it caches the
+failure and keeps reporting `repository not found` after the repository is
+there.
+Clear it with a hard refresh rather than by rebuilding anything:
+
+```bash
+kubectl annotate app -n argocd <name> argocd.argoproj.io/refresh=hard --overwrite
+```
 
 ## What you supply either way
 
@@ -67,6 +84,12 @@ NAME               REPO                                                  SYNC   
 labsource-verify   git://lab-git.lab-source.svc.cluster.local/repo.git   Synced   Healthy
 
 NAME                             STATUS    IMAGE
-reference-app-77d864cbff-rbtkb   Running   <registry>/reference-app@sha256:398773f0...
-reference-app-77d864cbff-vmfjv   Running   <registry>/reference-app@sha256:398773f0...
+reference-app-77d864cbff-52lf7   Running   <registry>/reference-app@sha256:398773f0...
+reference-app-77d864cbff-pq4r8   Running   <registry>/reference-app@sha256:398773f0...
+
+NAME                      STATUS    NONROOT   USER
+lab-git-7578867f6-x27p6   Running   true      65532
 ```
+
+The verification used `deployment/kubernetes/base` into a scratch namespace, so
+that it could not disturb the reference environment's own applications.
