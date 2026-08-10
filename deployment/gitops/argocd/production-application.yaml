@@ -6,6 +6,9 @@ metadata:
 spec:
   project: ai-native-devops
   source:
+    # Point this at the same source as the staging application, and at the
+    # same revision you promoted. See ../lab-source/README.md if you have no
+    # Git host the cluster can reach.
     repoURL: https://github.com/netbiz-ai/ai-native-devops-companion.git
     targetRevision: main
     path: deployment/gitops/overlays/production
