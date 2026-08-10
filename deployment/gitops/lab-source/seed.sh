@@ -71,5 +71,8 @@ Argo CD reads this source at:
   targetRevision: $branch
 
 Set those two fields in deployment/gitops/argocd/staging-application.yaml and
-deployment/gitops/argocd/production-application.yaml before applying them.
+deployment/gitops/argocd/production-application.yaml, and set the same URL in
+spec.sourceRepos in deployment/gitops/argocd/project.yaml. An application whose
+source the project does not permit is refused, and the error names the
+application rather than the project.
 EOF

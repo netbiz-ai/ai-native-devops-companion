@@ -43,8 +43,18 @@ targetRevision: main
 ```
 
 Set them in `../argocd/staging-application.yaml` and
-`../argocd/production-application.yaml`, apply those, and Argo CD reconciles
-from your copy.
+`../argocd/production-application.yaml`, and set the same URL in
+`spec.sourceRepos` in `../argocd/project.yaml`.
+All three, or none: the project bounds which sources may be reconciled, and an
+application naming a source the project does not permit fails with
+
+```text
+application repo git://lab-git.lab-source.svc.cluster.local/repo.git is not
+permitted in project 'ai-native-devops'
+```
+
+which reports an application-level error for a project-level rule.
+Apply the three files and Argo CD reconciles from your copy.
 Commit and re-run `seed.sh` for every later change you want reconciled;
 promotion between environments is still the Chapter 9 exercise, and this server
 changes nothing about it.

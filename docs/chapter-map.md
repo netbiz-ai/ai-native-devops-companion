@@ -100,7 +100,7 @@ Chapter 8 onward is usually one of these left unset.
 |---|---|---|
 | A disposable cluster | Your `kubectl` context | Chapter 8. A local `kind` cluster is enough, and is what the reference environment used |
 | A registry the cluster can pull from, and the image digest in it | `newName` and `digest` in `deployment/kubernetes/base/kustomization.yaml` | Chapter 8. Chapter 4 builds the image and Chapter 6 promotes the digest |
-| A Git source Argo CD can reach and you can push to | `spec.source.repoURL` in `deployment/gitops/argocd/*.yaml` | Chapter 9. Argo CD reconciles from Git, never from your working tree |
+| A Git source Argo CD can reach and you can push to | `spec.source.repoURL` in both `deployment/gitops/argocd/*-application.yaml`, and the same URL in `spec.sourceRepos` in `deployment/gitops/argocd/project.yaml` | Chapter 9. Argo CD reconciles from Git, never from your working tree |
 
 The digest published here is an all-zero placeholder and cannot pull, by
 design: an unreplaced value fails at admission rather than deploying something
