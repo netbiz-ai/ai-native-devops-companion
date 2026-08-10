@@ -48,10 +48,14 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
-      # gitleaks-action v2 requires a token to scan a pull request; without it
-      # the job fails before scanning. It only surfaced on this repository's
-      # first pull request.
-      - uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2.3.9
+      # gitleaks-action requires a token to scan a pull request; without it the
+      # job fails before scanning. It only surfaced on this repository's first
+      # pull request.
+      #
+      # v3 is the Node 24 runtime and nothing else: no input, output or
+      # behavioral change. It is not optional for long - Node 20 leaves
+      # GitHub-hosted runners on 2026-09-16, and v2 stops running then.
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
