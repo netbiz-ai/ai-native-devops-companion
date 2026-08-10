@@ -36,6 +36,26 @@ for script in inject-failure restore generate-traffic capture-evidence validate;
   fi
 done
 
+printf 'evidence\n'
+# The incident scripts write their snapshots into the working tree. Any earlier
+# sudo, runuser or root-shell git pull leaves directories here owned by root,
+# and the write then fails inside a step rather than before one.
+state_file="${CH12_STATE_FILE:-evidence/ch12/pre-fault-state.txt}"
+state_dir="$(dirname "$state_file")"
+unwritable=""
+if ! mkdir -p "$state_dir" 2>/dev/null || [[ ! -w "$state_dir" ]]; then
+  unwritable="$state_dir"
+elif [[ -e "$state_file" && ! -w "$state_file" ]]; then
+  unwritable="$state_file"
+fi
+if [[ -z "$unwritable" ]]; then
+  pass "${state_dir} is writable"
+else
+  bad "${unwritable} is not writable by $(id -un) - the incident steps cannot record what they change"
+  # shellcheck disable=SC2016  # printed for the reader to run, not expanded here
+  printf '        chown -R "$(id -un)" evidence\n' >&2
+fi
+
 printf 'environment\n'
 if ! command -v kubectl >/dev/null 2>&1 || ! kubectl cluster-info >/dev/null 2>&1; then
   skip "no cluster in reach - the lab cannot run here"
