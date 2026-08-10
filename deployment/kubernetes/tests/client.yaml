@@ -1,3 +1,17 @@
+# The sanctioned test client. Every chapter that probes the workload from
+# inside the cluster execs into this pod.
+#
+# Two things decide whether it works. It has to still be running - it sleeps
+# without end for that reason, because a client that Completes turns every
+# later check into a failure that reads as a broken workload. And it has to
+# carry the labels the NetworkPolicy admits: the overlays stamp
+# `app.kubernetes.io/environment` onto the policy's selector, so a client
+# applied into an overlay's namespace with the name label alone is admitted by
+# nothing and every request times out with the service healthy.
+#
+#   kubectl apply -f deployment/kubernetes/tests/client.yaml -n reference-staging
+#   kubectl label pod reference-client -n reference-staging \
+#     app.kubernetes.io/environment=staging
 apiVersion: v1
 kind: Pod
 metadata:
@@ -16,7 +30,7 @@ spec:
   containers:
     - name: client
       image: python:3.12-alpine
-      command: ["sleep", "3600"]
+      command: ["sleep", "infinity"]
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:

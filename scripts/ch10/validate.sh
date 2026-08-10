@@ -20,9 +20,11 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
-pass() { printf '  ok    %s\n' "$1"; }
-skip() { printf '  skip  %s\n' "$1"; }
-fail() { printf '  FAIL  %s\n' "$1" >&2; exit 1; }
+pass()   { printf '  ok    %s\n' "$1"; }
+skip()   { printf '  skip  %s\n' "$1"; }
+fail()   { printf '  FAIL  %s\n' "$1" >&2; exit 1; }
+# `fail` exits, so anything worth saying about a failure has to be said first.
+detail() { printf '        %s\n' "$1" >&2; }
 
 # ---- assets ----------------------------------------------------------------
 printf 'assets\n'
@@ -95,7 +97,11 @@ else
 fi
 
 # ---- cluster ---------------------------------------------------------------
-printf 'cluster\n'
+# Name the namespace in the header. The default is a reasonable one and it is
+# also the whole failure when your client is somewhere else: "reference-app
+# rolled out" reads as confirmation you are looking in the right place.
+namespace="${CH10_NAMESPACE:-reference-staging}"
+printf 'cluster (namespace %s, set CH10_NAMESPACE to change)\n' "$namespace"
 
 if ! command -v kubectl >/dev/null 2>&1 || ! kubectl cluster-info >/dev/null 2>&1; then
   skip "no cluster in reach - the lab was not observed running"
@@ -103,7 +109,6 @@ if ! command -v kubectl >/dev/null 2>&1 || ! kubectl cluster-info >/dev/null 2>&
   exit 0
 fi
 
-namespace="${CH10_NAMESPACE:-reference-staging}"
 if ! kubectl -n "$namespace" get deployment reference-app >/dev/null 2>&1; then
   skip "reference-app not deployed in ${namespace} - the lab was not observed running"
   printf '\nchapter 10 validated (assets and code; cluster tier skipped)\n'
@@ -117,10 +122,28 @@ pass "reference-app rolled out"
 # Requests must come from the sanctioned client: the default-deny NetworkPolicy
 # admits only a pod carrying both of these labels, and the Service listens on 80.
 if ! kubectl -n "$namespace" get pod reference-client >/dev/null 2>&1; then
-  skip "reference-client pod absent - correlation not checked from inside the mesh"
+  skip "reference-client pod absent in ${namespace} - correlation not checked from inside the mesh"
+  printf '        recreate it: kubectl apply -f deployment/kubernetes/tests/client.yaml -n %s\n' "$namespace"
   printf '\nchapter 10 validated (assets and code; correlation unchecked)\n'
   exit 0
 fi
+
+# A client that is not Running cannot be exec'd into, and the exec failure
+# arrives as an empty status rather than as an explanation. Say what happened.
+phase="$(kubectl -n "$namespace" get pod reference-client -o jsonpath='{.status.phase}')"
+if [[ "$phase" != "Running" ]]; then
+  detail "kubectl delete pod reference-client -n ${namespace}"
+  detail "kubectl apply -f deployment/kubernetes/tests/client.yaml -n ${namespace}"
+  detail "kubectl label pod reference-client -n ${namespace} app.kubernetes.io/environment=<env>"
+  fail "reference-client in ${namespace} is ${phase}, not Running - nothing can be probed from inside the mesh"
+fi
+
+# Keep the probe's stderr. A refused connection, a client the NetworkPolicy
+# does not admit, and a client that is no longer there all produce the same
+# empty status, and only the error text tells them apart. It goes to a file
+# because the probe runs in a subshell, where a variable would not survive.
+probe_stderr="$(mktemp)"
+trap 'rm -f "$probe_stderr"' EXIT
 
 probe() {
   kubectl -n "$namespace" exec reference-client -- python -c "
@@ -128,14 +151,19 @@ import re, sys, urllib.request as u
 r = u.urlopen('http://reference-app.${namespace}.svc.cluster.local/', timeout=5)
 trace = r.headers.get('X-Trace-Id')
 sys.stdout.write(f\"{r.status} {trace or 'ABSENT'}\")
-" 2>/dev/null
+" 2>"$probe_stderr" || true
 }
 
 omit="$(kubectl -n "$namespace" get deployment reference-app \
   -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="CH10_OMIT_TRACE_ID")].value}')"
 read -r status trace <<<"$(probe)"
 
-[ "$status" = "200" ] || fail "live request returned ${status}"
+if [ "$status" != "200" ]; then
+  while IFS= read -r line; do detail "$line"; done <"$probe_stderr"
+  [[ -s "$probe_stderr" ]] ||
+    detail "the probe produced no output and no error; check that the client carries app.kubernetes.io/environment"
+  fail "live request to reference-app.${namespace} returned ${status:-no status}"
+fi
 
 if [ "$omit" = "true" ]; then
   [ "$trace" = "ABSENT" ] \

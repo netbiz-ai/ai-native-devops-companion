@@ -34,7 +34,20 @@ if [[ -n "$current" && "$current" != "0" ]]; then
   exit 1
 fi
 
-mkdir -p "$(dirname "$state_file")"
+# The snapshot is written before the fault is applied, and the script stops
+# here if it cannot be written: a fault whose baseline was never recorded is
+# the thing restore.sh needs and cannot reconstruct. The usual cause is a
+# working tree carrying root-owned directories from an earlier sudo or
+# root-shell git pull, so say that rather than only naming the file.
+# The stderr redirection comes first deliberately: a failing `>>` is reported
+# by the shell before a later redirection takes effect, and a bare
+# "Permission denied" ahead of the explanation is the thing being fixed.
+if ! mkdir -p "$(dirname "$state_file")" 2>/dev/null ||
+   ! { : 2>/dev/null >>"$state_file"; }; then
+  echo "cannot write ${state_file}, so the fault was not applied" >&2
+  echo "usually a root-owned working tree: chown -R \"\$(id -un)\" evidence" >&2
+  exit 1
+fi
 {
   printf 'namespace=%s\n' "$namespace"
   printf 'pre_fault_latency_ms=%s\n' "${current:-0}"
