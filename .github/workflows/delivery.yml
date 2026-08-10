@@ -45,6 +45,16 @@ jobs:
     environment: staging
     steps:
       - uses: actions/checkout@v6
+      # validate-offline.sh imports the reference app's dependencies, so the
+      # runner needs them installed before it runs. ci.yml already does this;
+      # delivery.yml did not, so the staging gate failed on every dispatch with
+      # "reference-app dependencies are not installed" and production was never
+      # reached. Same Python version and lockfile as ci.yml, deliberately.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install reference-app dependencies
+        run: pip install -r reference-app/requirements.lock
       - name: Validate staging handoff
         env:
           IMAGE_DIGEST: ${{ needs.candidate.outputs.digest }}
