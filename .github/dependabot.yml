@@ -1,0 +1,18 @@
+# Pinning by commit SHA makes an action immutable and makes it stale, and the
+# second is the usual objection to the first. Dependabot answers it: it opens a
+# pull request when a pinned action publishes a new release, and the update
+# arrives as a reviewed change with a new SHA rather than as a tag that moved
+# underneath a workflow.
+#
+# Updates land like any other change here: through a pull request, against the
+# protected checks.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    labels:
+      - dependencies
