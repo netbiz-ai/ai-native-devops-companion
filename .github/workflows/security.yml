@@ -64,7 +64,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-      # v0.35.0 safe commit named in Aqua's March 2026 incident guidance.
+      # Descends from the v0.35.0 commit named in Aqua's March 2026 incident
+      # guidance - 13 commits ahead of it and none behind, so that commit is
+      # contained rather than bypassed. Check that before taking an update
+      # here: this pin answers an incident, not a version preference.
       - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
         with:
           scan-type: config
@@ -92,7 +95,10 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - run: docker build -t reference-app:${{ github.sha }} reference-app
-      # v0.35.0 safe commit named in Aqua's March 2026 incident guidance.
+      # Descends from the v0.35.0 commit named in Aqua's March 2026 incident
+      # guidance - 13 commits ahead of it and none behind, so that commit is
+      # contained rather than bypassed. Check that before taking an update
+      # here: this pin answers an incident, not a version preference.
       - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
         with:
           image-ref: reference-app:${{ github.sha }}
