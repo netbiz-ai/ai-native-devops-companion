@@ -4,6 +4,13 @@ metadata:
   name: ai-native-devops
   namespace: argocd
 spec:
+  # The project bounds which sources may be reconciled, so this list has to
+  # name the same repository as `spec.source.repoURL` in the applications.
+  # Change both together: a repoURL the project does not permit fails with
+  # "application repo ... is not permitted in project", which reports an
+  # application-level error for a project-level rule and reads as if the
+  # source were unreachable. Use ../lab-source/README.md's URL if you took
+  # that route.
   sourceRepos:
     - https://github.com/netbiz-ai/ai-native-devops-companion.git
   destinations:
