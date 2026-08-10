@@ -1,0 +1,86 @@
+# A disposable in-cluster Git server, for readers without a Git host Argo CD
+# can reach. It stores one bare repository on an emptyDir: it is a lab source,
+# not a place to keep anything you would miss. Restarting the pod empties it,
+# and `seed.sh` puts your work back.
+#
+# Argo CD reads it at git://lab-git.lab-source.svc.cluster.local/repo.git.
+# The daemon speaks the unauthenticated Git protocol and accepts pushes from
+# anything that can reach port 9418, which is why it belongs only on a
+# disposable cluster.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lab-source
+  labels:
+    app.kubernetes.io/part-of: ai-native-devops-lab
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lab-git
+  namespace: lab-source
+  labels:
+    app.kubernetes.io/name: lab-git
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lab-git
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lab-git
+    spec:
+      containers:
+        - name: git-daemon
+          image: alpine/git:2.49.1
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              # alpine/git carries the client; the daemon is a separate package.
+              apk add --no-cache git-daemon >/dev/null
+              test -d /srv/git/repo.git ||
+                git init --bare --initial-branch=main /srv/git/repo.git
+              exec git daemon \
+                --verbose \
+                --export-all \
+                --base-path=/srv/git \
+                --reuseaddr \
+                --enable=upload-pack \
+                --enable=receive-pack \
+                --port=9418
+          ports:
+            - name: git
+              containerPort: 9418
+          readinessProbe:
+            tcpSocket:
+              port: git
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          volumeMounts:
+            - name: repos
+              mountPath: /srv/git
+      volumes:
+        - name: repos
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lab-git
+  namespace: lab-source
+spec:
+  selector:
+    app.kubernetes.io/name: lab-git
+  ports:
+    - name: git
+      port: 9418
+      targetPort: git

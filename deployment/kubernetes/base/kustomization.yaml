@@ -7,5 +7,12 @@ resources:
   - network-policy.yaml
 images:
   - name: reference-app
+    # Replace both fields with your own: the registry your cluster can pull
+    # from, and the digest your Chapter 4 build produced and Chapter 6
+    # promoted. The digest below is an all-zero placeholder, and an all-zero
+    # digest cannot pull - deliberately, so that an unreplaced value fails at
+    # admission instead of deploying something you never reviewed.
+    # See ../README.md, and ../../gitops/lab-source/README.md for the three
+    # things you supply before Chapter 9 can reconcile.
     newName: ghcr.io/netbiz-ai/ai-native-devops-companion/reference-app
     digest: sha256:0000000000000000000000000000000000000000000000000000000000000000

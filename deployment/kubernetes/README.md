@@ -4,9 +4,12 @@ The base declares two non-root replicas, health and readiness probes, bounded
 resources, a read-only root filesystem, no service-account token, and a
 default-deny policy permitting only the labeled test client.
 
-Before applying, replace the all-zero teaching digest in
-`base/kustomization.yaml` with the digest produced for the reviewed source
-revision. Validate and inspect the rendered YAML:
+Before applying, replace both image fields in `base/kustomization.yaml`:
+`newName` with a registry your cluster can pull from, and the all-zero teaching
+digest with the digest produced for the reviewed source revision. The published
+`newName` is the upstream package, which your cluster has no credential for.
+An all-zero digest cannot pull, so an unreplaced value fails rather than
+deploying something unreviewed. Validate and inspect the rendered YAML:
 
 ```bash
 kubectl kustomize deployment/kubernetes/base

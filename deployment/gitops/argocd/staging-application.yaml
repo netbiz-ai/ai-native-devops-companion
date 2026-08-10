@@ -6,6 +6,13 @@ metadata:
 spec:
   project: ai-native-devops
   source:
+    # Argo CD reconciles from Git, not from your working tree, so this must
+    # name a repository the cluster can reach and you can push your edited
+    # `deployment/` to - your fork, or the disposable in-cluster server in
+    # ../lab-source. The URL below is the upstream companion, which you cannot
+    # push to and whose base kustomization still carries the placeholder
+    # digest. A private source also needs the read-only credential named in
+    # ../README.md.
     repoURL: https://github.com/netbiz-ai/ai-native-devops-companion.git
     targetRevision: main
     path: deployment/gitops/overlays/staging

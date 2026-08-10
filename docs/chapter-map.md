@@ -89,6 +89,28 @@ their lab was blocked when it was not.
   refuses a commit whose checks are missing, duplicated, still running, or
   from an unexpected app.
 
+## What you supply, and where it goes
+
+Three things the labs need cannot live in this repository, because they are
+yours: a cluster, a registry with an image in it, and a Git source. Each has one
+field or context that carries it, and a chapter that appears not to work from
+Chapter 8 onward is usually one of these left unset.
+
+| What | Where it goes | Needed from |
+|---|---|---|
+| A disposable cluster | Your `kubectl` context | Chapter 8. A local `kind` cluster is enough, and is what the reference environment used |
+| A registry the cluster can pull from, and the image digest in it | `newName` and `digest` in `deployment/kubernetes/base/kustomization.yaml` | Chapter 8. Chapter 4 builds the image and Chapter 6 promotes the digest |
+| A Git source Argo CD can reach and you can push to | `spec.source.repoURL` in `deployment/gitops/argocd/*.yaml` | Chapter 9. Argo CD reconciles from Git, never from your working tree |
+
+The digest published here is an all-zero placeholder and cannot pull, by
+design: an unreplaced value fails at admission rather than deploying something
+unreviewed. The `repoURL` published here is this repository, which you cannot
+push your edits to.
+
+`deployment/gitops/lab-source/` supplies a disposable in-cluster Git server for
+readers with no reachable Git host, and its README states the trade-offs. It is
+one valid answer to the third row, not a requirement.
+
 ## What the reader writes, and when
 
 These paths appear in chapters and are absent here by design. They are the
