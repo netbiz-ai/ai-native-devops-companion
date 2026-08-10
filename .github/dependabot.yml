@@ -16,3 +16,28 @@ updates:
       prefix: ci
     labels:
       - dependencies
+    # Six of these actions are also pinned in the manuscript, and Chapter 5
+    # records the reviewed identity of each. A major bump accepted here alone
+    # puts the book and its executable counterpart back into the disagreement
+    # issue #3 was about, and the manuscript cannot follow without a render.
+    # So majors for those six are the author's decision, taken with the book;
+    # patches and minors still arrive, and every action not shared with the
+    # book updates without restriction.
+    ignore:
+      - dependency-name: actions/checkout
+        update-types: ["version-update:semver-major"]
+      - dependency-name: actions/setup-python
+        update-types: ["version-update:semver-major"]
+      - dependency-name: actions/upload-artifact
+        update-types: ["version-update:semver-major"]
+      - dependency-name: docker/build-push-action
+        update-types: ["version-update:semver-major"]
+      - dependency-name: docker/setup-buildx-action
+        update-types: ["version-update:semver-major"]
+      # trivy-action is pre-1.0, so every release it publishes is a semver
+      # minor and none of them are caught by the rule above. The pin is also
+      # not an ordinary version choice: 0.35.0 is the commit named in Aqua's
+      # March 2026 incident guidance, which security.yml says at the call
+      # site. Its updates are worth reading rather than taking.
+      - dependency-name: aquasecurity/trivy-action
+        update-types: ["version-update:semver-major"]
