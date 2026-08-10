@@ -77,6 +77,18 @@ their lab was blocked when it was not.
   Chapter 7's Terraform takes the no-apply route unless you supply and approve
   your own sandbox.
 
+- **Chapter 6's delivery route now runs, and needs configuration you must
+  supply.** `delivery.yml` and `rollback.yml` implement the contract the
+  chapter audits against, and both were exercised end to end on 2026-08-10.
+  They require two repository environments, `staging` and `production`, with
+  deployment branches restricted to `main` and a required reviewer on
+  `production` who is not the person dispatching the run. Without them the
+  jobs will not gate, and with self-review permitted the chapter's independence
+  checkpoint is not met. Protected-check verification uses this repository's
+  real check names - `quality`, `image`, `SAST`, `Secrets` and `IaC` - and
+  refuses a commit whose checks are missing, duplicated, still running, or
+  from an unexpected app.
+
 ## What the reader writes, and when
 
 These paths appear in chapters and are absent here by design. They are the
