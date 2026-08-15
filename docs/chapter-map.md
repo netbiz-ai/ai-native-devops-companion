@@ -63,6 +63,7 @@ differences; a chapter naming the left-hand path means the right-hand file.
 | `docs/optimization/scorecard-template.md` | `optimization/scorecard-template.md` | 13 |
 | `docs/security/finding-disposition.yaml` | `security/finding-disposition-template.yaml` | 11 |
 | `agents/k8s-diagnostics/` | `operations-agent/` | 15 |
+| `infrastructure/modules/`, `infrastructure/environments/` | `infrastructure/terraform/modules/`, `infrastructure/terraform/environments/` | 7 |
 
 ## Known gaps in this contract
 
@@ -89,6 +90,16 @@ their lab was blocked when it was not.
   real check names - `quality`, `image`, `SAST`, `Secrets` and `IaC` - and
   refuses a commit whose checks are missing, duplicated, still running, or
   from an unexpected app.
+
+- **Chapter 7's printed module interface diverges from the shipped module.**
+  The chapter's variables (`subnets` as `map(string)`, lower-case tag keys, a
+  `region` variable) and its `rejects_duplicate_subnets` test case do not fit
+  `infrastructure/terraform/modules/network`, which takes
+  `map(object({cidr, availability_zone}))`, requires `Owner`, `Environment`
+  and `ExpiresAt` tags, names the variable `aws_region`, and guards only the
+  subnet count. A reader who writes the printed files gets a module of their
+  own that works standalone; the printed test run against the shipped module
+  fails, observed 2026-08-14 as `0 passed, 1 failed, 1 skipped`.
 
 - **Chapter 13 prints three helper scripts this repository does not supply.**
   The chapter's flow calls `labs/ch13/capture-baseline.sh`,
