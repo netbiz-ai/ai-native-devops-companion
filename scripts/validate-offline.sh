@@ -4,6 +4,20 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
+# The Python floor is 3.11: operations-agent imports datetime.UTC, which 3.10
+# does not have, and docs/supported-versions.md records 3.11-3.13 as the
+# supported range. Say that plainly before anything runs: the alternative is
+# an ImportError traceback out of a test loader, which reads as a broken
+# repository rather than an old interpreter.
+if ! python3 -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)'; then
+  printf 'FAIL: Python 3.11 or newer is required; python3 here is %s.\n' \
+    "$(python3 -c 'import platform; print(platform.python_version())')" >&2
+  printf '      The supported range is 3.11-3.13, per docs/supported-versions.md.\n' >&2
+  printf '      Point python3 at a newer interpreter, e.g. a virtual environment:\n' >&2
+  printf '      python3.12 -m venv .venv && . .venv/bin/activate\n' >&2
+  exit 1
+fi
+
 while IFS= read -r script; do
   bash -n "$script"
 done < <(find scripts labs deployment -type f -name '*.sh' -print | sort)

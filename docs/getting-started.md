@@ -27,6 +27,9 @@ Which level each chapter needs is in the table in [`labs/README.md`](../labs/REA
 
 ## First-time setup (about 10 minutes)
 
+Check your Python first: `python3 --version` must report 3.11, 3.12, or 3.13.
+If it reports something older, create a virtual environment from a newer interpreter (`python3.12 -m venv .venv && . .venv/bin/activate`) and stay in it for everything below.
+
 ```bash
 git clone https://github.com/netbiz-ai/ai-native-devops-companion.git
 cd ai-native-devops-companion
