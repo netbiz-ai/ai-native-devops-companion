@@ -1,5 +1,7 @@
 # Labs
 
+New to the repository? [docs/getting-started.md](../docs/getting-started.md) walks through setup and every chapter's labs step by step.
+
 Every command the book prints exists here as a file, so a reader never retypes from the page.
 Each chapter folder holds one numbered `.sh` file per printed bash block, in the order the chapter prints them, with the command body verbatim.
 The header of each file carries the chapter's label for the block, a destructive-command warning where one applies, and the chapter's expected result.

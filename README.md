@@ -3,6 +3,9 @@
 This repository is the cumulative project used by *AI-Native DevOps: A Hands-On
 Guide to Becoming an AI-Native DevOps Engineer* by Elvis Tafoh-Ngunjoh.
 
+**Start here:** new to the repository? [docs/getting-started.md](docs/getting-started.md)
+walks you through setup, prerequisites, and every chapter's labs step by step.
+
 `docs/chapter-map.md` is the canonical contract between the book and this
 repository: what each chapter starts from, carries in, produces, and how to
 validate it. Where the book and that map disagree, the map is correct.
@@ -31,6 +34,7 @@ results.
 ```bash
 git clone https://github.com/netbiz-ai/ai-native-devops-companion.git
 cd ai-native-devops-companion
+pip install -r reference-app/requirements.lock
 ./scripts/validate-offline.sh
 python3 reference-app/src/app.py
 ```

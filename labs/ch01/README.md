@@ -16,4 +16,5 @@ These are the chapter's commands exactly as the book prints them.
 All 8 bash blocks in the chapter are shipped as files; none were printed-only.
 
 The chapter also prints the workspace documents (task brief, AI usage policy, verification checklist, review record) in Markdown fences.
-Those already exist in this repository under workspace/ (context/, evidence/, decisions/, samples/) and templates/verification-checklist.md - do not duplicate them.
+You write those yourself into the `workspace/` you create in this chapter - per `docs/chapter-map.md`, `workspace/` is the reader's output and this repository deliberately does not supply one.
+The blank checklist to copy is `templates/verification-checklist.md`.
