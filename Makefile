@@ -1,4 +1,4 @@
-.PHONY: test validate run assistant agent ch01-start ch02-start ch03-start ch04-start ch05-start ch06-start ch07-start ch08-start ch09-start ch10-start ch11-start ch12-start ch13-start ch14-start ch15-start ch16-start ch01-complete ch02-complete ch03-complete ch04-complete ch05-complete ch06-complete ch07-complete ch08-complete ch09-complete ch10-complete ch11-complete ch12-complete ch13-complete ch14-complete ch15-complete ch16-complete
+.PHONY: test validate run assistant agent ch10-validate ch12-validate ch13-validate ch16-validate ch01-start ch02-start ch03-start ch04-start ch05-start ch06-start ch07-start ch08-start ch09-start ch10-start ch11-start ch12-start ch13-start ch14-start ch15-start ch16-start ch01-complete ch02-complete ch03-complete ch04-complete ch05-complete ch06-complete ch07-complete ch08-complete ch09-complete ch10-complete ch11-complete ch12-complete ch13-complete ch14-complete ch15-complete ch16-complete
 
 test:
 	python3 -m unittest discover -s reference-app/tests -p 'test_*.py'
@@ -116,3 +116,18 @@ ch16-start:
 
 ch16-complete:
 	./scripts/start-chapter.sh 16 complete
+
+# Chapter validators migrated from scripts/ into labs/. Only the four chapters
+# that ship an executable validator get a target; extracted verbatim commands
+# are run by path, as the book prints them.
+ch10-validate:
+	./labs/ch10/validate.sh
+
+ch12-validate:
+	./labs/ch12/validate.sh
+
+ch13-validate:
+	./labs/ch13/validate.sh
+
+ch16-validate:
+	./labs/ch16/capstone-verify.sh

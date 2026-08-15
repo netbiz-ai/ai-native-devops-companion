@@ -1,0 +1,26 @@
+# Chapter 8 lab scripts - Kubernetes with AI as a Reviewer
+
+These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
+
+| File | Book section | Label | Purpose |
+|---|---|---|---|
+| 01-check-prerequisites.sh | Prerequisites | Runnable | Verify required tools, cluster access, branch, directories, and namespace permissions. |
+| 02-create-namespace.sh | Build It, Step 1 | Runnable | Refuse an existing namespace, dry-run, diff, then apply namespace.yaml and record its UID. |
+| 03-validate-before-apply.sh | Build It, Step 3 | Runnable | Prove namespace ownership, check permissions, and server-dry-run the manifests. |
+| 04-check-psa-rejection.sh | Build It, Step 3 | Runnable | Prove Restricted admission rejects a noncompliant server-dry-run Pod. |
+| 05-diff-manifests.sh | Build It, Step 3 | Runnable | Run kubectl diff on the policy and workload manifests before approval. |
+| 06-apply-and-observe.sh | Build It, Step 4 | Runnable | Apply policy then workload, watch the rollout, and inspect endpoints. |
+| 07-run-client-positive-test.sh | Build It, Step 5 | Runnable | Deploy the labeled test client and prove it reaches /ready through the Service. |
+| 08-test-unlabeled-denial.sh | Build It, Step 5 | Runnable | Remove the client label and prove the unlabeled client is denied. |
+| 09-test-egress-denial.sh | Build It, Step 5 | Runnable | Prove the application Pod cannot open unapproved egress to the API Service. |
+| 10-delete-client.sh | Build It, Step 5 | Runnable | Delete the test client Pod after retaining the result. |
+| 11-break-readiness.sh | Break It Deliberately | Runnable | Change only the readiness path and confirm the rollout stalls. |
+| 12-diagnose-rollout.sh | Break It Deliberately | Runnable | Inspect deployment state, events, and logs before restoring the file. |
+| 13-restore-workload.sh | Break It Deliberately | Runnable | Restore the reviewed declaration and wait for recovery. |
+| 14-inventory-namespace.sh | Cost and Cleanup | Runnable | Prove ownership and inventory every namespaced resource before deletion. |
+| 15-delete-namespace.sh | Cost and Cleanup | Runnable | Delete the reference-dev Namespace after explicit confirmation. |
+
+## Referenced configuration files
+
+The chapter's blocks reference manifests that this repository already keeps under `deployment/kubernetes/` - `base/namespace.yaml`, `base/workload.yaml`, `base/network-policy.yaml`, and `tests/client.yaml`; do not duplicate them here.
+The chapter also prints `deployment/kubernetes/tests/connect.py` as a Python block used by scripts 08 and 09, but that file does not currently exist in this repository.

@@ -8,7 +8,7 @@ incident_id: pending
 criteria:
   CAP-01:
     status: pending
-    command: scripts/capstone-verify.sh identity
+    command: labs/ch16/capstone-verify.sh identity
     evidence: evidence/capstone/delivery/identity.txt
     reviewer: pending
   CAP-02:
