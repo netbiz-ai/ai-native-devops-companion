@@ -1,0 +1,27 @@
+# Chapter 9 lab commands - GitOps and Platform Automation
+
+These are the chapter's commands exactly as the book prints them.
+
+| File | Book section | Label | Purpose |
+|---|---|---|---|
+| 01-check-preflight.sh | Prerequisites | Runnable | Stop-or-proceed preflight for the cluster, Argo CD client, and repository access. |
+| 02-apply-namespaces.sh | Build It, Step 1 | Runnable | Verify namespace owner tokens, dry-run, then create both owned namespaces. |
+| 03-render-overlays.sh | Build It, Step 1 | Runnable | Render both overlays, assert the verified digests, and server dry-run the output. |
+| 04-dryrun-project.sh | Build It, Step 2 | Runnable | Server dry-run the bounded AppProject. |
+| 05-push-gitops-branch.sh | Build It, Step 3 | Runnable | Publish the GitOps declarations on a review branch. |
+| 06-apply-controller.sh | Build It, Step 3 | Runnable | Create the AppProject and both Applications, then inspect controller state. |
+| 07-push-promotion.sh | Build It, Step 4 | Runnable | Stage and push the production digest promotion for review. |
+| 08-sync-production.sh | Build It, Step 4 | Runnable | Pin the approved revision, sync production, and verify rollout and image identity. |
+| 09-validate-production.sh | Test and Validate | Runnable | Gather controller, scope, history, and runtime evidence. |
+| 10-exercise-drift.sh | Break It Deliberately | Runnable | Inject replica drift in staging and watch self-heal restore the Git value. |
+| 11-diagnose-outofsync.sh | Troubleshooting - remains OutOfSync | Runnable | Diagnose an application that stays OutOfSync. |
+| 12-diagnose-unhealthy.sh | Troubleshooting - Synced but not Healthy | Runnable | Diagnose Pods that cannot become ready after a sync. |
+| 13-diagnose-rejection.sh | Troubleshooting - controller rejects a resource | Runnable | Diagnose an AppProject scope rejection. |
+| 14-inventory-resources.sh | Cost and Cleanup | Runnable | Inventory application finalizers, namespaces, and external resources. |
+| 15-delete-applications.sh | Cost and Cleanup | Runnable | Non-cascading application deletion, then delete the owned namespaces. |
+| 16-delete-project.sh | Cost and Cleanup | Runnable | Remove the AppProject once no application references it. |
+
+The chapter prints several configuration fences (the base kustomization, overlay namespaces and kustomizations, the AppProject, and the Application manifests).
+Those already exist as real files in this repository under `deployment/kubernetes/base/` and `deployment/gitops/` (overlays and `argocd/`); they are not duplicated here.
+
+Several scripts reference placeholders the book tells you to replace before running: the repository URL `https://git.example/platform/ai-native-devops.git`, the registry `registry.example.invalid`, and the `REPLACE_ME` / `REPLACE_WITH` digest and owner tokens, plus the `STAGING_DIGEST` and `PRODUCTION_DIGEST` environment variables.

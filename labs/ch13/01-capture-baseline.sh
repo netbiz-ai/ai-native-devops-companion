@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Chapter 13, Step 1 - Establish the accepted baseline - start the lab, run preflight, capture baseline evidence
+#
+# Label: Runnable
+# Destructive: make ch13-start deploys the ch13 lab state into the disposable cluster
+#
+# Expected result, per the chapter:
+#   PASS: context targets the disposable lab cluster
+#   PASS: reference application is healthy
+#   PASS: GitOps state matches the accepted revision
+#   PASS: approved telemetry queries return data
+#   PASS: restore path is available
+#   PASS: baseline evidence written to evidence/ch13/baseline.json
+# --- command as printed, verbatim ---
+make ch13-start
+test -x labs/ch13/preflight.sh
+labs/ch13/preflight.sh
+labs/ch13/capture-baseline.sh \
+  --namespace reference-optimization \
+  --output evidence/ch13/baseline.json
