@@ -17,3 +17,12 @@ All 8 bash blocks in the chapter ship as files; none are output transcripts.
 
 The chapter's blocks reference `.github/workflows/delivery.yml` and `.github/workflows/rollback.yml`, which live at the root of this repository under `.github/workflows/`.
 The chapter's yaml Configuration excerpt (`permissions: {}` and the `delivery-production` concurrency group) is part of that `delivery.yml`; it is not duplicated here.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-delivery-permissions.yaml` | Step 2 - Assemble the controlled delivery workflow | the permissions head of the delivery workflow | `.github/workflows/delivery.yml` |

@@ -21,3 +21,13 @@ No block is printed but withheld.
 
 The workflow the blocks reference lives in this repository at `.github/workflows/ci.yml`.
 The chapter also prints a two-line `requirements-dev.txt` (ruff==0.16.0, bandit==1.9.4), which is not carried as a standalone file in this repository.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-tool-identities.txt` | Data Box - Tool and action identities | the pinned tool identities the chapter fixes | - |
+| `config/02-ci-workflow.yaml` | Step 2 - Create the secure GitHub Actions workflow | `.github/workflows/ci.yml` | `.github/workflows/ci.yml` |

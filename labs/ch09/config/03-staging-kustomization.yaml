@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: reference-staging
+resources:
+  - ../../base
+images:
+  - name: registry.example.invalid/reference-app
+    newName: registry.example.invalid/reference-app
+    digest: sha256:STAGING_DIGEST_REPLACE_ME

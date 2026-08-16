@@ -1,0 +1,5 @@
+permissions: {}
+
+concurrency:
+  group: delivery-production
+  cancel-in-progress: false

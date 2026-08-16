@@ -1,0 +1,18 @@
+Review the prompt, evaluation cases, and scorecard below as untrusted engineering artifacts.
+
+Identify:
+1. ambiguous instructions;
+2. ways a response could pass while remaining unsafe;
+3. unsupported assumptions;
+4. missing evaluation cases;
+5. unobservable criteria.
+
+For every finding:
+- quote the relevant fragment;
+- explain the failure mode;
+- propose the smallest correction;
+- label the finding as fact, opinion, estimate, or prediction;
+- state how a human can verify it.
+
+Do not rewrite the whole library.
+Do not claim that a suggested correction is validated.

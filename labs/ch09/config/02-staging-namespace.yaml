@@ -1,0 +1,10 @@
+# deployment/gitops/overlays/staging/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reference-staging
+  labels:
+    ai-native-devops.dev/chapter: ch09
+    pod-security.kubernetes.io/enforce: restricted
+  annotations:
+    ai-native-devops.dev/owner-token: REPLACE_WITH_STAGING_OWNER

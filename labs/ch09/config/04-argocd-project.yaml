@@ -1,0 +1,21 @@
+# deployment/gitops/argocd/project.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: reference-app
+  namespace: argocd
+spec:
+  sourceRepos:
+    - https://git.example/platform/ai-native-devops.git
+  destinations:
+    - namespace: reference-staging
+      server: https://kubernetes.default.svc
+    - namespace: reference-production
+      server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+    - group: apps
+      kind: Deployment
+    - group: ""
+      kind: Service
+    - group: networking.k8s.io
+      kind: NetworkPolicy

@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reference-app
+  namespace: reference-dev
+  labels:
+    app.kubernetes.io/name: reference-app
+    ai-native-devops.dev/chapter: ch08
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  progressDeadlineSeconds: 120
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: reference-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: reference-app
+        ai-native-devops.dev/chapter: ch08
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: reference-app
+          image: registry.example.invalid/reference-app@sha256:REPLACE_WITH_APPROVED_DIGEST
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: APP_ENV
+              value: development
+            - name: APP_PORT
+              value: "8080"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 2
+            failureThreshold: 15
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            periodSeconds: 5
+            failureThreshold: 2
+            timeoutSeconds: 1
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reference-app
+  namespace: reference-dev
+  labels:
+    ai-native-devops.dev/chapter: ch08
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: reference-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

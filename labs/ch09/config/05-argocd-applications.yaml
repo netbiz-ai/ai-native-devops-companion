@@ -1,0 +1,20 @@
+# deployment/gitops/argocd/staging-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reference-app-staging
+  namespace: argocd
+spec:
+  project: reference-app
+  source:
+    repoURL: https://git.example/platform/ai-native-devops.git
+    targetRevision: main
+    path: deployment/gitops/overlays/staging
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: reference-staging
+  syncPolicy:
+    automated:
+      enabled: true
+      prune: false
+      selfHeal: true

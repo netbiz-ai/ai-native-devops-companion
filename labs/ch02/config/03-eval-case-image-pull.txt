@@ -1,0 +1,10 @@
+CASE: image-pull
+ENVIRONMENT: non-production Kubernetes namespace named demo
+OBSERVED:
+- A deployment named api was updated 12 minutes ago.
+- New pods remain in a waiting state.
+- A redacted event contains: Failed to pull image "registry.example.invalid/team/api:1.4".
+- The previous deployment used tag 1.3.
+- No registry response or credential status has been supplied.
+REQUEST:
+Produce a diagnostic plan only.

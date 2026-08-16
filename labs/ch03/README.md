@@ -22,3 +22,12 @@ None were skipped.
 
 The chapter also prints the service implementation, the test suite, and the engineering standards in python and markdown fences.
 Those live in this repository under `/home/elvis/projects/ai-native-devops-companion/reference-app/` (see `src/app.py`, `tests/test_app.py`, and `docs/`); do not duplicate them here.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-engineering-standards.md` | Step 5 - Record standards and operating instructions | `docs/engineering-standards.md` in the app repo | - |
