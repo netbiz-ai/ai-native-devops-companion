@@ -1,0 +1,20 @@
+You are assisting with a DevOps review.
+
+Review the task brief and Bash script below.
+Do not execute commands, invent output, or assume a live environment.
+
+For each finding:
+1. quote the relevant behavior or line;
+2. explain the risk;
+3. propose a non-destructive check;
+4. state what the check proves and does not prove;
+5. label facts, assumptions, and recommendations.
+
+Include syntax, success-path, and negative-path checks.
+Flag any missing context.
+
+Task brief:
+<paste context/task-brief.md>
+
+Script:
+<paste samples/release-gate.sh>

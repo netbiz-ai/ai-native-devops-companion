@@ -70,6 +70,7 @@ Each chapter is the same loop:
 3. **Run the numbered scripts in order** as the book discusses them.
    A script whose header says `Partial` keeps the book's placeholders and fails until you substitute your own values - exactly as the printed page would.
    A script whose header says `Destructive` creates or changes real things (containers, cluster objects); read it before you run it.
+   The documents the chapter prints as **Configuration** blocks (task briefs, policies, manifests) ship in `labs/chNN/config/` - copy the file to the destination the chapter README names rather than retyping it from the page.
 4. **Check yourself** with the chapter's validation command - each card below states it, taken from [chapter-map.md](chapter-map.md).
 5. **Keep what you made.**
    Some chapters produce artifacts a later chapter reads; the cards say when.

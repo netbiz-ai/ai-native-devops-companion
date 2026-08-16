@@ -25,3 +25,16 @@ The chapter prints several configuration fences (the base kustomization, overlay
 Those already exist as real files in this repository under `deployment/kubernetes/base/` and `deployment/gitops/` (overlays and `argocd/`); they are not duplicated here.
 
 Several scripts reference placeholders the book tells you to replace before running: the repository URL `https://git.example/platform/ai-native-devops.git`, the registry `registry.example.invalid`, and the `REPLACE_ME` / `REPLACE_WITH` digest and owner tokens, plus the `STAGING_DIGEST` and `PRODUCTION_DIGEST` environment variables.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-base-kustomization.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | the base kustomization | `deployment/kubernetes/base/kustomization.yaml` |
+| `config/02-staging-namespace.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | `overlays/staging/namespace.yaml` | - |
+| `config/03-staging-kustomization.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | `overlays/staging/kustomization.yaml` | `deployment/gitops/overlays/staging/kustomization.yaml` |
+| `config/04-argocd-project.yaml` | Step 2 - Bound controller authority | the Argo CD project | `deployment/gitops/argocd/project.yaml` |
+| `config/05-argocd-applications.yaml` | Step 3 - Declare staging and production applications | the staging and production applications | `deployment/gitops/argocd/staging-application.yaml` (the live tree splits this into staging- and production-application.yaml) |

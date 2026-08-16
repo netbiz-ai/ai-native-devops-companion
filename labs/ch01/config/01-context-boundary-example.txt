@@ -1,0 +1,4 @@
+Deployment target: managed Kubernetes cluster
+Secret source: <approved external secret store>
+Constraint: do not place secret values in manifests or prompt output
+Unknown: current network policy

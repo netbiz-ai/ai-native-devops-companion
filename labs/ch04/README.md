@@ -33,3 +33,14 @@ None - this directory was created for this extraction.
 ## Non-shipped blocks
 
 None - all 17 bash blocks in the chapter are commands and are shipped as files.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-dockerignore.txt` | Step 1 - Control the build context | `.dockerignore` of the app | `reference-app/.dockerignore` |
+| `config/02-dockerfile-baseline.dockerfile` | Step 2 - Build and measure a baseline | the single-stage baseline you measure against | - |
+| `config/03-dockerfile-final.dockerfile` | Step 3 - Record the base identity and build the final image | the hardened multi-stage build | `reference-app/Dockerfile` |

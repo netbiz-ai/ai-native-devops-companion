@@ -1,0 +1,26 @@
+groups:
+  - name: reference-app
+    rules:
+      - alert: ReferenceAppHighUserLatency
+        expr: |
+          reference_app:http_request_duration_p95_seconds{
+            environment="reference-staging",
+            route="/",
+            method="GET",
+            status_class="2xx"
+          } > 0.5
+          and on (service_name, environment, route, method)
+          reference_app:http_request_rate{
+            environment="reference-staging",
+            route="/",
+            method="GET",
+            status_class="2xx"
+          } > 0.2
+        for: 2m
+        labels:
+          severity: lab-page
+          service: reference-app
+          owner: reference-app-oncall
+        annotations:
+          summary: "Sustained latency affects the tested user path"
+          runbook_url: "RUNBOOK_URL_VERIFIED_BY_DEPLOYMENT"

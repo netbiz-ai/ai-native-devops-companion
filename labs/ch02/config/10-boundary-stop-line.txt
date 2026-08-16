@@ -1,0 +1,1 @@
+Stop before any state-changing action.

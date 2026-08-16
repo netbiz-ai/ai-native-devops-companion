@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reference-dev
+  labels:
+    ai-native-devops.dev/chapter: ch08
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: v1.36
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+  annotations:
+    ai-native-devops.dev/owner-token: REPLACE_WITH_OWNER_TOKEN

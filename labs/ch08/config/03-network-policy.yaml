@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: reference-app-default-deny
+  namespace: reference-dev
+  labels:
+    ai-native-devops.dev/chapter: ch08
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: reference-app
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: reference-client
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress: []

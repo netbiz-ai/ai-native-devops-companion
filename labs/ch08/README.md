@@ -24,3 +24,15 @@ These are the chapter's commands exactly as the book prints them, one file per b
 
 The chapter's blocks reference manifests that this repository already keeps under `deployment/kubernetes/` - `base/namespace.yaml`, `base/workload.yaml`, `base/network-policy.yaml`, and `tests/client.yaml`; do not duplicate them here.
 The chapter also prints `deployment/kubernetes/tests/connect.py` as a Python block used by scripts 08 and 09, but that file does not currently exist in this repository.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-namespace.yaml` | Step 1 - Establish ownership, then declare the workload | the namespace declaration | `deployment/kubernetes/base/namespace.yaml` |
+| `config/02-workload.yaml` | Stop here until a named reviewer approves this exact Namespace diff. | the hardened workload | `deployment/kubernetes/base/workload.yaml` |
+| `config/03-network-policy.yaml` | Step 2 - Restrict who may reach the application | the network policy | `deployment/kubernetes/base/network-policy.yaml` |
+| `config/04-client.yaml` | Step 5 - Prove allowed and denied access | the access-test client | `deployment/kubernetes/tests/client.yaml` |

@@ -16,3 +16,12 @@ These are the chapter's commands exactly as the book prints them.
 ## Related configuration
 
 The evidence manifest that the chapter prints as a Configuration block lives at docs/capstone/evidence-manifest.yaml in this repository.
+
+## Configuration blocks
+
+The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+
+| File | Book section | Goes to | Live file here |
+|---|---|---|---|
+| `config/01-evidence-manifest.yaml` | Step 2 - Create the evidence manifest | the capstone evidence manifest | `docs/capstone/evidence-manifest.yaml` |
