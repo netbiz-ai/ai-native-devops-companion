@@ -7,7 +7,10 @@
 #   The search returns no matches.
 #   The rule test returns SUCCESS.
 # --- command as printed, verbatim ---
-! rg -n 'RUNBOOK_URL_VERIFIED_BY_DEPLOYMENT' \
+if rg -n 'RUNBOOK_URL_VERIFIED_BY_DEPLOYMENT' \
   observability/alerts/reference-app.yaml \
-  observability/alerts/reference-app.test.yaml
+  observability/alerts/reference-app.test.yaml; then
+  echo "runbook URL placeholder is still present" >&2
+  exit 1
+fi
 promtool test rules observability/alerts/reference-app.test.yaml
