@@ -31,6 +31,7 @@ Chapters 10 to 13 and 16 also carry the executable validators and helpers that u
 "Needs a tool" means at least one locally installable tool from the chapter's prerequisites.
 "Needs a cluster" means a Kubernetes cluster or a cloud account is required for at least one block.
 
+Each numbered file is a separate script, so a `cd` inside one does not carry to the next; where the launch directory matters, the chapter README states it.
 Each `labs/chNN/README.md` maps its files to the book section they came from and names any printed block that is not shipped as a file.
 The book's **Configuration** blocks ship too, under `labs/chNN/config/`, one file per printed block in book order, body verbatim, so a reader copies a document rather than retypes it.
 Where a live version of the same file ships elsewhere in this repository, the chapter README's table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.

@@ -10,6 +10,10 @@
 #   test_unknown_path_returns_404 ... ok
 #   test_defaults_are_loaded ... ok
 #   test_non_numeric_port_is_rejected ... ok
+#
+# Against this repository's shipped tree expect `Ran 37 tests ... OK`: the clone
+# also carries the Chapter 10 and 12 suites. The chapter's count describes the
+# app as you write it in this chapter.
 #   test_out_of_range_port_is_rejected ... ok
 #   test_query_string_preserves_root_response ... ok
 #   test_server_settings_are_isolated ... ok

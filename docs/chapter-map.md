@@ -102,6 +102,24 @@ their lab was blocked when it was not.
   own that works standalone; the printed test run against the shipped module
   fails, observed 2026-08-14 as `0 passed, 1 failed, 1 skipped`.
 
+- **Chapter 3's printed run command fails against the shipped app.**
+  `python3 -m src.app` (Steps 4, Break It, and Troubleshooting) dies with
+  `No module named 'telemetry'` against `reference-app/src/app.py` on `main`,
+  which carries the Chapter 10 refactor's flat `import telemetry`. Run
+  `python3 src/app.py` with the same environment variables instead; the printed
+  form works against the app as the chapter has you write it. Observed
+  2026-08-17; worst in the Break It step, which exits nonzero with the wrong
+  error, so confirm the `ValueError`, not just a failure.
+
+- **Printed expected test output describes the chapter-time suites, not the
+  shipped tree.** Chapter 3 says ten passing tests, but `main` runs 37 (the
+  Chapter 10 and 12 suites ship alongside); Chapter 14 names six tests while
+  the shipped suite is five differently named ones. Relatedly, the Chapter 3
+  and 14 validation commands pass on an untouched fresh clone, so they prove
+  the shipped suites still work, not that the reader's chapter work was done -
+  the chapters' own artifacts (the evidence file, the knowledge doc, the demo
+  run) are the reader-side proof.
+
 - **Chapter 13 prints three helper scripts this repository does not supply.**
   The chapter's flow calls `labs/ch13/capture-baseline.sh`,
   `labs/ch13/estimate-cost.sh` and `labs/ch13/restore.sh` alongside the

@@ -15,13 +15,23 @@ These are the chapter's commands exactly as the book prints them.
 | 09-diagnose-port.sh | Troubleshooting - port already in use | Runnable | Check whether something is listening on port 8080. |
 | 10-run-alt-port.sh | Troubleshooting - port already in use | Runnable (unlabeled in the chapter) | Restart the service on the unoccupied port 8081. |
 | 11-find-pycache.sh | Cost and Cleanup | Runnable | List project-local `__pycache__` directories. |
-| 12-verify-cleanup.sh | Cost and Cleanup | Runnable (unlabeled in the chapter) | Verify no listener remains and the Git tree is clean. |
+| 12-verify-cleanup.sh | Cost and Cleanup | Runnable (unlabeled in the chapter) | Verify no listener remains and only intended files appear in `git status`. |
 
 All 12 of the chapter's bash blocks are shipped as files.
 None were skipped.
 
+## How the files run
+
+- Each numbered file is a separate script, so 02's `cd` does not carry: run 01 and 02 from where you keep your lab work, and 03 to 12 from inside the `reference-app/` directory.
+- 05 and 10 start a server that blocks its terminal; run each in its own terminal and probe with 06 or 09 from another.
+- Against this repository's shipped reference-app, the printed `python3 -m src.app` form in 05, 08, and 10 fails with `No module named 'telemetry'` (the shipped app carries the Chapter 10 refactor); use `python3 src/app.py` with the same environment variables. The printed form works against the app as this chapter has you write it.
+- Before 07, write `evidence/ch03-validation.txt` as the chapter's Test and Validate section describes; 07 stages it.
+- Before 12, stop the servers from 05/10 (a Ctrl-C in the book).
+- 06's `curl --fail-with-body` needs curl 7.76 or newer, which 01 does not check for.
+
 The chapter also prints the service implementation, the test suite, and the engineering standards in python and markdown fences.
-Those live in this repository under `/home/elvis/projects/ai-native-devops-companion/reference-app/` (see `src/app.py`, `tests/test_app.py`, and `docs/`); do not duplicate them here.
+The implementation and tests live in this repository under `reference-app/` (`src/app.py`, `tests/test_app.py`); do not duplicate them.
+The engineering-standards document is yours to write: copy the config block below to `reference-app/docs/engineering-standards.md` - this repository does not carry a live copy.
 
 ## Configuration blocks
 
