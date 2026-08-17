@@ -53,6 +53,23 @@ Three responsibilities do not transfer:
    The chapter is done when its validation command from [chapter-map.md](chapter-map.md) passes; ask for each check's actual output rather than a bare "passed", since a few chapters validate through their own success and failure runs rather than one command.
    Keep the artifacts the chapter produced - later chapters read some of them, and the cards in [getting-started.md](getting-started.md) say which.
 
+## Where the human gate lives
+
+The book's central discipline is that a human gates every consequential action, and handing the labs to an agent does not hand over the gate.
+It survives at three layers, and knowing them tells you what your supervision is actually for:
+
+1. **The agent's stop points.**
+   [`AGENTS.md`](../AGENTS.md) hard-codes where the agent must halt and hand the decision back: before any `Destructive` script, before anything that creates a cluster or could cost money, and whenever a `Partial` script needs your values.
+   Your yes or no at each stop is the gate - which is why step 5 says to read the script before answering.
+2. **The harness's permission prompts.**
+   Step 3 says to keep your agent's own permission prompts on rather than granting blanket approval.
+   The two layers overlap on purpose: `AGENTS.md` catches a safe-looking script whose label says `Destructive`, and the harness catches anything an agent might rationalize past.
+3. **The book's gate artifacts.**
+   The chapter work itself is human-gate machinery only you can operate: the verification checklist ends with a named human owning the decision, review records and ADRs need your dispositions, Chapter 6's delivery route requires a production reviewer who is not the dispatcher - a gate no agent can satisfy for you - and the Chapter 14 and 15 assistants are read-only and proposal-only by construction.
+   `AGENTS.md` forbids the agent from inventing those judgments, and the Chapter 14 demo will not produce its safe answer until the knowledge doc you write in Step 1 exists.
+
+In short: the agent executes inside the gates; it never becomes one.
+
 ## If a lab file looks wrong
 
 If the agent reports that a lab file appears defective, do not let it patch the file: the lab bodies are verbatim copies of the printed page, and the fix belongs in [GitHub Issues](https://github.com/netbiz-ai/ai-native-devops-companion/issues), the errata channel.
