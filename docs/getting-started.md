@@ -77,7 +77,12 @@ Each chapter is the same loop:
 
 ### Using a coding agent
 
-You can have an AI coding agent drive this loop for you while you supervise: the repository carries agent instructions in [`AGENTS.md`](../AGENTS.md), and [running-labs-with-a-coding-agent.md](running-labs-with-a-coding-agent.md) explains what the agent can do, what stays your responsibility, and a prompt to start from.
+You can have an AI coding agent drive this loop for you while you supervise: the repository carries agent instructions in [`AGENTS.md`](../AGENTS.md), and [running-labs-with-a-coding-agent.md](running-labs-with-a-coding-agent.md) explains what the agent can do, what stays your responsibility, and how to know a chapter is done.
+A prompt to start from, adjusted to the chapter:
+
+> Work through chapter 3 of this repository per AGENTS.md.
+> Run the lab scripts in labs/ch03/ in numbered order, show me each command and its result before moving on, and stop for my confirmation before anything labeled Destructive or anything that would create a cluster or cost money.
+> Finish with the chapter's validation command from docs/chapter-map.md and report whether it passed.
 
 ### Things you create yourself
 
