@@ -75,6 +75,10 @@ Each chapter is the same loop:
 5. **Keep what you made.**
    Some chapters produce artifacts a later chapter reads; the cards say when.
 
+### Using a coding agent
+
+You can have an AI coding agent drive this loop for you while you supervise: the repository carries agent instructions in [`AGENTS.md`](../AGENTS.md), and [running-labs-with-a-coding-agent.md](running-labs-with-a-coding-agent.md) explains what the agent can do, what stays your responsibility, and a prompt to start from.
+
 ### Things you create yourself
 
 Some paths the book names are deliberately absent here, because they are your output, not the repository's:

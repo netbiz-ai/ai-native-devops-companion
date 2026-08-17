@@ -5,6 +5,9 @@ Guide to Becoming an AI-Native DevOps Engineer* by Elvis Tafoh-Ngunjoh.
 
 **Start here:** new to the repository? [docs/getting-started.md](docs/getting-started.md)
 walks you through setup, prerequisites, and every chapter's labs step by step.
+Working with an AI coding agent? [AGENTS.md](AGENTS.md) carries its instructions,
+and [docs/running-labs-with-a-coding-agent.md](docs/running-labs-with-a-coding-agent.md)
+explains that way of working.
 
 `docs/chapter-map.md` is the canonical contract between the book and this
 repository: what each chapter starts from, carries in, produces, and how to
