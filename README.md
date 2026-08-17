@@ -59,7 +59,7 @@ obvious secret patterns.
 
 | Book area | Repository path | Baseline |
 |---|---|---|
-| Chapters 1–2: bounded AI work and prompt evaluation | You create `workspace/` and `devops-prompt-library/`; this repository supplies neither | Offline |
+| Chapters 1–2: bounded AI work and prompt evaluation | You create `ai-native-workspace/` and `devops-prompt-library/`; this repository supplies neither | Offline |
 | Chapters 3–6: application, container, CI, delivery | `reference-app/`, `.github/workflows/` | Offline plus Docker/GitHub |
 | Chapter 7: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
 | Chapters 8–9: Kubernetes and GitOps | `deployment/` | Static; cluster is opt-in |

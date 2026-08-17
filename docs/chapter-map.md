@@ -10,7 +10,7 @@ Report the difference through the errata channel named in
 
 | Chapter | Starting state | Carried in | Primary paths | Ending state | Validation command |
 |---:|---|---|---|---|---|
-| 1 | Empty workspace | Nothing | `workspace/`, which you create | A verified script with an observed success and failure path, and a recorded decision | The chapter's own syntax, success and failure runs |
+| 1 | Empty workspace | Nothing | `ai-native-workspace/`, which you create | A verified script with an observed success and failure path, and a recorded decision | The chapter's own syntax, success and failure runs |
 | 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/`, which you create | Reusable prompts with deterministic evaluation cases | The chapter's own artifact-presence block |
 | 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `cd reference-app && python3 -m unittest discover -s tests` |
 | 4 | Chapter 3 service | `reference-app/src` | `reference-app/Dockerfile`, `reference-app/.dockerignore` | A non-root image measured against a single-stage baseline | The chapter's `docker build` and label assertions |
@@ -63,6 +63,7 @@ differences; a chapter naming the left-hand path means the right-hand file.
 | `docs/optimization/scorecard-template.md` | `optimization/scorecard-template.md` | 13 |
 | `docs/security/finding-disposition.yaml` | `security/finding-disposition-template.yaml` | 11 |
 | `agents/k8s-diagnostics/` | `operations-agent/` | 15 |
+| `workspace/` | `ai-native-workspace/`, which the reader creates; the Chapter 1 script names the directory in full | 1 |
 | `infrastructure/modules/`, `infrastructure/environments/` | `infrastructure/terraform/modules/`, `infrastructure/terraform/environments/` | 7 |
 
 ## Known gaps in this contract
@@ -152,7 +153,8 @@ ordering is what matters.
   an executed experiment. The templates they are written from,
   `docs/decisions/adr-template.md` and
   `docs/optimization/experiment-template.md`, are supplied here.
-- `workspace/` - built in Chapter 1, in full: the task brief, the AI usage
+- `ai-native-workspace/` (the book sometimes says `workspace/` for short) -
+  built in Chapter 1, in full: the task brief, the AI usage
   policy, `samples/release-gate.sh`, the review record, and the filled
   verification checklist. This repository carried a `workspace/` whose
   `samples/release-gate.sh` took `pass|fail` while Chapter 1 runs it against an

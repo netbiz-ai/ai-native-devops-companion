@@ -36,7 +36,7 @@ The repository is the companion project for *AI-Native DevOps*; the reader works
   Ask the reader for the values; do not invent them.
 - `make chNN-start` exiting 3 with a plain message means that chapter's snapshot tag has not been cut.
   That is by design, not a defect: continue from the clone's current state and tell the reader.
-- Some paths the book names are deliberately absent because the reader creates them (`workspace/`, `devops-prompt-library/`, and others listed in `docs/chapter-map.md` under "What the reader writes, and when").
+- Some paths the book names are deliberately absent because the reader creates them (`ai-native-workspace/`, `devops-prompt-library/`, and others listed in `docs/chapter-map.md` under "What the reader writes, and when").
   Creating them by following the chapter is the lab; do not scaffold them ahead of the reader.
 - Nothing here is evidence that a cloud, cluster, alert, or promotion succeeded until the applicable path has actually been run.
   Report only what you observed.

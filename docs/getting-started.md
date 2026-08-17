@@ -83,7 +83,7 @@ You can have an AI coding agent drive this loop for you while you supervise: the
 
 Some paths the book names are deliberately absent here, because they are your output, not the repository's:
 
-- `workspace/` - you build it in Chapter 1 (the blank checklist to copy is `templates/verification-checklist.md`).
+- `ai-native-workspace/` - you build it in Chapter 1 (the blank checklist to copy is `templates/verification-checklist.md`); where the book says `workspace/`, it means this directory.
 - `devops-prompt-library/` - you build it in Chapter 2, starting from `mkdir`.
 - `docs/security/` policy files - you write them in Chapter 11.
 - `incident-evidence/` - you write it in Chapter 12; Chapter 14 reads it.
@@ -103,7 +103,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 
 - **You build:** a verified release-gate script with an observed success and failure path, and a recorded decision.
 - **You need:** the offline level.
-- **Enter it:** a fresh clone; you create `workspace/` yourself here.
+- **Enter it:** a fresh clone; you create `ai-native-workspace/` yourself here.
 - **Labs:** [`labs/ch01/`](../labs/ch01/README.md)
 - **Check:** the chapter's own syntax, success, and failure runs.
 
