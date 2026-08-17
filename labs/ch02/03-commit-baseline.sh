@@ -6,6 +6,7 @@
 # Expected result, per the chapter:
 #   [main or master <commit-id>] Add evaluated deployment debugging prompt
 # --- command as printed, verbatim ---
+set -e
 git add README.md prompts evals docs
 git diff --cached --check
 git diff --cached

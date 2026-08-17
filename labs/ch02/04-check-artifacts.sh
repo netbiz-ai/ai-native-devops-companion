@@ -5,8 +5,10 @@
 #
 # Expected result, per the chapter:
 #   The test commands are silent on success.
-#   The confirmation line appears only after the required artifacts are present.
+#   The confirmation line appears only after the required artifacts are present,
+#   and a missing artifact fails the block.
 # --- command as printed, verbatim ---
+set -e
 shopt -s nullglob
 image_results=(evals/results/image-pull-*-response.md)
 image_reviews=(evals/reviews/image-pull-*-review.md)
@@ -23,7 +25,7 @@ if test -s prompts/deployment-debug.md &&
   printf 'Artifact presence checks passed\n'
 else
   printf 'Artifact presence checks failed\n'
-  false
+  exit 1
 fi
 
 git diff --check
