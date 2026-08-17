@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.1 - 2026-08-17
+
+- Extend the coding-agent guide with "Where the human gate lives": the agent's stop points, the harness's permission prompts, and the book's gate artifacts, in one place.
+- Trace the gate chapter by chapter through the arc of Chapters 1, 8, and 16.
+
 ## 0.5.0 - 2026-08-17
 
 - Add coding-agent support: `AGENTS.md` at the root, a `CLAUDE.md` pointer, and a reader guide with a step-by-step walkthrough for running the labs with a coding agent.
