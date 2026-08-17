@@ -119,7 +119,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 
 - **You build:** `reference-app` serving `/`, `/health`, and `/ready` on port 8080.
 - **You need:** the offline level, plus `curl`.
-- **Enter it:** continue from Chapter 2.
+- **Enter it:** continue from Chapter 2, and pick an entry route first: the clone already ships the finished app, so you either build your own outside the clone (the chapter as written) or work against the shipped one - [`labs/ch03/README.md`](../labs/ch03/README.md) states both ways.
 - **Labs:** [`labs/ch03/`](../labs/ch03/README.md)
 - **Check:** `cd reference-app && python3 -m unittest discover -s tests`
 

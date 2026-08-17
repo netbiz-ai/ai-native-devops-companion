@@ -20,9 +20,18 @@ These are the chapter's commands exactly as the book prints them.
 All 12 of the chapter's bash blocks are shipped as files.
 None were skipped.
 
+## Two ways to enter this chapter
+
+This chapter has you build `reference-app`, but this repository already ships it finished on `main` (later chapters depend on it), so choose your route before running 02:
+
+- **Build your own (the chapter as written).** Run 01 and 02 from a directory *outside* this clone (a sibling such as `~/labs/` works); 02 creates a fresh `reference-app/` repository there, and every printed command - including `python3 -m src.app` and the ten-test suite - behaves exactly as the page says. The clone's `reference-app/` is then your solution key.
+- **Work against the shipped app.** Skip 02 entirely - inside the clone it would nest a second git repository - and run 03 to 12 against the clone's `reference-app/`, with the shipped-tree caveats below (`python3 src/app.py`, 37 tests).
+
+Either way, from Chapter 4 onward the labs run against the clone's `reference-app/`, which is canonical per `docs/chapter-map.md`.
+
 ## How the files run
 
-- Each numbered file is a separate script, so 02's `cd` does not carry: run 01 and 02 from where you keep your lab work, and 03 to 12 from inside the `reference-app/` directory.
+- Each numbered file is a separate script, so 02's `cd` does not carry: run 01 and 02 from where you keep your lab work, and 03 to 12 from inside the `reference-app/` directory your route uses.
 - 05 and 10 start a server that blocks its terminal; run each in its own terminal and probe with 06 or 09 from another.
 - Against this repository's shipped reference-app, the printed `python3 -m src.app` form in 05, 08, and 10 fails with `No module named 'telemetry'` (the shipped app carries the Chapter 10 refactor); use `python3 src/app.py` with the same environment variables. The printed form works against the app as this chapter has you write it.
 - Before 07, write `evidence/ch03-validation.txt` as the chapter's Test and Validate section describes; 07 stages it.

@@ -102,6 +102,18 @@ their lab was blocked when it was not.
   own that works standalone; the printed test run against the shipped module
   fails, observed 2026-08-14 as `0 passed, 1 failed, 1 skipped`.
 
+- **Chapter 3 arrives pre-solved on `main`.** The chapter has you build
+  `reference-app`, but later chapters depend on the finished app, so it ships
+  here in full and there is no `ch03-start` tag to hide it (a tag is only cut
+  from an executed state, and no pre-app state of this repository was ever
+  executed). Choose a route before the chapter's Step 1: build your own
+  `reference-app` from the printed page in a directory outside the clone
+  (every printed command then behaves as the page says, and the shipped app is
+  your solution key), or work against the shipped app and skip the scaffold
+  step, whose `git init` would otherwise nest a second repository inside the
+  clone. `labs/ch03/README.md` states both routes; from Chapter 4 onward the
+  labs use the clone's `reference-app/` either way.
+
 - **Chapter 3's printed run command fails against the shipped app.**
   `python3 -m src.app` (Steps 4, Break It, and Troubleshooting) dies with
   `No module named 'telemetry'` against `reference-app/src/app.py` on `main`,
