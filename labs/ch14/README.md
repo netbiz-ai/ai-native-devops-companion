@@ -12,8 +12,8 @@ Both commands must be run from the `operations-assistant/` directory of this rep
 This chapter's carried-in artifact is the sanitized `incident-evidence/` you wrote in Chapter 12: Step 1 has you distill it into the approved knowledge doc below.
 No shipped script reads `incident-evidence/` directly, so the labs run without it, but the knowledge doc you write from it is the chapter's actual work - the shipped test suite passes on an untouched clone and does not evidence that work.
 
-The Python modules these commands invoke are printed in the chapter as python fences.
-They already exist in this repository under `operations-assistant/` (`src/assistant.py`, `src/demo.py`, `tests/test_assistant.py`); do not duplicate them here.
+The Python modules these commands invoke live in this repository under `operations-assistant/` (`src/assistant.py`, `src/retriever.py`, `src/demo.py`, `tests/test_assistant.py`); do not duplicate them here.
+The shipped code is canonical per `docs/chapter-map.md` where its details differ from the chapter's listings; `src/demo.py` is the fake-client demonstration the chapter invokes, and it prints the chapter's safe answer only after your Step 1 knowledge doc exists (see the note in `02-run-demo.sh`).
 
 ## Configuration blocks
 
