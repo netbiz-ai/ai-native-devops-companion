@@ -34,6 +34,7 @@ python3 -m compileall -q \
 # reads as a broken test suite rather than a missing install.
 if ! python3 -c 'import opentelemetry' >/dev/null 2>&1; then
   printf 'FAIL: reference-app dependencies are not installed.\n' >&2
+  printf '      python3 -m venv .venv && . .venv/bin/activate\n' >&2
   printf '      pip install -r reference-app/requirements.lock\n' >&2
   exit 1
 fi

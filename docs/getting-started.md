@@ -28,11 +28,15 @@ Which level each chapter needs is in the table in [`labs/README.md`](../labs/REA
 ## First-time setup (about 10 minutes)
 
 Check your Python first: `python3 --version` must report 3.11, 3.12, or 3.13.
-If it reports something older, create a virtual environment from a newer interpreter (`python3.12 -m venv .venv && . .venv/bin/activate`) and stay in it for everything below.
+If it reports something older, create the virtual environment below from a newer interpreter instead (`python3.12 -m venv .venv`).
+The setup creates a virtual environment even when the system Python is new enough: Debian and Ubuntu mark the system interpreter as externally managed (PEP 668), so a bare `pip install` outside one fails with `error: externally-managed-environment` before it reads the requirements file.
+Stay in the environment for everything below.
 
 ```bash
 git clone https://github.com/netbiz-ai/ai-native-devops-companion.git
 cd ai-native-devops-companion
+python3 -m venv .venv
+. .venv/bin/activate
 pip install -r reference-app/requirements.lock
 ./scripts/validate-offline.sh
 ```

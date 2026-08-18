@@ -37,6 +37,8 @@ results.
 ```bash
 git clone https://github.com/netbiz-ai/ai-native-devops-companion.git
 cd ai-native-devops-companion
+python3 -m venv .venv
+. .venv/bin/activate
 pip install -r reference-app/requirements.lock
 ./scripts/validate-offline.sh
 python3 reference-app/src/app.py
