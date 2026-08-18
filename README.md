@@ -44,6 +44,9 @@ pip install -r reference-app/requirements.lock
 python3 reference-app/src/app.py
 ```
 
+The application binds port 8080, so that port must be free.
+If something else already holds it, the run step fails with `OSError: [Errno 98] Address already in use`; either stop the other process or start the app on another port with `APP_PORT=8090` and point the `curl` checks at that port instead.
+
 In another terminal:
 
 ```bash
