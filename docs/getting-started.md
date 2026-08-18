@@ -50,8 +50,9 @@ Then prove the reference application runs:
 make run
 ```
 
-The application binds port 8080, so that port must be free.
-If something else already holds it, `make run` fails with `OSError: [Errno 98] Address already in use`; either stop the other process or start the app on another port with `APP_PORT=8090` and point the `curl` checks at that port instead.
+The application binds port 8080, and the book's printed commands, the lab validators, and the `curl` checks below all assume that port.
+If something else already holds it, `make run` fails with `OSError: [Errno 98] Address already in use`; free the port by stopping or moving whatever occupies it, and run the reference app on 8080 itself.
+The app does accept an `APP_PORT` override, but running the labs anywhere but 8080 means every later printed snippet needs hand-adjusting, so do not use it for the book's exercises.
 
 And in a second terminal:
 
