@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.4 - 2026-08-18
+
+- Restore the four missing sections to `templates/verification-checklist.md`: it stated it was the full form of the Chapter 1 checklist but ended after `## Intent`, so a reader copying it as instructed filled in a form carrying neither Information safety, Technical correctness and Engineering quality, nor the Evidence and decision section that holds the chapter's own "a named human owns the final decision" requirement. Closes errata issue 46.
+
 ## 0.5.3 - 2026-08-18
 
 - Insist on port 8080 in the quickstart port notes: the printed commands, the lab validators, and the `curl` checks all assume it, so free the port rather than move the app, and treat `APP_PORT` as unsuitable for the book's exercises.
