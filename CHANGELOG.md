@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.2 - 2026-08-18
+
+- Create the virtual environment unconditionally in the README and getting-started quickstarts: on Debian and Ubuntu the system interpreter is externally managed (PEP 668), so a bare `pip install` failed with `error: externally-managed-environment` before reading the requirements file.
+- Name the venv creation step in the offline validator's missing-dependencies hint.
+- State next to the run step that the application binds port 8080 and the port must be free, show the `Address already in use` error a taken port produces, and point at the `APP_PORT` override.
+
 ## 0.5.1 - 2026-08-17
 
 - Extend the coding-agent guide with "Where the human gate lives": the agent's stop points, the harness's permission prompts, and the book's gate artifacts, in one place.
