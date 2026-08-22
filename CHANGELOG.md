@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.6 - 2026-08-22
+
+- Activate `.venv` in `scripts/validate-offline.sh` when no environment is active: the validator tested whatever `python3` the calling shell resolved to, so a reader who had completed the documented setup still got `FAIL: reference-app dependencies are not installed` from any shell that had not activated it, which is a failure message about a setup that is already complete. An environment that is already active is left alone, and both failure paths still fail with their original guidance.
+
 ## 0.5.5 - 2026-08-22
 
 - Bump `docker/setup-buildx-action` to 4.3.0 and `github/codeql-action` to 4.37.7, each to a new reviewed SHA.
