@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.5 - 2026-08-22
+
+- Bump `docker/setup-buildx-action` to 4.3.0 and `github/codeql-action` to 4.37.7, each to a new reviewed SHA.
+- Group the `codeql-action` updates in `.github/dependabot.yml`: `codeql-action/init` and `codeql-action/analyze` are separate dependencies to Dependabot but one action to CodeQL, which refuses to run when the two versions differ, so an ungrouped bump arrived as two pull requests that each failed SAST alone and could not be merged one at a time without leaving `main` red in between.
+
 ## 0.5.4 - 2026-08-18
 
 - Restore the four missing sections to `templates/verification-checklist.md`: it stated it was the full form of the Chapter 1 checklist but ended after `## Intent`, so a reader copying it as instructed filled in a form carrying neither Information safety, Technical correctness and Engineering quality, nor the Evidence and decision section that holds the chapter's own "a named human owns the final decision" requirement. Closes errata issue 46.
