@@ -16,6 +16,18 @@ updates:
       prefix: ci
     labels:
       - dependencies
+    # codeql-action/init and codeql-action/analyze are two paths into one
+    # action, and CodeQL refuses to run when the two are on different
+    # versions: analyze fails with "Loaded a configuration file for version
+    # X, but running version Y". Dependabot names each path as its own
+    # dependency, so an ungrouped bump arrives as two pull requests that
+    # cannot pass alone and leave main red between the two merges. Grouping
+    # them makes the pair arrive as the single change it always was.
+    groups:
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
+
     # Six of these actions are also pinned in the manuscript, and Chapter 5
     # records the reviewed identity of each. A major bump accepted here alone
     # puts the book and its executable counterpart back into the disagreement
