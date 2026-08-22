@@ -4,6 +4,22 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
+# A reader who has followed the setup has .venv in the repository root, but a
+# shell that has not activated it runs this script against the system
+# interpreter, and both checks below then fail for a setup that is already
+# complete. Activate it here so the checks report on the environment the
+# repository provides rather than on the shell that happened to invoke them.
+# An environment that is already active is left alone: whoever activated it
+# chose it, and a validator is no place to overrule that.
+if [ -z "${VIRTUAL_ENV:-}" ] && [ -f .venv/bin/activate ]; then
+  # The activation script is not written to run under `set -u`.
+  set +u
+  # shellcheck source=/dev/null
+  . .venv/bin/activate
+  set -u
+  printf 'virtualenv=%s\n' "$VIRTUAL_ENV"
+fi
+
 # The Python floor is 3.11: operations-agent imports datetime.UTC, which 3.10
 # does not have, and docs/supported-versions.md records 3.11-3.13 as the
 # supported range. Say that plainly before anything runs: the alternative is
