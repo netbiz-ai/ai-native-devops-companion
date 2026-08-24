@@ -13,7 +13,7 @@ spec:
     # push to and whose base kustomization still carries the placeholder
     # digest. A private source also needs the read-only credential named in
     # ../README.md.
-    repoURL: https://github.com/netbiz-ai/ai-native-devops-companion.git
+    repoURL: git://lab-git.lab-source.svc.cluster.local/repo.git
     targetRevision: main
     path: deployment/gitops/overlays/staging
   destination:

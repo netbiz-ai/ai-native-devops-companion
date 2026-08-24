@@ -1,0 +1,10 @@
+# deployment/gitops/overlays/production/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reference-production
+  labels:
+    ai-native-devops.dev/chapter: ch09
+    pod-security.kubernetes.io/enforce: restricted
+  annotations:
+    ai-native-devops.dev/owner-token: tafohelvis@gmail.com

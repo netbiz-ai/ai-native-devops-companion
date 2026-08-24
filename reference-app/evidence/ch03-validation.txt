@@ -1,0 +1,62 @@
+Chapter 3 validation record - reference-app
+Date: 2026-08-24
+Route taken: worked against the companion clone's shipped reference-app
+(labs/ch03/README.md, "Two ways to enter this chapter"), so step 02 was skipped.
+Environment: Python 3.12.13, git 2.34.1, curl 7.81.0, Linux WSL2.
+
+COMMANDS AND RESULTS
+
+1. python3 -m unittest discover -v
+   Ran 37 tests, OK. The chapter prints ten; the clone also carries the
+   Chapter 10 and 12 suites. tests/test_app.py holds exactly ten tests, which
+   are the chapter's ten under different names (test_health_contract rather
+   than test_health_is_live, and so on).
+
+2. APP_ENV=development APP_PORT=8080 python3 src/app.py
+   Service started and accepted connections. The printed form, python3 -m
+   src.app, fails against the shipped app with
+   ModuleNotFoundError: No module named 'telemetry', because src/app.py
+   carries the Chapter 10 refactor's flat import.
+
+3. curl --fail-with-body http://127.0.0.1:8080/
+   {"environment": "development", "service": "reference-app", "status": "ok"}
+
+4. curl --fail-with-body 'http://127.0.0.1:8080/?probe=1'
+   {"environment": "development", "service": "reference-app", "status": "ok"}
+   The query string did not change the response, as the contract requires.
+
+5. curl --fail-with-body http://127.0.0.1:8080/health
+   {"status": "healthy"}
+
+6. curl http://127.0.0.1:8080/ready
+   {"status": "ready"}
+   Not part of the chapter's probe block; checked because docs/chapter-map.md
+   names /ready in this chapter's ending state.
+
+7. curl --write-out '%{http_code}' http://127.0.0.1:8080/missing
+   404
+
+8. python3 -m compileall -q src tests
+   Silent, exit 0.
+
+CONTROLLED FAILURE
+
+APP_PORT=not-a-port python3 src/app.py
+  ValueError: APP_PORT must be an integer
+Raised from Settings.from_environment() at src/app.py:90, reached from main()
+at line 206 - before any bind. The failure is a refusal to start, not a
+partially started server on an unintended port, which is the behavior
+docs/engineering-standards.md requires.
+
+Observed separately: the printed form of this same step, APP_PORT=not-a-port
+python3 -m src.app, also exits nonzero, but with
+ModuleNotFoundError: No module named 'telemetry'. It is the wrong failure for
+the right-looking exit status, so exit status alone would not have proved the
+port validation works.
+
+LIMITATION
+
+These checks prove the contract on one machine, against a loopback listener,
+started by hand. They prove nothing about the service under concurrency, behind
+a proxy, in a container, or on a port it does not control. Chapter 4 takes up
+container behavior; nothing here is evidence about it.

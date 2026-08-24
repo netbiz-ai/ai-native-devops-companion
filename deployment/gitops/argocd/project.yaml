@@ -12,7 +12,7 @@ spec:
   # source were unreachable. Use ../lab-source/README.md's URL if you took
   # that route.
   sourceRepos:
-    - https://github.com/netbiz-ai/ai-native-devops-companion.git
+    - git://lab-git.lab-source.svc.cluster.local/repo.git
   destinations:
     - server: https://kubernetes.default.svc
       namespace: reference-staging
