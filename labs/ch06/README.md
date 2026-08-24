@@ -18,6 +18,13 @@ All 8 bash blocks in the chapter ship as files; none are output transcripts.
 The chapter's blocks reference `.github/workflows/delivery.yml` and `.github/workflows/rollback.yml`, which live at the root of this repository under `.github/workflows/`.
 The chapter's yaml Configuration excerpt (`permissions: {}` and the `delivery-production` concurrency group) is part of that `delivery.yml`; it is not duplicated here.
 
+## What does not behave as printed here
+
+- **01's four file checks cannot all pass from one directory.** It tests `.github/workflows/ci.yml`, `Dockerfile`, `src/app.py` and `tests/test_app.py` together; the first exists only at the repository root and the other three only under `reference-app/`, because this repository splits the application from the workflows. The script sets no `-e` and ends on `git status --short`, so it exits 0 with three assertions failed and says nothing. Check the workflow from the root and the three application files from `reference-app/`, and read the results rather than the exit code - this is the prerequisite gate for a chapter that pushes an image and promotes a digest, so a green exit here is worth less than no check at all.
+- **01 moves your working tree before it checks anything.** Its first two commands are `git switch main` and `git pull --ff-only`, which on this clone is a real branch switch and a real pull, not the no-op the chapter assumes for a reader already on `main`.
+
+Everything else in 01 behaves as the chapter says: Docker, Buildx, curl, jq, ripgrep and actionlint all report versions, and `gh auth status` and `gh repo view` confirm the authenticated repository.
+
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
