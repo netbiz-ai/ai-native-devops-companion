@@ -7,4 +7,4 @@ metadata:
     ai-native-devops.dev/chapter: ch09
     pod-security.kubernetes.io/enforce: restricted
   annotations:
-    ai-native-devops.dev/owner-token: tafohelvis@gmail.com
+    ai-native-devops.dev/owner-token: REPLACE_WITH_PRODUCTION_OWNER
