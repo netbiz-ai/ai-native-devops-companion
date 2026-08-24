@@ -161,6 +161,29 @@ their lab was blocked when it was not.
   Chapter 3 application outside the clone is unaffected, which makes that route
   choice consequential beyond Chapter 3.
 
+- **Chapter 7's scaffold creates the book's paths as empty directories, and
+  Terraform then validates one of them successfully.** `01-setup-workspace.sh`
+  ends with `mkdir -p infrastructure/modules/network
+  infrastructure/environments/dev docs/decisions`. Those first two are the
+  book's names for `infrastructure/terraform/modules/` and
+  `infrastructure/terraform/environments/`, per the path alias table above, and
+  `mkdir -p` does not resolve an alias: it creates two empty directories beside
+  the real configuration. `03-validate-config.sh` then starts with
+  `cd infrastructure/environments/dev`, which now resolves to the empty one,
+  where `terraform init` reports no configuration files and `terraform validate`
+  prints `Success! The configuration is valid.` at exit 0 - character for
+  character the chapter's expected result, with nothing validated. This row's
+  validation entry is `terraform validate`, so the chapter can report success
+  against a directory holding no infrastructure. Run 03 and 06 from
+  `infrastructure/terraform/environments/dev` and
+  `infrastructure/terraform/modules/network` instead, where the configuration is
+  real and genuinely valid. Relatedly, `06-test-module.sh` runs
+  `terraform test` against a module that ships no `.tftest.hcl`, which reports
+  `Success! 0 passed, 0 failed.` - the chapter's expected line differs only in
+  the count, which is the only part carrying information. Writing
+  `labs/ch07/config/05-network.tftest.hcl` into the module is what the chapter
+  intends, and it then fails as the module-interface entry below records.
+
 - **The chapters assume the application and `.github/` share one repository.**
   The book's blocks run from a single root holding `src/`, `tests/`,
   `Dockerfile` and `.github/workflows/`; here the application is under
