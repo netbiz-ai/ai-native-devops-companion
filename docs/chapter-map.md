@@ -161,6 +161,24 @@ their lab was blocked when it was not.
   Chapter 3 application outside the clone is unaffected, which makes that route
   choice consequential beyond Chapter 3.
 
+- **The chapters assume the application and `.github/` share one repository.**
+  The book's blocks run from a single root holding `src/`, `tests/`,
+  `Dockerfile` and `.github/workflows/`; here the application is under
+  `reference-app/` and the workflows are at the repository root, so a block
+  naming both cannot pass from either directory. Chapter 5's
+  `04-review-workflow.sh` stages `requirements-dev.txt` beside
+  `.github/workflows/ci.yml` and fails with `pathspec 'requirements-dev.txt'
+  did not match any files`. Chapter 6's `01-check-prereqs.sh` tests
+  `.github/workflows/ci.yml`, `Dockerfile`, `src/app.py` and
+  `tests/test_app.py` in one directory: the first exists only at the root and
+  the other three only under `reference-app/`, so three of the four always
+  fail. Neither script sets `-e`, and both end on a command that succeeds
+  regardless, so each reports success while its assertions fail - which for
+  Chapter 6 is the prerequisite gate of a chapter that pushes an image and
+  promotes a digest. Run the file checks from the directory that holds the
+  files and read the results rather than the exit code; `labs/ch05/README.md`
+  and `labs/ch06/README.md` name which directory is which.
+
 - **Chapter 5's printed workflow fails the chapter's own validation command,
   and its local check blocks report success either way.** Written to
   `.github/workflows/ci.yml` as Step 2 directs,
