@@ -26,6 +26,25 @@ Note that 04-record-digest.sh and 05-build-final.sh share the `python_base` shel
 
 The chapter's `.dockerignore`, `Dockerfile.baseline`, and multi-stage `Dockerfile` are printed as Configuration fences, not bash blocks; the repository's container files live in `reference-app/`.
 
+## The shipped Dockerfile is not this chapter's Dockerfile
+
+`reference-app/Dockerfile` on `main` is the Chapter 10 evolution of the file, not the multi-stage build this chapter prints as `config/03-dockerfile-final.dockerfile`.
+It is single-stage on `python:3.12-alpine`, installs `requirements.txt`, copies the contents of `src/` to `/app`, and carries no `ARG` and no `LABEL`.
+Later chapters need that file, so it cannot be replaced here.
+
+Two of the chapter's steps therefore cannot behave as printed against it.
+
+- **05 asserts a label contract the shipped file does not carry.** The three `--build-arg` values are rejected as unconsumed, `title`, `revision` and `source` all come back empty, and every assertion fails. Chapter 4's validation entry in `docs/chapter-map.md` is these assertions, so the chapter cannot validate against the shipped file.
+- **11 never breaks the image.** Its `awk` deletes the line `COPY --from=builder --chown=10001:10001 /build/src ./src`, which the shipped file does not contain, so `Dockerfile.broken` is identical to `Dockerfile`, the image starts normally, and the script reports `unexpected success: investigate before continuing`. That message points away from the cause, which is the file, not the build.
+
+To run the chapter as printed, write `config/03-dockerfile-final.dockerfile` to `reference-app/Dockerfile` first and restore it afterwards with `git checkout -- reference-app/Dockerfile`.
+The label assertions pass on that route, and the Break It step fails for the reason the chapter intends.
+
+One step still cannot pass on it, and this is the Chapter 3 route choice reaching forward.
+06 runs the image, and an image built from the chapter's Dockerfile cannot run the shipped application: the chapter copies `src` as a package and runs `python3 -m src.app`, while the shipped `src/app.py` does a flat `import telemetry` that only resolves when the module lands at `/app/telemetry.py` as the shipped Dockerfile places it.
+The chapter's Dockerfile also has no `pip install`, so the `opentelemetry` packages `src/telemetry.py` imports are absent either way.
+A reader who built their own Chapter 3 application outside the clone is unaffected, because that application is standard library only.
+
 ## Pre-existing (migrated) scripts
 
 None - this directory was created for this extraction.

@@ -141,6 +141,26 @@ their lab was blocked when it was not.
   different names, and `labs/ch03/README.md` maps each printed name to its
   shipped one.
 
+- **Chapter 4's shipped Dockerfile is the Chapter 10 file, so the chapter's
+  validation cannot pass against it.** `reference-app/Dockerfile` on `main` is
+  single-stage on `python:3.12-alpine` with a `pip install` and no `ARG` or
+  `LABEL`, not the multi-stage build the chapter prints as
+  `labs/ch04/config/03-dockerfile-final.dockerfile`. This row's validation entry
+  is the chapter's `docker build` and label assertions, and against the shipped
+  file the three build args are rejected as unconsumed and `title`, `revision`
+  and `source` come back empty. The Break It step is worse than a failure: 11's
+  `awk` deletes a line the shipped file does not contain, so the "broken" image
+  is byte-for-byte the working one, it starts, and the script prints
+  `unexpected success: investigate before continuing`. Write
+  `config/03-dockerfile-final.dockerfile` to `reference-app/Dockerfile` for the
+  chapter and restore it afterwards; `labs/ch04/README.md` states the route.
+  Step 06 still cannot pass on the shipped-app route, because an image built
+  from the chapter's Dockerfile cannot run the shipped application: the flat
+  `import telemetry` does not resolve under `python3 -m src.app`, and the
+  chapter's Dockerfile installs no dependencies. A reader who built their own
+  Chapter 3 application outside the clone is unaffected, which makes that route
+  choice consequential beyond Chapter 3.
+
 - **Chapter 1's workspace validation checks one of the checklist's seven
   sections.** `labs/ch01/08-validate-workspace.sh` asserts that
   `evidence/verification-checklist.md` exists, is non-empty, carries
