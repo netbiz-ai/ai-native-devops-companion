@@ -1,2 +1,10 @@
+# The chapter prints this file as two lines, the pinned lint and security
+# tools. It carries the runtime requirements too, because Chapter 5 builds its
+# virtual environment from this file alone and then runs the test suite in it:
+# without them every test module fails to import opentelemetry and the run
+# collapses to three loader errors, which reads as a broken suite rather than
+# an incomplete environment.
+-r requirements.txt
+
 ruff==0.16.0
 bandit==1.9.4

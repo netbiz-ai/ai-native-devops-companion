@@ -16,7 +16,7 @@ from urllib.request import urlopen
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from app import (  # noqa: E402
+from app import (
     MAX_INJECTED_LATENCY_MS,
     ApplicationServer,
     Settings,
@@ -41,9 +41,11 @@ class InjectedLatencySettingsTests(unittest.TestCase):
         # Deliberately unlike Chapter 10's header, which ignores nonsense. This
         # value arrives through a reviewed change; if it cannot be read, the
         # change being applied is not the change that was reviewed.
-        with patch.dict(os.environ, {"CH12_INJECTED_LATENCY_MS": "soon"}, clear=True):
-            with self.assertRaisesRegex(ValueError, "must be an integer"):
-                Settings.from_environment()
+        with (
+            patch.dict(os.environ, {"CH12_INJECTED_LATENCY_MS": "soon"}, clear=True),
+            self.assertRaisesRegex(ValueError, "must be an integer"),
+        ):
+            Settings.from_environment()
 
     def test_out_of_range_refuses_to_start(self) -> None:
         for value in (str(MAX_INJECTED_LATENCY_MS + 1), "-1"):
@@ -52,9 +54,11 @@ class InjectedLatencySettingsTests(unittest.TestCase):
                     "CH12_INJECTED_LATENCY_MS": value,
                     "APP_ENV": "reference-incident",
                 }
-                with patch.dict(os.environ, values, clear=True):
-                    with self.assertRaisesRegex(ValueError, "between 0 and"):
-                        Settings.from_environment()
+                with (
+                    patch.dict(os.environ, values, clear=True),
+                    self.assertRaisesRegex(ValueError, "between 0 and"),
+                ):
+                    Settings.from_environment()
 
     def test_refuses_in_protected_environments(self) -> None:
         for environment in ("production", "reference-production", "prod"):
@@ -63,9 +67,11 @@ class InjectedLatencySettingsTests(unittest.TestCase):
                     "CH12_INJECTED_LATENCY_MS": "1500",
                     "APP_ENV": environment,
                 }
-                with patch.dict(os.environ, values, clear=True):
-                    with self.assertRaisesRegex(ValueError, "disposable namespace"):
-                        Settings.from_environment()
+                with (
+                    patch.dict(os.environ, values, clear=True),
+                    self.assertRaisesRegex(ValueError, "disposable namespace"),
+                ):
+                    Settings.from_environment()
 
     def test_zero_is_allowed_everywhere(self) -> None:
         # Restoration sets the value back to 0, and that has to be applicable

@@ -161,6 +161,20 @@ their lab was blocked when it was not.
   Chapter 3 application outside the clone is unaffected, which makes that route
   choice consequential beyond Chapter 3.
 
+- **Chapter 5's printed workflow fails the chapter's own validation command,
+  and its local check blocks report success either way.** Written to
+  `.github/workflows/ci.yml` as Step 2 directs,
+  `labs/ch05/config/02-ci-workflow.yaml` exits 1 under actionlint with
+  shellcheck installed - one `SC2034` for a loop variable the retry never uses,
+  four `SC2317` against the `cleanup` trap - while this row's validation entry,
+  `actionlint .github/workflows/ci.yml`, passes because the live workflow is
+  clean. The result also depends on shellcheck being installed, since actionlint
+  skips the shell analysis without it. Separately, `03-run-local-checks.sh` and
+  `06-validate-local-layer.sh` set no `-e` and end on a command that succeeds
+  regardless, so both exit 0 whatever Ruff and unittest reported; the same holds
+  for `02-check-tool-versions.sh` with a tool missing. `labs/ch05/README.md`
+  lists these and the split-layout consequences for 04 and 07.
+
 - **Chapter 1's workspace validation checks one of the checklist's seven
   sections.** `labs/ch01/08-validate-workspace.sh` asserts that
   `evidence/verification-checklist.md` exists, is non-empty, carries

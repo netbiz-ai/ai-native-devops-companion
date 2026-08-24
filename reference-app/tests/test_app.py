@@ -10,7 +10,7 @@ from urllib.request import urlopen
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from app import ApplicationServer, Settings, route  # noqa: E402
+from app import ApplicationServer, Settings, route
 
 
 class SettingsTests(unittest.TestCase):
@@ -34,16 +34,20 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings, Settings("demo", "test", "0.0.0.0", 9090))
 
     def test_non_integer_port_fails(self) -> None:
-        with patch.dict(os.environ, {"APP_PORT": "eight"}, clear=True):
-            with self.assertRaisesRegex(ValueError, "integer"):
-                Settings.from_environment()
+        with (
+            patch.dict(os.environ, {"APP_PORT": "eight"}, clear=True),
+            self.assertRaisesRegex(ValueError, "integer"),
+        ):
+            Settings.from_environment()
 
     def test_out_of_range_port_fails(self) -> None:
         for value in ("0", "65536"):
-            with self.subTest(value=value):
-                with patch.dict(os.environ, {"APP_PORT": value}, clear=True):
-                    with self.assertRaisesRegex(ValueError, "between"):
-                        Settings.from_environment()
+            with (
+                self.subTest(value=value),
+                patch.dict(os.environ, {"APP_PORT": value}, clear=True),
+                self.assertRaisesRegex(ValueError, "between"),
+            ):
+                Settings.from_environment()
 
 
 class RouteTests(unittest.TestCase):
