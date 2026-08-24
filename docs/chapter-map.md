@@ -159,7 +159,12 @@ their lab was blocked when it was not.
   `import telemetry` does not resolve under `python3 -m src.app`, and the
   chapter's Dockerfile installs no dependencies. A reader who built their own
   Chapter 3 application outside the clone is unaffected, which makes that route
-  choice consequential beyond Chapter 3.
+  choice consequential beyond Chapter 3. Separately, the baseline and final
+  images the chapter has you measure share `python:3.12-slim`, which is about
+  99.99% of both, and the baseline's `COPY . .` ships whatever the build context
+  holds: the byte comparison is decided by the reader's directory and has been
+  measured with either sign, while the file count under `/app` and the image
+  user are stable. `labs/ch04/README.md` carries the numbers.
 
 - **Chapter 7's scaffold creates the book's paths as empty directories, and
   Terraform then validates one of them successfully.** `01-setup-workspace.sh`

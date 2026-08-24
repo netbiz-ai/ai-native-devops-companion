@@ -45,6 +45,22 @@ One step still cannot pass on it, and this is the Chapter 3 route choice reachin
 The chapter's Dockerfile also has no `pip install`, so the `opentelemetry` packages `src/telemetry.py` imports are absent either way.
 A reader who built their own Chapter 3 application outside the clone is unaffected, because that application is standard library only.
 
+## What the baseline comparison measures
+
+03 and 05 print `baseline_bytes` and `final_bytes` for you to compare, and the comparison is smaller than it looks.
+Both images stand on `python:3.12-slim`, which is 119,221,332 bytes by itself, so the base is about 99.99% of each image and the whole difference rests on a few kilobytes of application files.
+
+The baseline Dockerfile is `COPY . .`, so it ships whatever your build context holds, while the final one copies `/build/src` alone.
+The printed `.dockerignore` excludes `Dockerfile.*` but not `Dockerfile`, `.dockerignore`, or `tests/`, so a baseline built here carries nine files under `/app` against the final image's three - and a context holding an `evidence/` directory, a second Dockerfile, or a `requirements` file carries more again.
+The sign of the difference therefore depends on your directory rather than on the two Dockerfiles: measured from this repository the final image came out 8,185 bytes smaller, and from a context with one more file in it, 5,600 bytes larger.
+
+Read the comparison as what the image no longer carries and no longer runs as, which is stable:
+
+| | baseline | final |
+|---|---|---|
+| files under `/app` | 9 | 3 |
+| image user | `root` | `10001:10001` |
+
 ## Pre-existing (migrated) scripts
 
 None - this directory was created for this extraction.
