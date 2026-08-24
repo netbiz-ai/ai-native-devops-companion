@@ -21,7 +21,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: app
-          image: reference-app
+          image: localhost:5001/reference-app@sha256:e17a63fde89d1757f3dafb721f92c2d9fba5979ea90a86e137af2a4ba2127d9e
           imagePullPolicy: IfNotPresent
           env:
             - name: APP_ENV
