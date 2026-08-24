@@ -121,7 +121,11 @@ their lab was blocked when it was not.
   `python3 src/app.py` with the same environment variables instead; the printed
   form works against the app as the chapter has you write it. Observed
   2026-08-17; worst in the Break It step, which exits nonzero with the wrong
-  error, so confirm the `ValueError`, not just a failure.
+  error, so confirm the `ValueError`, not just a failure. The shipped app's
+  startup banner also carries three fields the chapter's expected result does
+  not show - `fault_gate`, `trace_header` and `injected_latency_ms`, added by
+  the Chapter 10 and 12 work - which is correct here rather than a
+  misconfiguration.
 
 - **Printed expected test output describes the chapter-time suites, not the
   shipped tree.** Chapter 3 says ten passing tests, but `main` runs 37 (the
@@ -130,7 +134,12 @@ their lab was blocked when it was not.
   and 14 validation commands pass on an untouched fresh clone, so they prove
   the shipped suites still work, not that the reader's chapter work was done -
   the chapters' own artifacts (the evidence file, the knowledge doc, the demo
-  run) are the reader-side proof.
+  run) are the reader-side proof. Chapter 3's ten printed test *names* are
+  renamed too, not just outnumbered: none of them exists in the shipped tree,
+  so a reader grepping for one finds nothing and reads it as a missing suite.
+  `reference-app/tests/test_app.py` holds exactly those ten contracts under
+  different names, and `labs/ch03/README.md` maps each printed name to its
+  shipped one.
 
 - **Chapter 1's workspace validation checks one of the checklist's seven
   sections.** `labs/ch01/08-validate-workspace.sh` asserts that

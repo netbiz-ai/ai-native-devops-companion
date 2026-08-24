@@ -34,6 +34,7 @@ Either way, from Chapter 4 onward the labs run against the clone's `reference-ap
 - Each numbered file is a separate script, so 02's `cd` does not carry: run 01 and 02 from where you keep your lab work, and 03 to 12 from inside the `reference-app/` directory your route uses.
 - 05 and 10 start a server that blocks its terminal; run each in its own terminal and probe with 06 or 09 from another.
 - Against this repository's shipped reference-app, the printed `python3 -m src.app` form in 05, 08, and 10 fails with `No module named 'telemetry'` (the shipped app carries the Chapter 10 refactor); use `python3 src/app.py` with the same environment variables. The printed form works against the app as this chapter has you write it.
+- On the shipped app, 05 and 10 print three fields the chapter's expected result does not show: `fault_gate`, `trace_header`, and `injected_latency_ms`, which the Chapter 10 and 12 work added to the same banner. Their presence is correct here and is not a misconfiguration; the printed one-line form is what the app you write yourself produces.
 - Before 07, write `evidence/ch03-validation.txt` as the chapter's Test and Validate section describes; 07 stages it.
 - Before 12, stop the servers from 05/10 (a Ctrl-C in the book).
 - 06's `curl --fail-with-body` needs curl 7.76 or newer, which 01 does not check for.
@@ -41,6 +42,29 @@ Either way, from Chapter 4 onward the labs run against the clone's `reference-ap
 The chapter also prints the service implementation, the test suite, and the engineering standards in python and markdown fences.
 The implementation and tests live in this repository under `reference-app/` (`src/app.py`, `tests/test_app.py`); do not duplicate them.
 The engineering-standards document is yours to write: copy the config block below to `reference-app/docs/engineering-standards.md` - this repository does not carry a live copy.
+
+## The chapter's ten tests, under their shipped names
+
+`reference-app/tests/test_app.py` holds exactly the chapter's ten tests, renamed.
+None of the printed names exists in the shipped tree, so grepping for one finds nothing and reads as a missing suite; the contracts are all covered.
+The other 27 tests the shipped suite runs are the Chapter 10 and 12 suites, per `docs/chapter-map.md`.
+
+| Printed in the chapter | Shipped in `tests/test_app.py` |
+|---|---|
+| `test_health_is_live` | `RouteTests.test_health_contract` |
+| `test_ready_accepts_traffic` | `RouteTests.test_ready_contract` |
+| `test_root_returns_service_information` | `RouteTests.test_root_contract` |
+| `test_unknown_path_returns_404` | `RouteTests.test_unknown_route_is_json_404` |
+| `test_defaults_are_loaded` | `SettingsTests.test_defaults` |
+| `test_non_numeric_port_is_rejected` | `SettingsTests.test_non_integer_port_fails` |
+| `test_out_of_range_port_is_rejected` | `SettingsTests.test_out_of_range_port_fails` |
+| `test_query_string_preserves_root_response` | `HTTPAdapterTests.test_real_http_root_and_query` |
+| `test_unknown_path_preserves_json_error_contract` | `HTTPAdapterTests.test_real_http_404_and_server_banner` |
+| `test_server_settings_are_isolated` | `SettingsTests.test_environment_override`, by elimination |
+
+The last row is the least certain: `test_environment_override` asserts that four `APP_*` variables override the defaults, which is not obviously what "server settings are isolated" describes.
+It is the only shipped test left unmatched once the other nine are placed.
+Two shipped tests also assert more than their printed name suggests; `test_real_http_404_and_server_banner` additionally checks that the `Server` header does not leak `Python`.
 
 ## Configuration blocks
 
