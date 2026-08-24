@@ -15,6 +15,11 @@ These are the chapter's commands exactly as the book prints them.
 
 All 8 bash blocks in the chapter are shipped as files; none were printed-only.
 
+08 validates less than its Purpose line suggests.
+It checks that the verification checklist exists, is non-empty, carries `## Test results`, and holds no `| pending |` cell.
+It does not check the checklist's other six sections, so a checklist that carries a filled results table and nothing else passes 08 cleanly.
+Confirm the rest yourself against `templates/verification-checklist.md`, `## Evidence and decision` above all: it carries the chapter's own requirement that a named human owns the final decision.
+
 Two steps of the chapter's flow live between the numbered files rather than in them.
 File 03 is a script body: write it to `samples/release-gate.sh` in your workspace, then check and exercise it with 04 and 05.
 Between 06 and 07 comes the chapter's correction: 06 fails by design because the gate exits 0 on a missing artifact, and the chapter has you edit your `samples/release-gate.sh` so the missing-artifact path exits 1, then re-run 06 to observe it pass before committing with 07.

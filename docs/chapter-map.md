@@ -132,6 +132,20 @@ their lab was blocked when it was not.
   the chapters' own artifacts (the evidence file, the knowledge doc, the demo
   run) are the reader-side proof.
 
+- **Chapter 1's workspace validation checks one of the checklist's seven
+  sections.** `labs/ch01/08-validate-workspace.sh` asserts that
+  `evidence/verification-checklist.md` exists, is non-empty, carries
+  `## Test results`, and holds no `| pending |` cell. The other six sections -
+  `## Evidence metadata`, `## Intent`, `## Information safety`,
+  `## Technical correctness`, `## Engineering quality` and
+  `## Evidence and decision` - are never checked, so a checklist carrying only
+  a filled results table exits 0 against a block the chapter describes as
+  confirming the checklist is complete. The script is verbatim book content and
+  is not patched here. Read 08 passing as "the results table has no unreplaced
+  placeholders", and confirm the remaining six sections yourself -
+  `## Evidence and decision` above all, since it carries the chapter's own
+  requirement that a named human owns the final decision.
+
 - **Chapter 13 prints three helper scripts this repository does not supply.**
   The chapter's flow calls `labs/ch13/capture-baseline.sh`,
   `labs/ch13/estimate-cost.sh` and `labs/ch13/restore.sh` alongside the
