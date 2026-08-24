@@ -62,6 +62,8 @@ The other 27 tests the shipped suite runs are the Chapter 10 and 12 suites, per 
 | `test_unknown_path_preserves_json_error_contract` | `HTTPAdapterTests.test_real_http_404_and_server_banner` |
 | `test_server_settings_are_isolated` | `SettingsTests.test_environment_override`, by elimination |
 
+Chapter 5 prints a third name for the first of these: `labs/ch05/07-reproduce-failed-test.sh` runs `tests.test_app.RouteTests.test_health_returns_200`, which is absent for the same reason.
+
 The last row is the least certain: `test_environment_override` asserts that four `APP_*` variables override the defaults, which is not obviously what "server settings are isolated" describes.
 It is the only shipped test left unmatched once the other nine are placed.
 Two shipped tests also assert more than their printed name suggests; `test_real_http_404_and_server_banner` additionally checks that the `Server` header does not leak `Python`.
