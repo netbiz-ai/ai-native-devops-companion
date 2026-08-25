@@ -1,4 +1,5 @@
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -33,6 +34,43 @@ class AssistantTests(unittest.TestCase):
         result = answer("What is the quarterly payroll total?")
         self.assertTrue(result.startswith("REFUSE:"))
         self.assertIn("approved evidence", result)
+
+    def test_a_single_shared_token_is_not_a_match(self) -> None:
+        """Relevance needs more than one word in common.
+
+        Both halves of this once failed. "What is the capital of France?"
+        returned a full brief citing a real passage, matching on "of" alone,
+        and a single shared content word was enough on its own. A citation
+        pointing at a genuine document is what makes an ungrounded answer look
+        grounded, so both are worth pinning rather than trusting the shipped
+        corpus to happen to miss.
+        """
+        with tempfile.TemporaryDirectory() as tmp:
+            knowledge = Path(tmp)
+            (knowledge / "checkout-api.md").write_text(
+                "---\nsource_id: runbook-checkout-api\n---\n\n"
+                "# Checkout API errors\n\n"
+                "Compare the alert window with deployment events, and establish "
+                "the release identity serving traffic at the time.\n",
+                encoding="utf-8",
+            )
+
+            # Shares only the function word "of".
+            self.assertTrue(
+                answer("What is the capital of France?", knowledge).startswith("REFUSE:")
+            )
+
+            # Shares exactly one content word, "window", and nothing else.
+            one_token = answer("Which window seats are still free?", knowledge)
+            self.assertTrue(
+                one_token.startswith("REFUSE:"),
+                f"one shared token was treated as a match: {one_token[:120]}",
+            )
+
+            # Two content words in common, so this one is genuinely covered -
+            # the guard has to be a threshold, not a refusal of everything.
+            covered = answer("Which deployment events follow checkout errors?", knowledge)
+            self.assertIn("READ-ONLY DIAGNOSTIC BRIEF", covered)
 
 
 if __name__ == "__main__":
