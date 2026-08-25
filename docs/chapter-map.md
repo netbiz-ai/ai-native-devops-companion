@@ -23,7 +23,7 @@ Report the difference through the errata channel named in
 | 11 | Chapter 10 telemetry | The release identity | `security/`, CI jobs | Findings that carry a disposition and an owner | `./scripts/validate-offline.sh` |
 | 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `labs/ch12/` | A controlled failure diagnosed and restored under human control | `labs/ch12/validate.sh` |
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
-| 14 | Chapter 12 sanitized summary | `incident-evidence/` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
+| 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
 | 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
 | 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `labs/ch16/capstone-verify.sh` | CAP-01 to CAP-07 visible and evidence-linked | `labs/ch16/capstone-verify.sh` |
 
@@ -43,7 +43,7 @@ A chapter that uses a different name for the same thing is wrong.
 | Staging Application | `reference-staging` |
 | Production Application | `reference-production` |
 | Argo CD project | `ai-native-devops` |
-| Incident evidence carried into Chapter 14 | `incident-evidence/` |
+| Incident evidence carried into Chapter 14 | `docs/incidents/ch12-controlled-failure.md` |
 
 ## How a chapter reaches its starting state
 
@@ -102,11 +102,6 @@ the point.
 
 Chapter 10 additionally needs the `observability` namespace, which is created
 by `observability/collector-deployment.yaml` rather than by any chapter.
-
-Chapter 14's case is different and is recorded below: Chapter 12 is named as
-its starting state, but running all ten of Chapter 12's blocks produces
-`evidence/ch12/` and no `incident-evidence/` at all, so nothing writes what
-Chapter 14 is said to read.
 
 ## Known gaps in this contract
 
@@ -314,8 +309,8 @@ reader's output, and a chapter that names one is telling you to create it, not
 reporting a missing file. Where one chapter reads another's output, the
 ordering is what matters.
 
-- `incident-evidence/checkout-summary.md` and
-  `incident-evidence/decision-boundaries.yml` - written in Chapter 12,
+- `docs/incidents/ch12-controlled-failure.md` - the incident record you
+  write in Chapter 12 from `incidents/templates/facts-incident-record.md`,
   read as Chapter 14's starting state. Chapter 14 has no input until
   Chapter 12 has been run.
 - `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and

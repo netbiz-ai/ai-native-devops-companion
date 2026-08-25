@@ -99,7 +99,7 @@ Some paths the book names are deliberately absent here, because they are your ou
 - `ai-native-workspace/` - you build it in Chapter 1 (the blank checklist to copy is `templates/verification-checklist.md`); where the book says `workspace/`, it means this directory.
 - `devops-prompt-library/` - you build it in Chapter 2, starting from `mkdir`.
 - `docs/security/` policy files - you write them in Chapter 11.
-- `incident-evidence/` - you write it in Chapter 12; Chapter 14 reads it.
+- `docs/incidents/ch12-controlled-failure.md` - you write it in Chapter 12; Chapter 14 reads it.
 - The Chapter 13 ADR and experiment record - you write them from the templates in `docs/decisions/` and `docs/optimization/`.
 
 If a chapter names one of these, it is telling you to create it, not reporting a missing file.
@@ -211,7 +211,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **Enter it:** `make ch12-start`
 - **Labs:** [`labs/ch12/`](../labs/ch12/README.md)
 - **Check:** `labs/ch12/validate.sh` (also `make ch12-validate`)
-- **Keep:** the sanitized `incident-evidence/` you write here is Chapter 14's input.
+- **Keep:** the sanitized `docs/incidents/ch12-controlled-failure.md` you write here is Chapter 14's input.
 
 ### Chapter 13 - Reliability, Performance, and Cost Optimization
 
@@ -227,7 +227,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 
 - **You build:** a read-only assistant that answers with citations and refuses action requests.
 - **You need:** the offline level.
-- **Enter it:** continue with the `incident-evidence/` you wrote in Chapter 12 - the assistant has no input until Chapter 12 has been run.
+- **Enter it:** continue with the `docs/incidents/ch12-controlled-failure.md` you wrote in Chapter 12 - the assistant has no input until Chapter 12 has been run.
 - **Labs:** [`labs/ch14/`](../labs/ch14/README.md)
 - **Check:** `cd operations-assistant && python3 -m unittest discover -s tests`
 
