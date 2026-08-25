@@ -1,0 +1,116 @@
+# The Collector the Chapter 10 scripts inspect.
+#
+# observability/collector.yaml is the Collector's configuration. Nothing in this
+# repository deployed it, so 03-validate-collector.sh could validate the config
+# and then fail on `kubectl -n observability rollout status deploy/otel-collector`,
+# 08-diagnose-missing-metrics.sh had no logs to read, and 01-check-environment.sh
+# reported a missing namespace the reader could not create from here.
+#
+# The configuration is mounted from a ConfigMap generated from that same file, so
+# there is one copy of it and `otelcol-contrib validate --config=observability/collector.yaml`
+# still checks what actually runs. Regenerate after editing it:
+#
+#   kubectl -n observability create configmap otel-collector-config \
+#     --from-file=collector.yaml=observability/collector.yaml \
+#     --dry-run=client -o yaml | kubectl apply -f -
+#
+# The baseline exporter is `debug`, so this ships telemetry nowhere: it writes to
+# the pod's own log, which is exactly what 08 reads. Replacing it with a real
+# destination is the reader's decision and needs their credentials, as
+# observability/telemetry-plan.md says.
+#
+# It runs the way the reference workload does - non-root, no capabilities, no
+# privilege escalation, read-only root filesystem, in a namespace enforcing
+# Restricted admission - because a lab fixture that ignores the standard the book
+# sets teaches the exception.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observability
+  labels:
+    app.kubernetes.io/part-of: ai-native-devops-lab
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: otel-collector
+    app.kubernetes.io/part-of: ai-native-devops-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: otel-collector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: otel-collector
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: collector
+          # Pinned by digest, as Chapter 4 requires of the application image.
+          # otel/opentelemetry-collector-contrib:0.159.0
+          image: otel/opentelemetry-collector-contrib@sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc
+          args: ["--config=/conf/collector.yaml"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          ports:
+            - name: otlp-grpc
+              containerPort: 4317
+            - name: otlp-http
+              containerPort: 4318
+          resources:
+            requests:
+              cpu: 25m
+              # memory_limiter in collector.yaml is set to 256Mi, so the limit
+              # has to leave room above it or the kernel kills the process
+              # before the Collector's own backpressure can act.
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /conf
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-config
+            items:
+              - key: collector.yaml
+                path: collector.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+  namespace: observability
+  labels:
+    app.kubernetes.io/name: otel-collector
+spec:
+  selector:
+    app.kubernetes.io/name: otel-collector
+  ports:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: otlp-grpc
+    - name: otlp-http
+      port: 4318
+      targetPort: otlp-http
