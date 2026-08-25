@@ -18,14 +18,31 @@ skip() { printf '  skip  %s\n' "$1"; }
 bad()  { printf '  FAIL  %s\n' "$1" >&2; failed=1; }
 
 printf 'assets\n'
+missing_incident_overlay=0
 for path in \
   incidents/templates/facts-incident-record.md \
   incidents/templates/post-incident-review.md \
   observability/runbooks/high-latency.md \
   deployment/gitops/overlays/incident/kustomization.yaml \
   deployment/gitops/overlays/incident/ch12-latency-fault.yaml; do
-  if [[ -s "$path" ]]; then pass "$path"; else bad "missing: $path"; fi
+  if [[ -s "$path" ]]; then
+    pass "$path"
+  else
+    bad "missing: $path"
+    [[ "$path" == deployment/gitops/overlays/incident/* ]] && missing_incident_overlay=1
+  fi
 done
+
+# The incident overlay is the healthy baseline Step 1 deploys, and it was added
+# after ch12-start was cut - it first appears at ch12-complete. So entering the
+# chapter the documented way, with `make ch12-start`, lands in a state that
+# cannot deploy the thing the chapter breaks. Naming the file is not enough
+# here; say where it comes from.
+if (( missing_incident_overlay )); then
+  printf '        the incident overlay postdates the starting state of this chapter.\n' >&2
+  printf '        Restore it from a ref that carries it, then re-run:\n' >&2
+  printf '          git checkout main -- deployment/gitops/overlays/incident\n' >&2
+fi
 
 printf 'scripts\n'
 for script in inject-failure restore generate-traffic capture-evidence validate; do

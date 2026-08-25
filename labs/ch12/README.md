@@ -31,6 +31,25 @@ They are listed for orientation only and are not modified or renamed by this ext
 
 ## What does not behave as printed here
 
+- **The incident overlay is not in this chapter's starting state.** Step 1
+  deploys `deployment/gitops/overlays/incident/`, the healthy baseline the
+  chapter then breaks, and that overlay was added after `ch12-start` was cut -
+  it first appears at `ch12-complete`. So `make ch12-start`, which
+  `01-run-preflight.sh` runs, lands in a state that cannot deploy it.
+
+  The preflight catches this and exits 1, naming both files and where to get
+  them, so it fails before anything is applied rather than during Step 1:
+
+      FAIL  missing: deployment/gitops/overlays/incident/kustomization.yaml
+      FAIL  missing: deployment/gitops/overlays/incident/ch12-latency-fault.yaml
+            the incident overlay postdates the starting state of this chapter.
+            Restore it from a ref that carries it, then re-run:
+              git checkout main -- deployment/gitops/overlays/incident
+
+  Restore it and the chapter runs from the starting state as printed. Re-cutting
+  the tag is the durable fix and is a release decision, per
+  `docs/release-policy.md`.
+
 - **03 copies the incident template from the book's path, and the copy fails.**
   It runs `cp docs/incidents/incident-template.md
   docs/incidents/ch12-controlled-failure.md`. Per the path alias table in
