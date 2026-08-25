@@ -15,6 +15,10 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
+# shellcheck source=labs/ch13/args.sh
+. "${repo_root}/labs/ch13/args.sh"
+ch13_parse_args "$@"
+
 namespace="${CH13_NAMESPACE:-reference-incident}"
 definition="${CH13_DEFINITION:-optimization/baseline.yaml}"
 output="${CH13_OUTPUT:-evidence/ch13/experiment.json}"
@@ -40,6 +44,17 @@ min_requests="$(field service_target minimum_requests)"
 
 (( requests >= min_requests )) || {
   echo "CH13_REQUESTS=${requests} is below the experiment's minimum_requests=${min_requests}" >&2
+  exit 1
+}
+
+# The chapter passes --candidate candidate-a and candidate-b. This definition
+# carries one section named `candidate`, so a name that is not in the file is a
+# mistake worth reporting rather than silently running something else.
+candidate_section="${CH13_CANDIDATE:-candidate}"
+grep -Eq "^${candidate_section}:" "$definition" || {
+  printf 'no section named %s in %s; it defines: %s\n' \
+    "$candidate_section" "$definition" \
+    "$(grep -Eo '^[a-z_-]+:' "$definition" | tr -d ':' | tr '\n' ' ')" >&2
   exit 1
 }
 
@@ -87,10 +102,10 @@ apply_arm baseline
 baseline_json="$(measure)"
 printf 'arm=baseline %s\n' "$baseline_json"
 
-printf 'arm=candidate applying...\n'
-apply_arm candidate
+printf 'arm=%s applying...\n' "$candidate_section"
+apply_arm "$candidate_section"
 candidate_json="$(measure)"
-printf 'arm=candidate %s\n' "$candidate_json"
+printf 'arm=%s %s\n' "$candidate_section" "$candidate_json"
 
 printf 'restoring baseline resources...\n'
 apply_arm baseline

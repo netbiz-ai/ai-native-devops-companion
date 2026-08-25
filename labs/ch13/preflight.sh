@@ -11,6 +11,10 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
+# shellcheck source=labs/ch13/args.sh
+. "${repo_root}/labs/ch13/args.sh"
+ch13_parse_args "$@"
+
 namespace="${CH13_NAMESPACE:-reference-incident}"
 failed=0
 
