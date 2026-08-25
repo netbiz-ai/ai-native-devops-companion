@@ -61,7 +61,6 @@ differences; a chapter naming the left-hand path means the right-hand file.
 | Named in the book | Actual path here | Chapters |
 |---|---|---|
 | `src/app.py`, `src/telemetry.py` | `reference-app/src/` | 3, 4, 10 |
-| `docs/incidents/incident-template.md` | `incidents/templates/facts-incident-record.md` | 12 |
 | `docs/incidents/post-incident-review.md` | `incidents/templates/post-incident-review.md` | 12 |
 | `docs/optimization/scorecard-template.md` | `optimization/scorecard-template.md` | 13 |
 | `docs/security/finding-disposition.yaml` | `security/finding-disposition-template.yaml` | 11 |

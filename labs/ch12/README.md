@@ -50,23 +50,6 @@ They are listed for orientation only and are not modified or renamed by this ext
   the tag is the durable fix and is a release decision, per
   `docs/release-policy.md`.
 
-- **03 copies the incident template from the book's path, and the copy fails.**
-  It runs `cp docs/incidents/incident-template.md
-  docs/incidents/ch12-controlled-failure.md`. Per the path alias table in
-  `docs/chapter-map.md` that template lives here as
-  `incidents/templates/facts-incident-record.md`, and `mkdir -p docs/incidents`
-  on the line above creates the directory, so the failure is on the source:
-
-      cp: cannot stat 'docs/incidents/incident-template.md': No such file or directory
-
-  The block sets no `-e` and ends on a command that succeeds, so it exits 0 and
-  the baseline evidence is captured normally. Nothing says the incident record
-  was never created - and that record is the artifact the chapter's whole
-  argument rests on. Copy it from the real path before running 03:
-
-      cp incidents/templates/facts-incident-record.md \
-        docs/incidents/ch12-controlled-failure.md
-
 ## Referenced configuration
 
 The client Pod manifest the blocks apply lives in this repository at deployment/kubernetes/tests/client.yaml; do not duplicate it here.
