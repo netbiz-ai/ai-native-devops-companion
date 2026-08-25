@@ -14,5 +14,5 @@ images:
     # admission instead of deploying something you never reviewed.
     # See ../README.md, and ../../gitops/lab-source/README.md for the three
     # things you supply before Chapter 9 can reconcile.
-    newName: localhost:5001/reference-app
-    digest: sha256:e17a63fde89d1757f3dafb721f92c2d9fba5979ea90a86e137af2a4ba2127d9e
+    newName: ghcr.io/netbiz-ai/ai-native-devops-companion/reference-app
+    digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
