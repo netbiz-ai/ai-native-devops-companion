@@ -9,7 +9,7 @@
 #   Evidence written to evidence/ch12/baseline.txt.
 # --- command as printed, verbatim ---
 mkdir -p docs/incidents evidence/ch12
-cp docs/incidents/incident-template.md \
+cp incidents/templates/facts-incident-record.md \
   docs/incidents/ch12-controlled-failure.md
 labs/ch12/generate-traffic.sh --duration 60
 labs/ch12/capture-evidence.sh \
