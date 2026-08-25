@@ -52,7 +52,12 @@ case "$mode" in
   cleanup)
     require_observed CAP-07-cleanup evidence/capstone/summary/cleanup.txt
     ;;
-  all)
+  all|final)
+    # `final` is the acceptance run labs/ch16/04-run-verify-final.sh asks for,
+    # after 03 has recorded cleanup evidence. It checks the same criteria as
+    # `all` - which already includes the cleanup evidence - and says plainly
+    # that every one of them is supported, so the reader has a single line to
+    # point at rather than eight.
     "$0" identity
     "$0" delivery
     "$0" runtime
@@ -61,9 +66,12 @@ case "$mode" in
     "$0" agent
     "$0" cost
     "$0" cleanup
+    if [ "$mode" = "final" ]; then
+      printf 'capstone_final=pass criteria=CAP-01..CAP-07 cleanup=recorded\n'
+    fi
     ;;
   *)
-    printf 'Usage: %s {design|identity|delivery|runtime|reliability|incident|agent|cost|cleanup|all}\n' "$0" >&2
+    printf 'Usage: %s {design|identity|delivery|runtime|reliability|incident|agent|cost|cleanup|all|final}\n' "$0" >&2
     exit 2
     ;;
 esac
