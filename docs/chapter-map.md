@@ -69,6 +69,25 @@ differences; a chapter naming the left-hand path means the right-hand file.
 | `workspace/` | `ai-native-workspace/`, which the reader creates; the Chapter 1 script names the directory in full | 1 |
 | `infrastructure/modules/`, `infrastructure/environments/` | `infrastructure/terraform/modules/`, `infrastructure/terraform/environments/` | 7 |
 
+## A handoff tag can predate what its chapter applies
+
+The `chNN-*` tags are cut from executed states, so each predates whatever landed
+after it. Where that later work includes something the chapter itself applies,
+the chapter cannot run from its own starting state.
+
+The known case is Chapter 12. `deployment/gitops/overlays/incident/` is the
+healthy baseline Step 1 deploys, and it first appears at `ch12-complete`;
+`ch12-start` carries only the staging and production overlays.
+`labs/ch12/preflight.sh` fails on it by name and prints the restore command, so
+this surfaces before anything is applied:
+
+    git checkout main -- deployment/gitops/overlays/incident
+
+`labs/` was the same shape and is handled differently: `scripts/start-chapter.sh`
+carries it forward, because it is the harness rather than chapter content. An
+overlay a chapter applies is content, and carrying it forward automatically
+would risk pre-solving work the reader is meant to do.
+
 ## A chapter's cleanup removes the next chapter's starting state
 
 Each chapter's Cost and Cleanup step is right on its own terms, and the
