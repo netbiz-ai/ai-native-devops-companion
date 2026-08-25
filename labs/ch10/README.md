@@ -25,7 +25,7 @@ They are left exactly as migrated.
 ## Referenced configuration
 
 The chapter's commands reference configuration the book prints in yaml fences.
-Those files already exist in this repository under /home/elvis/projects/ai-native-devops-companion/observability/ (collector.yaml, recording-rules.yaml, alerts/reference-app.yaml, alerts/reference-app.test.yaml) and are not duplicated here.
+Those files already exist in this repository under observability/ (collector.yaml, recording-rules.yaml, alerts/reference-app.yaml, alerts/reference-app.test.yaml) and are not duplicated here.
 
 ## What does not behave as printed here
 
