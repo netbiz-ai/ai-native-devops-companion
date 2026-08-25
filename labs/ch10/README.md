@@ -27,6 +27,15 @@ They are left exactly as migrated.
 The chapter's commands reference configuration the book prints in yaml fences.
 Those files already exist in this repository under /home/elvis/projects/ai-native-devops-companion/observability/ (collector.yaml, recording-rules.yaml, alerts/reference-app.yaml, alerts/reference-app.test.yaml) and are not duplicated here.
 
+## What does not behave as printed here
+
+- **06 forwards a port the Service does not expose.** The Service listens on 80
+  and targets the container's 8080, so `port-forward service/reference-app
+  8080:8080` fails with `Service reference-app does not have a service port
+  8080`. Use `8080:80`. 07 then fails too, because nothing is listening locally.
+
+      kubectl -n reference-staging port-forward service/reference-app 8080:80
+
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.

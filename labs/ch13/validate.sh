@@ -11,6 +11,10 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
+# shellcheck source=labs/ch13/args.sh
+. "${repo_root}/labs/ch13/args.sh"
+ch13_parse_args "$@"
+
 report="${CH13_OUTPUT:-evidence/ch13/experiment.json}"
 
 pass() { printf '  ok    %s\n' "$1"; }

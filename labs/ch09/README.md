@@ -26,6 +26,39 @@ Those already exist as real files in this repository under `deployment/kubernete
 
 Several scripts reference placeholders the book tells you to replace before running: the repository URL `https://git.example/platform/ai-native-devops.git`, the registry `registry.example.invalid`, and the `REPLACE_ME` / `REPLACE_WITH` digest and owner tokens, plus the `STAGING_DIGEST` and `PRODUCTION_DIGEST` environment variables.
 
+## What does not behave as printed here
+
+- **The scripts name Argo CD objects that this repository does not define.**
+  Six blocks - 06, 08, 09, 10, 13 and 15 - address `reference-app-staging`,
+  `reference-app-production` and AppProject `reference-app`. The manifests under
+  `deployment/gitops/argocd/` define `reference-staging`, `reference-production`
+  and `ai-native-devops`. None of those blocks sets `-e`, so each prints an
+  error and carries on, and the `kubectl` half of the same script succeeds -
+  which reads as partial success rather than a wrong name. Note that a wrong
+  Application name comes back as `PermissionDenied`, not `NotFound`, so it looks
+  like an RBAC problem. Substitute the real names and every command works.
+
+- **03 asserts a registry this tree does not use.** It greps the rendered
+  overlays for `registry.example.invalid/reference-app@$DIGEST`. The image comes
+  from `deployment/kubernetes/base/kustomization.yaml`, so the assertion cannot
+  match and the block exits 1. Assert the digest against the registry you set
+  there.
+
+- **07 asserts a digest line the production overlay does not have, and there is
+  no digest to promote.** `overlays/production/kustomization.yaml` carries no
+  `images:` block; it inherits the image from the base, so staging and
+  production render the *same* digest. The grep for `digest: $STAGING_DIGEST`
+  fails, and the promotion the chapter is teaching has no difference to promote
+  until you give the overlays their own digests. 07 also stages
+  `docs/promotions/reference-app-production.md`, which does not exist.
+
+- **08 requires a push even on the repository's own fallback.** It compares
+  local `HEAD` with `git ls-remote origin refs/heads/main` and stops if they
+  differ. `deployment/gitops/lab-source/` publishes through the API server
+  rather than through a push, so a reader using it has no matching remote and
+  the block refuses. Seed the source and sync against the revision `seed.sh`
+  prints.
+
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.

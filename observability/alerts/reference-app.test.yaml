@@ -9,8 +9,16 @@ tests:
     input_series:
       - series: 'http_server_request_duration_seconds_count{job="reference-app",environment="staging",http_response_status_code="200"}'
         values: '0+60x15'
+      # The p95 has to land above 0.5s for the alert to fire, and a histogram
+      # cannot report a quantile above its highest finite bucket: when the
+      # quantile falls in +Inf, histogram_quantile returns that bucket's lower
+      # bound. With le="0.5" as the only finite bucket the p95 was exactly 0.5,
+      # and the alert asks for > 0.5, so it could never fire on its own fixture.
+      # le="1" gives the quantile somewhere real to land.
       - series: 'http_server_request_duration_seconds_bucket{job="reference-app",environment="staging",http_response_status_code="200",le="0.5"}'
         values: '0+1x15'
+      - series: 'http_server_request_duration_seconds_bucket{job="reference-app",environment="staging",http_response_status_code="200",le="1"}'
+        values: '0+60x15'
       - series: 'http_server_request_duration_seconds_bucket{job="reference-app",environment="staging",http_response_status_code="200",le="+Inf"}'
         values: '0+60x15'
     alert_rule_test:

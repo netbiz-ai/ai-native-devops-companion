@@ -20,6 +20,47 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
+usage() {
+  cat <<'USAGE'
+Usage: labs/ch10/validate.sh [--service-url URL] [--evidence PATH] [--namespace NS]
+
+  --service-url  Probe this URL directly instead of exec'ing into the
+                 in-cluster client. Use it with the port-forward from
+                 labs/ch10/06-port-forward-service.sh.
+  --evidence     Write this run's report to PATH as well as to the terminal.
+  --namespace    Namespace to check. Same as setting CH10_NAMESPACE.
+USAGE
+}
+
+service_url=""
+evidence_path=""
+
+# Re-run through tee so the evidence file is written by a process that owns the
+# pipe, rather than by a process substitution the shell does not wait for. The
+# guard stops the second run from recursing.
+if [ -z "${CH10_EVIDENCE_ACTIVE:-}" ]; then
+  prev=""
+  for arg in "$@"; do
+    if [ "$prev" = "--evidence" ]; then
+      [ -n "$arg" ] || { printf '--evidence needs a value\n' >&2; exit 2; }
+      mkdir -p "$(dirname "$arg")"
+      CH10_EVIDENCE_ACTIVE=1 "${BASH_SOURCE[0]}" "$@" 2>&1 | tee "$arg"
+      exit "${PIPESTATUS[0]}"
+    fi
+    prev="$arg"
+  done
+fi
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --service-url) service_url="${2:-}"; [ -n "$service_url" ] || { printf -- '--service-url needs a value\n' >&2; exit 2; }; shift 2 ;;
+    --evidence)    evidence_path="${2:-}"; shift 2 ;;
+    --namespace)   CH10_NAMESPACE="${2:-}"; [ -n "$CH10_NAMESPACE" ] || { printf -- '--namespace needs a value\n' >&2; exit 2; }; export CH10_NAMESPACE; shift 2 ;;
+    -h|--help)     usage; exit 0 ;;
+    *)             printf 'unknown argument: %s\n' "$1" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
 pass()   { printf '  ok    %s\n' "$1"; }
 skip()   { printf '  skip  %s\n' "$1"; }
 fail()   { printf '  FAIL  %s\n' "$1" >&2; exit 1; }
@@ -121,16 +162,25 @@ pass "reference-app rolled out"
 
 # Requests must come from the sanctioned client: the default-deny NetworkPolicy
 # admits only a pod carrying both of these labels, and the Service listens on 80.
-if ! kubectl -n "$namespace" get pod reference-client >/dev/null 2>&1; then
+# --service-url is the way past that from outside, and is what
+# labs/ch10/06-port-forward-service.sh sets up.
+if [ -z "$service_url" ] && ! kubectl -n "$namespace" get pod reference-client >/dev/null 2>&1; then
   skip "reference-client pod absent in ${namespace} - correlation not checked from inside the mesh"
-  printf '        recreate it: kubectl apply -f deployment/kubernetes/tests/client.yaml -n %s\n' "$namespace"
+  # A bare `kubectl apply -f` skips the overlay's commonLabels, and the
+  # NetworkPolicy admits the client only when it carries the environment label
+  # too - so applying the file alone produces a pod whose requests time out.
+  printf '        recreate it: kubectl apply -k deployment/gitops/overlays/<env>\n'
+  printf '        or: kubectl apply -f deployment/kubernetes/tests/client.yaml -n %s \\\n' "$namespace"
+  printf '            && kubectl label pod reference-client -n %s app.kubernetes.io/environment=<env>\n' "$namespace"
+  printf '        or probe from outside: labs/ch10/validate.sh --service-url http://127.0.0.1:8080\n'
   printf '\nchapter 10 validated (assets and code; correlation unchecked)\n'
   exit 0
 fi
 
 # A client that is not Running cannot be exec'd into, and the exec failure
 # arrives as an empty status rather than as an explanation. Say what happened.
-phase="$(kubectl -n "$namespace" get pod reference-client -o jsonpath='{.status.phase}')"
+phase="Running"
+[ -n "$service_url" ] || phase="$(kubectl -n "$namespace" get pod reference-client -o jsonpath='{.status.phase}')"
 if [[ "$phase" != "Running" ]]; then
   detail "kubectl delete pod reference-client -n ${namespace}"
   detail "kubectl apply -f deployment/kubernetes/tests/client.yaml -n ${namespace}"
@@ -146,6 +196,17 @@ probe_stderr="$(mktemp)"
 trap 'rm -f "$probe_stderr"' EXIT
 
 probe() {
+  if [ -n "$service_url" ]; then
+    # Same assertion, made from outside the mesh against the reader's forwarded
+    # port, so the result is comparable with the in-cluster one.
+    python3 -c "
+import sys, urllib.request as u
+r = u.urlopen('${service_url%/}/', timeout=5)
+trace = r.headers.get('X-Trace-Id')
+sys.stdout.write(f\"{r.status} {trace or 'ABSENT'}\")
+" 2>"$probe_stderr" || true
+    return
+  fi
   kubectl -n "$namespace" exec reference-client -- python -c "
 import re, sys, urllib.request as u
 r = u.urlopen('http://reference-app.${namespace}.svc.cluster.local/', timeout=5)
@@ -156,13 +217,14 @@ sys.stdout.write(f\"{r.status} {trace or 'ABSENT'}\")
 
 omit="$(kubectl -n "$namespace" get deployment reference-app \
   -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="CH10_OMIT_TRACE_ID")].value}')"
+[ -z "$service_url" ] || printf '        probing %s directly (outside the mesh)\n' "$service_url"
 read -r status trace <<<"$(probe)"
 
 if [ "$status" != "200" ]; then
   while IFS= read -r line; do detail "$line"; done <"$probe_stderr"
   [[ -s "$probe_stderr" ]] ||
     detail "the probe produced no output and no error; check that the client carries app.kubernetes.io/environment"
-  fail "live request to reference-app.${namespace} returned ${status:-no status}"
+  fail "live request to ${service_url:-reference-app.${namespace}} returned ${status:-no status}"
 fi
 
 if [ "$omit" = "true" ]; then

@@ -3,14 +3,23 @@ kind: Kustomization
 namespace: reference-staging
 resources:
   - ../../../kubernetes/base
+  # This environment's own Namespace, carrying its own owner token. The base's
+  # Namespace is dropped just below rather than renamed: renaming it rendered the
+  # base's REPLACE_WITH_OWNER_TOKEN into this environment, so the first Argo CD
+  # sync overwrote whatever token the reader had applied here, and
+  # labs/ch09/02-apply-namespaces.sh then refused the namespace forever as an
+  # ownership collision.
+  - namespace.yaml
 patches:
   - target:
       kind: Namespace
       name: reference-dev
     patch: |-
-      - op: replace
-        path: /metadata/name
-        value: reference-staging
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: reference-dev
+      $patch: delete
   # Chapter 10's fault switches. Named explicitly so that applying them is a
   # decision, and so no other overlay inherits them by living in this tree.
   # The target is selected by kind and name rather than by the patch's own

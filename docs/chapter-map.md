@@ -40,6 +40,9 @@ A chapter that uses a different name for the same thing is wrong.
 | Shared Kubernetes base | `deployment/kubernetes/base` |
 | Environment overlays | `deployment/gitops/overlays/{staging,production}` |
 | Argo CD declarations | `deployment/gitops/argocd` |
+| Staging Application | `reference-staging` |
+| Production Application | `reference-production` |
+| Argo CD project | `ai-native-devops` |
 | Incident evidence carried into Chapter 14 | `incident-evidence/` |
 
 ## How a chapter reaches its starting state
@@ -65,6 +68,26 @@ differences; a chapter naming the left-hand path means the right-hand file.
 | `agents/k8s-diagnostics/` | `operations-agent/` | 15 |
 | `workspace/` | `ai-native-workspace/`, which the reader creates; the Chapter 1 script names the directory in full | 1 |
 | `infrastructure/modules/`, `infrastructure/environments/` | `infrastructure/terraform/modules/`, `infrastructure/terraform/environments/` | 7 |
+
+## A chapter's cleanup removes the next chapter's starting state
+
+Each chapter's Cost and Cleanup step is right on its own terms, and the
+sequence still breaks: three chapters begin from something the chapter before
+has just deleted. Redeploying is one command, and knowing that in advance is
+the point.
+
+| Deleted by | Needed by | Restore with |
+|---|---|---|
+| Chapter 9's `15-delete-applications.sh` removes `reference-staging` | Chapter 10's `01-check-environment.sh` | `kubectl apply -k deployment/gitops/overlays/staging` |
+| Chapter 12's `10-cleanup-namespace.sh` removes `reference-incident` | Chapter 13's `preflight.sh`, which defaults to that namespace | `kubectl apply -k deployment/gitops/overlays/incident` |
+
+Chapter 10 additionally needs the `observability` namespace, which is created
+by `observability/collector-deployment.yaml` rather than by any chapter.
+
+Chapter 14's case is different and is recorded below: Chapter 12 is named as
+its starting state, but running all ten of Chapter 12's blocks produces
+`evidence/ch12/` and no `incident-evidence/` at all, so nothing writes what
+Chapter 14 is said to read.
 
 ## Known gaps in this contract
 

@@ -25,6 +25,22 @@ The chapter's yaml Configuration excerpt (`permissions: {}` and the `delivery-pr
 
 Everything else in 01 behaves as the chapter says: Docker, Buildx, curl, jq, ripgrep and actionlint all report versions, and `gh auth status` and `gh repo view` confirm the authenticated repository.
 
+- **02, 03, 04 and 06 keep the book's placeholders, and 06's checks do not gate
+  its pull.** `06-validate-rollback-evidence.sh` validates a rollback request
+  against `release-evidence.json` and then runs `docker pull`, with no `set -e`
+  between them. A request whose evidence says `Reject` fails every assertion and
+  still reaches the pull, and the script exits 0 because `docker pull` succeeded.
+  Read the assertions, not the exit status; the rollback gate reports success on
+  a rollback its own evidence refuses.
+
+- **07 deletes the release whether or not its safety checks pass.**
+  `07-delete-draft-release.sh` is labelled Destructive. It confirms the target is
+  a draft and that the tag matches, then calls `gh release delete` - and with no
+  `set -e`, a failing confirmation does not stop the deletion. A published
+  release at `v0.0.0-training` would be deleted anyway. In this repository that
+  tag returns 404, so the delete fails harmlessly and the defect stays invisible
+  to anyone who runs it here.
+
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
