@@ -20,4 +20,4 @@ These are the chapter's commands exactly as the book prints them.
 
 ## Referenced configuration files
 
-The workflow, Semgrep rules, and secret fixture that these commands reference already exist in this repository as /home/elvis/projects/ai-native-devops-companion/.github/workflows/security.yml, rules/semgrep.yml, and testdata/security/gitleaks-fixture.txt - do not duplicate them; docs/security/security-ruleset.json is authored by the reader per Step 4.
+The workflow, Semgrep rules, and secret fixture that these commands reference already exist in this repository as .github/workflows/security.yml, rules/semgrep.yml, and testdata/security/gitleaks-fixture.txt - do not duplicate them; docs/security/security-ruleset.json is authored by the reader per Step 4.
