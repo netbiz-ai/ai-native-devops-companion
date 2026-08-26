@@ -32,3 +32,8 @@ audit/*.jsonl
 Thumbs.db
 .idea/
 .vscode/
+
+# Reader-built chapter artifacts (Chapters 1-2). The book has you create these
+# in your clone; they are your work, not repository content (docs/chapter-map.md).
+ai-native-workspace/
+devops-prompt-library/

@@ -229,7 +229,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **You need:** the offline level.
 - **Enter it:** continue with the `docs/incidents/ch12-controlled-failure.md` you wrote in Chapter 12 - the assistant has no input until Chapter 12 has been run.
 - **Labs:** [`labs/ch14/`](../labs/ch14/README.md)
-- **Check:** `cd operations-assistant && python3 -m unittest discover -s tests`
+- **Check:** `labs/ch14/validate.sh` (also `make ch14-validate`); it checks your knowledge doc and the demo behavior, so it fails on an untouched clone by design.
 
 ### Chapter 15 - Design a Bounded AI Operations Agent
 

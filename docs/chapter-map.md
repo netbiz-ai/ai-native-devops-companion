@@ -23,7 +23,7 @@ Report the difference through the errata channel named in
 | 11 | Chapter 10 telemetry | The release identity | `security/`, CI jobs | Findings that carry a disposition and an owner | `./scripts/validate-offline.sh` |
 | 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `labs/ch12/` | A controlled failure diagnosed and restored under human control | `labs/ch12/validate.sh` |
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
-| 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
+| 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/`, `labs/ch14/` | Cited read-only answers with tested refusals, evidenced by the reader's knowledge doc | `labs/ch14/validate.sh` |
 | 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
 | 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `labs/ch16/capstone-verify.sh` | CAP-01 to CAP-07 visible and evidence-linked | `labs/ch16/capstone-verify.sh` |
 
@@ -165,12 +165,13 @@ their lab was blocked when it was not.
 
 - **Printed expected test output describes the chapter-time suites, not the
   shipped tree.** Chapter 3 says ten passing tests, but `main` runs 37 (the
-  Chapter 10 and 12 suites ship alongside); Chapter 14 names six tests while
-  the shipped suite is five differently named ones. Relatedly, the Chapter 3
-  and 14 validation commands pass on an untouched fresh clone, so they prove
-  the shipped suites still work, not that the reader's chapter work was done -
-  the chapters' own artifacts (the evidence file, the knowledge doc, the demo
-  run) are the reader-side proof. Chapter 3's ten printed test *names* are
+  Chapter 10 and 12 suites ship alongside). Chapter 14's printed names now
+  match the shipped six-test suite, and its validator (`labs/ch14/validate.sh`,
+  also `make ch14-validate`) checks the reader's knowledge doc and the demo
+  behavior, so it fails on an untouched clone by design. Chapter 3's
+  validation command still passes on an untouched fresh clone, so it proves
+  the shipped suite still works, not that the reader's chapter work was done -
+  the chapter's own artifacts (the evidence file) are the reader-side proof. Chapter 3's ten printed test *names* are
   renamed too, not just outnumbered: none of them exists in the shipped tree,
   so a reader grepping for one finds nothing and reads it as a missing suite.
   `reference-app/tests/test_app.py` holds exactly those ten contracts under
