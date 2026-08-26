@@ -16,7 +16,7 @@
 set -uo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-cd "$repo_root/operations-assistant"
+cd "$repo_root/operations-assistant" || exit 1
 
 fail=0
 say() { printf '%s\n' "$*"; }
