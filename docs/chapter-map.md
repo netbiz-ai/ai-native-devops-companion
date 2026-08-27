@@ -25,7 +25,7 @@ Report the difference through the errata channel named in
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
 | 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
 | 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
-| 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `labs/ch16/capstone-verify.sh` | CAP-01 to CAP-07 visible and evidence-linked | `labs/ch16/capstone-verify.sh` |
+| 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `infrastructure/terraform/capstone/`, `labs/ch16/` | CAP-01 to CAP-07 visible and evidence-linked | `labs/ch16/capstone-verify.sh` |
 
 ## Canonical names
 

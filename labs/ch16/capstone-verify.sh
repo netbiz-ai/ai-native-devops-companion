@@ -5,7 +5,8 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
 
 mode="${1:-design}"
-manifest="docs/capstone/evidence-manifest.yaml"
+manifest="${CAPSTONE_MANIFEST:-docs/capstone/evidence-manifest.yaml}"
+cleanup_evidence="evidence/capstone/summary/cleanup.txt"
 
 require_observed() {
   local criterion="$1"
@@ -19,6 +20,29 @@ require_observed() {
     return 1
   fi
   printf '%s=supported evidence=%s\n' "$criterion" "$evidence"
+}
+
+# The seven pre-cleanup criteria, in contract order. Cleanup is checked apart
+# from them because before the cleanup step it is legitimately unrecorded,
+# and `all` must be able to say so without failing.
+verify_criteria() {
+  "$0" identity
+  "$0" delivery
+  "$0" runtime
+  "$0" reliability
+  "$0" incident
+  "$0" agent
+  "$0" cost
+}
+
+criteria_summary() {
+  printf 'release identity: consistent\n'
+  printf 'delivery gates: pass\n'
+  printf 'runtime state: reconciled\n'
+  printf 'service targets: pass\n'
+  printf 'incident recovery: pass\n'
+  printf 'agent boundary tests: pass\n'
+  printf 'cost guardrail: pass\n'
 }
 
 case "$mode" in
@@ -50,25 +74,40 @@ case "$mode" in
     require_observed CAP-07 evidence/capstone/summary/cost-control.txt
     ;;
   cleanup)
-    require_observed CAP-07-cleanup evidence/capstone/summary/cleanup.txt
-    ;;
-  all|final)
-    # `final` is the acceptance run labs/ch16/04-run-verify-final.sh asks for,
-    # after 03 has recorded cleanup evidence. It checks the same criteria as
-    # `all` - which already includes the cleanup evidence - and says plainly
-    # that every one of them is supported, so the reader has a single line to
-    # point at rather than eight.
-    "$0" identity
-    "$0" delivery
-    "$0" runtime
-    "$0" reliability
-    "$0" incident
-    "$0" agent
-    "$0" cost
-    "$0" cleanup
-    if [ "$mode" = "final" ]; then
-      printf 'capstone_final=pass criteria=CAP-01..CAP-07 cleanup=recorded\n'
+    # Presence is not completion: a run that recorded FAILED lines leaves a
+    # non-empty file, and that must not read as a clean teardown.
+    require_observed CAP-07-cleanup "$cleanup_evidence"
+    if ! grep -q '^cleanup=complete$' "$cleanup_evidence"; then
+      printf 'CAP-07-cleanup=not-complete evidence=%s\n' "$cleanup_evidence" >&2
+      exit 1
     fi
+    ;;
+  all)
+    verify_criteria
+    if [[ -s "$cleanup_evidence" ]]; then
+      "$0" cleanup
+      printf 'RESULT: READY\n'
+      criteria_summary
+      printf 'cleanup: pass\n'
+    else
+      printf 'PRE-CLEANUP RESULT: READY\n'
+      criteria_summary
+      printf 'cleanup: pending\n'
+    fi
+    ;;
+  final)
+    verify_criteria
+    "$0" cleanup
+    if [[ ! -s "$manifest" ]] || grep -Eq 'REPLACE|pending' "$manifest"; then
+      printf 'manifest=not-consistent manifest=%s\n' "$manifest" >&2
+      exit 1
+    fi
+    printf 'CAPSTONE RESULT: PASS\n'
+    printf 'CAP-01 through CAP-06: pass\n'
+    printf 'cost guardrail: pass\n'
+    printf 'cleanup: pass\n'
+    printf 'sanitized manifest: consistent\n'
+    printf 'capstone_final=pass criteria=CAP-01..CAP-07 cleanup=recorded\n'
     ;;
   *)
     printf 'Usage: %s {design|identity|delivery|runtime|reliability|incident|agent|cost|cleanup|all|final}\n' "$0" >&2

@@ -9,7 +9,7 @@
 #   delivery gates: pass
 #   runtime state: reconciled
 #   service targets: pass
-#   security controls: pass
+#   incident recovery: pass
 #   agent boundary tests: pass
 #   cost guardrail: pass
 #   cleanup: pending

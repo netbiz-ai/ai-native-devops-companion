@@ -4,8 +4,10 @@
 # Label: Partial
 # The reader must implement and test the helper scripts this dispatches to
 # (scripts/verify-release-identity.sh, verify-delivery-gates.sh, verify-runtime-state.sh,
-# verify-service-targets.sh, verify-security-controls.sh, verify-agent-boundaries.sh,
+# verify-service-targets.sh, verify-incident-recovery.sh, verify-agent-boundaries.sh,
 # verify-cost-guardrail.sh, verify-cleanup.sh, verify-final-manifest.sh) before it will run.
+# The shipped labs/ch16/capstone-verify.sh implements this contract against retained
+# evidence, with the same mode names.
 # --- command as printed, verbatim ---
 #!/usr/bin/env bash
 set -euo pipefail
@@ -17,7 +19,7 @@ case "$mode" in
   delivery) ./scripts/verify-delivery-gates.sh ;;
   runtime) ./scripts/verify-runtime-state.sh ;;
   reliability) ./scripts/verify-service-targets.sh ;;
-  security) ./scripts/verify-security-controls.sh ;;
+  incident) ./scripts/verify-incident-recovery.sh ;;
   agent) ./scripts/verify-agent-boundaries.sh ;;
   cost) ./scripts/verify-cost-guardrail.sh ;;
   cleanup) ./scripts/verify-cleanup.sh ;;
@@ -27,12 +29,12 @@ case "$mode" in
     "$0" delivery
     "$0" runtime
     "$0" reliability
-    "$0" security
+    "$0" incident
     "$0" agent
     "$0" cost
     ;;
   *)
-    printf 'Usage: %s {identity|delivery|runtime|reliability|security|agent|cost|cleanup|all|final}\n' "$0" >&2
+    printf 'Usage: %s {identity|delivery|runtime|reliability|incident|agent|cost|cleanup|all|final}\n' "$0" >&2
     exit 2
     ;;
 esac
