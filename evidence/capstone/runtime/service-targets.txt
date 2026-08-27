@@ -1,0 +1,8 @@
+criterion=CAP-04 observed_at=2026-08-10T17:50:47Z namespace=reference-staging
+validator=scripts/ch10/validate.sh result=chapter 10 validated (assets, code and cluster)
+rollout=reference-app rolled out, 2/2 replicas ready
+live_request=200 1c6695d7ef02753a403bd36b5333526c
+trace_id_well_formed=true
+network_policy_negative_control=a client labelled app.kubernetes.io/name=reference-client
+network_policy_negative_control=but missing app.kubernetes.io/environment timed out
+network_policy_positive_control=the same client returned 200 once the label was added
