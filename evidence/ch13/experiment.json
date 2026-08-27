@@ -1,0 +1,30 @@
+{
+  "experiment_id": "reference-app-resources-001",
+  "namespace": "reference-incident",
+  "recorded_at": "2026-08-10T17:49:44+00:00",
+  "service_target": {
+    "success_ratio_min": 0.99,
+    "p95_latency_ms_max": 500.0
+  },
+  "baseline": {
+    "requests": 120,
+    "ok": 120,
+    "failed": 0,
+    "success_ratio": 1.0,
+    "p95_ms": 5.1,
+    "median_ms": 3.1
+  },
+  "candidate": {
+    "requests": 120,
+    "ok": 120,
+    "failed": 0,
+    "success_ratio": 1.0,
+    "p95_ms": 5.9,
+    "median_ms": 3.5
+  },
+  "baseline_within_target": true,
+  "candidate_within_target": true,
+  "comparable": true,
+  "p95_delta_ms": 0.8,
+  "decision": "pending - a named reviewer records retain or revert"
+}

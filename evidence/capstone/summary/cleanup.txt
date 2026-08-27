@@ -1,0 +1,31 @@
+capstone cleanup
+context: kind-ch10-lab
+run_at: 2026-08-27T13:41:15Z
+
+namespaces
+  absent    reference-dev
+  deleted   reference-staging
+  deleted   reference-production
+  deleted   reference-incident
+  deleted   observability
+  deleted   lab-source
+  absent    capstone-iac
+
+argo cd applications and project
+  deleted   application.argoproj.io/reference-production
+  deleted   application.argoproj.io/reference-staging
+  deleted   appproject/ai-native-devops
+
+local images
+  absent    ai-native-devops/reference-service:baseline
+  absent    ai-native-devops/reference-service:broken
+  absent    ai-native-devops/reference-service:chapter04
+  absent    ai-native-devops/reference-service:chapter05
+
+not handled here
+  cloud infrastructure: labs/ch07/07-destroy-lab.sh, against your own
+    approved sandbox. This script cannot know which account that is.
+  registry tags you pushed: remove them in your registry.
+  the cluster itself: delete it the way you created it.
+
+cleanup=complete

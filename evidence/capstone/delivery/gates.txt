@@ -1,0 +1,12 @@
+criterion=CAP-02 observed_at=2026-08-10T17:50:47Z repository=netbiz-ai/ai-native-devops-companion
+blocked_promotion_1=run 31408727813 staging failed closed, production skipped
+blocked_promotion_1_reason=reference-app dependencies were not installed, the gate held
+blocked_promotion_2=run 31410570438 protected-check gate refused the commit
+blocked_promotion_2_reason=check image was still in_progress on the dispatched commit
+allowed_promotion=run 31411941614 release ch06-release-003
+allowed_revision=a567221a6f90de2ced36f182a505cddbc9c44d54
+allowed_digest=sha256:5965c499194a5a522ad2aea1f88daed8afeaee5cdfdfc8a8c28d5847f6ce48d6
+allowed_previous_digest=sha256:8b39463014e35ebe62d6e521f55947443191a31289dd45b7b6df09f85de36be5
+protected_checks_required=quality image SAST Secrets IaC
+initiator=netbiz-ai approver=hashi-netbiz self_review_prevented=true
+rollback_run=31413410245 validated against recorded evidence, marker moved back

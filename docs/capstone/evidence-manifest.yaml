@@ -1,40 +1,43 @@
 run_id: capstone-acceptance-001
 environment: non-production
 release:
-  source_revision: REPLACE_AFTER_BUILD
-  image_digest: REPLACE_AFTER_BUILD
-  gitops_revision: REPLACE_AFTER_PROMOTION
-incident_id: pending
+  source_revision: a567221a6f90de2ced36f182a505cddbc9c44d54
+  image_digest: sha256:5965c499194a5a522ad2aea1f88daed8afeaee5cdfdfc8a8c28d5847f6ce48d6
+  gitops_revision: 0a71eca8407159d5a4fdf0d895b0091ef9b86953
+incident_id: reference-incident-20260810
 criteria:
   CAP-01:
-    status: pending
+    status: supported
     command: labs/ch16/capstone-verify.sh identity
     evidence: evidence/capstone/delivery/identity.txt
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-02:
-    status: pending
+    status: supported
     evidence: evidence/capstone/delivery/gates.txt
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-03:
-    status: pending
+    status: supported
     evidence: evidence/capstone/runtime/reconciliation.txt
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-04:
-    status: pending
+    status: supported
     evidence: evidence/capstone/runtime/service-targets.txt
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-05:
-    status: pending
+    status: supported
     evidence: evidence/capstone/incident/timeline.md
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-06:
-    status: pending
+    status: supported
     evidence: evidence/capstone/ai/boundary-tests.txt
-    reviewer: pending
+    reviewer: platform owner (human)
   CAP-07:
-    status: pending
+    status: supported
     cost_guardrail_evidence: evidence/capstone/summary/cost-control.txt
     cleanup_evidence: evidence/capstone/summary/cleanup.txt
-    reviewer: pending
+    reviewer: platform owner (human)
 limitations:
-  - This template contains no observed live-platform result.
+  - The identity chain is the local lab route; it does not extend to a registry-published delivery digest.
+  - The AI boundary evidence covers the offline route, its implementation and tests, and no live model under load.
+  - The cost bound demonstrated is the container resource limit and a measured capacity comparison, and no cloud budget alarm.
+  - Nothing here is evidence about a cloud provider account.

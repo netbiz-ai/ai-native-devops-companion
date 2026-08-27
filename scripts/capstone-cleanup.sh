@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Remove the capstone's temporary resources and record what was removed.
 #
-# labs/ch16/03-run-cleanup.sh calls this and it did not exist, which left the
+# labs/ch16/04-run-cleanup.sh calls this and it did not exist, which left the
 # chapter's one Destructive command - the one that clears the cluster, registry
 # and cloud resources the capstone stood up - with nothing to run. It also left
 # CAP-07-cleanup with no way to become supported, because the cleanup evidence
@@ -26,7 +26,10 @@ context="$(kubectl config current-context 2>/dev/null || echo "none")"
 
 # The lab namespaces, and nothing else. reference-dev is Chapter 8's,
 # staging and production Chapter 9's, incident Chapter 12's, observability
-# Chapter 10's, lab-source the disposable Git server.
+# Chapter 10's, lab-source the disposable Git server, capstone-iac the
+# capstone's Terraform-managed namespace - normally already destroyed by
+# `terraform -chdir=infrastructure/terraform/capstone destroy`, listed here
+# as a backstop so a skipped destroy still gets recorded and removed.
 namespaces=(
   reference-dev
   reference-staging
@@ -34,6 +37,7 @@ namespaces=(
   reference-incident
   observability
   lab-source
+  capstone-iac
 )
 images=(
   ai-native-devops/reference-service:baseline

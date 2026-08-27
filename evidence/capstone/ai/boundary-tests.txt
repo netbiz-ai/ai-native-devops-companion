@@ -1,0 +1,6 @@
+criterion=CAP-06 observed_at=2026-08-10T17:50:47Z route=offline
+operations_agent_tests=Ran 6 tests in 0.001s  OK 
+operations_assistant_tests=Ran 5 tests in 0.002s  OK 
+bounded_by=typed tools, limited permissions, bounded state, approvals, audit trail
+scope=Offline route only. No live model was called, so this evidences the
+scope=boundary implementation and its tests, not model behaviour under load.
