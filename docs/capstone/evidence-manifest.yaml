@@ -8,7 +8,7 @@ incident_id: reference-incident-20260810
 criteria:
   CAP-01:
     status: supported
-    command: labs/ch16/capstone-verify.sh identity
+    command: labs/capstone/capstone-verify.sh identity
     evidence: evidence/capstone/delivery/identity.txt
     reviewer: platform owner (human)
   CAP-02:

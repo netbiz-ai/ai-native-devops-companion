@@ -1,0 +1,20 @@
+run_id: capstone-acceptance-001
+environment: non-production
+release:
+  source_revision: REPLACE_AFTER_BUILD
+  image_digest: REPLACE_AFTER_BUILD
+  gitops_revision: REPLACE_AFTER_PROMOTION
+incident_id: pending
+criteria:
+  CAP-01:
+    status: pending
+    command: labs/capstone/capstone-verify.sh identity
+    evidence: evidence/capstone/delivery/identity.txt
+    reviewer: pending
+  CAP-07:
+    status: pending
+    cost_guardrail_evidence: evidence/capstone/summary/cost-control.txt
+    cleanup_evidence: evidence/capstone/summary/cleanup.txt
+    reviewer: pending
+limitations:
+  - Replace with an observed limitation

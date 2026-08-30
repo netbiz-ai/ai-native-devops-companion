@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Remove the capstone's temporary resources and record what was removed.
 #
-# labs/ch16/04-run-cleanup.sh calls this and it did not exist, which left the
+# labs/capstone/04-run-cleanup.sh calls this and it did not exist, which left the
 # chapter's one Destructive command - the one that clears the cluster, registry
 # and cloud resources the capstone stood up - with nothing to run. It also left
 # CAP-07-cleanup with no way to become supported, because the cleanup evidence
@@ -13,7 +13,7 @@
 # more dangerous than no cleanup script.
 #
 # Terraform and cloud resources are Chapter 7's, and are removed by
-# labs/ch07/07-destroy-lab.sh against the reader's own approved sandbox. This
+# labs/infrastructure/07-destroy-lab.sh against the reader's own approved sandbox. This
 # script records whether that was done rather than doing it, because it has no
 # way to know which account is approved.
 set -euo pipefail
@@ -120,7 +120,7 @@ fi
 
 record ""
 record "not handled here"
-record "  cloud infrastructure: labs/ch07/07-destroy-lab.sh, against your own"
+record "  cloud infrastructure: labs/infrastructure/07-destroy-lab.sh, against your own"
 record "    approved sandbox. This script cannot know which account that is."
 record "  registry tags you pushed: remove them in your registry."
 record "  the cluster itself: delete it the way you created it."

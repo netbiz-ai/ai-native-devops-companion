@@ -24,7 +24,7 @@ corrected by a new tag.
 
 ## Per-chapter handoff tags
 
-Chapters refer to `chNN-start` and `chNN-complete` tags. These are immutable
+Chapters refer to `<subject>-start` and `<subject>-complete` tags. These are immutable
 markers of the state a chapter begins from and the state it produces. They are
 cut only from a state that has actually been executed and whose observed output
 matches what the chapter asserts.

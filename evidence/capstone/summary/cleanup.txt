@@ -23,7 +23,7 @@ local images
   absent    ai-native-devops/reference-service:chapter05
 
 not handled here
-  cloud infrastructure: labs/ch07/07-destroy-lab.sh, against your own
+  cloud infrastructure: labs/infrastructure/07-destroy-lab.sh, against your own
     approved sandbox. This script cannot know which account that is.
   registry tags you pushed: remove them in your registry.
   the cluster itself: delete it the way you created it.
