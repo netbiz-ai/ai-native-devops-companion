@@ -20,7 +20,8 @@ test "$(kubectl get namespace reference-dev \
 
 kubectl apply \
   -f deployment/kubernetes/base/network-policy.yaml \
-  -f deployment/kubernetes/base/workload.yaml
+  -f deployment/kubernetes/base/workload.yaml \
+  -f deployment/kubernetes/base/service.yaml
 kubectl rollout status \
   deployment/reference-app \
   --namespace reference-dev \

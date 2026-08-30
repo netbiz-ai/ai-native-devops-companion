@@ -27,22 +27,11 @@ The chapter also prints `deployment/kubernetes/tests/connect.py` as a Python blo
 
 ## What does not behave as printed here
 
-- **06 never applies the Service it then asks for.**
-  `06-apply-and-observe.sh` applies `network-policy.yaml` and `workload.yaml`,
-  and the Service is neither: it is `base/service.yaml`, which the base
-  kustomization lists but this block does not pass to `kubectl apply`. The
-  rollout succeeds, 2/2, and the script then stops on
-
-      Error from server (NotFound): services "reference-app" not found
-
-  because it sets `set -euo pipefail`. Its EndpointSlice check and its
-  `kubectl exec ... python3 --version` never run, and 07 needs that Service to
-  reach `/ready` through it. Apply the base instead, or add the file:
-
-      kubectl apply -k deployment/kubernetes/base
-
-  The failure looks like a Service problem rather than a missing `-f`, because
-  the Deployment ahead of it is healthy.
+- **06 applies the Service with the policy and the workload.**
+  The Service is a separate file from the Deployment, and the step
+  that follows reaches `/ready` through it, so all three are applied
+  together. The namespace is not: the step before this one proves
+  namespace ownership by UID, and re-applying it would defeat that.
 
 ## Configuration blocks
 
