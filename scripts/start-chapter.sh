@@ -50,19 +50,19 @@ for candidate in HEAD main origin/main; do
   fi
 done
 
-git checkout --quiet -B "lab/ch${chapter}" "${tag}"
+git checkout --quiet -B "lab/${chapter}" "${tag}"
 
 labs_note=""
 if [ ! -d labs ] && [ -n "$harness_ref" ]; then
   # Restore onto the lab branch and commit, so the branch is a usable starting
-  # state rather than a tree with pending changes. lab/chNN is disposable.
+  # state rather than a tree with pending changes. lab/<subject> is disposable.
   #
   # This script comes forward too. It is the harness, not chapter content, and
   # the checkout above has just replaced it on disk with the tag's older copy -
   # so without this, re-running `make chNN-start` from the lab branch would run
   # the version that does not restore anything.
   git checkout --quiet "$harness_ref" -- labs scripts/start-chapter.sh
-  git commit --quiet --no-verify -m "Restore labs/ onto lab/ch${chapter}
+  git commit --quiet --no-verify -m "Restore labs/ onto lab/${chapter}
 
 The chNN-* tags predate the labs/ extraction, so the chapter's starting state
 does not carry its own lab scripts. Restored from ${harness_ref}." \
@@ -73,4 +73,4 @@ elif [ ! -d labs ]; then
   printf '         the chapter cannot run its numbered scripts from this state.\n' >&2
 fi
 
-printf 'chapter=%s state=%s tag=%s branch=lab/ch%s%s\n' "$chapter" "$state" "$tag" "$chapter" "$labs_note"
+printf 'chapter=%s state=%s tag=%s branch=lab/%s%s\n' "$chapter" "$state" "$tag" "$chapter" "$labs_note"
