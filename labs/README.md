@@ -17,6 +17,7 @@ Chapters 10 to 13 and 16 also carry the executable validators and helpers that u
 | 5 | `labs/ci/` | needs a tool (docker, actionlint, ruff, bandit) |
 | 6 | `labs/delivery/` | needs a tool (docker, gh, actionlint, jq) |
 | 7 | `labs/infrastructure/` | needs a cluster (terraform, aws) |
+| - | `labs/cluster/` | needs a container runtime (docker, kind, kubectl) |
 | 8 | `labs/kubernetes/` | needs a cluster (kubectl) |
 | 9 | `labs/gitops/` | needs a cluster (kubectl, argocd) |
 | 10 | `labs/observability/` | needs a cluster (kubectl, promtool, otelcol-contrib) |
@@ -26,6 +27,10 @@ Chapters 10 to 13 and 16 also carry the executable validators and helpers that u
 | 14 | `labs/assistant/` | offline |
 | 15 | `labs/agent/` | needs a cluster (kubectl) |
 | 16 | `labs/capstone/` | needs a cluster (runs every prior chapter's evidence checks) |
+
+The row with no chapter number is `labs/cluster/`, which builds the lab environment the cluster chapters assume rather than a chapter's project.
+It is the second edition's Bridge to the Cluster interlude, and it is the executable form of the first edition's Bridge to the Cluster section in Chapter 7, so it carries no chapter number of its own.
+Run it before `labs/kubernetes/` in either edition.
 
 "Offline" means plain POSIX tools plus git and python3.
 "Needs a tool" means at least one locally installable tool from the chapter's prerequisites.

@@ -1,7 +1,7 @@
 # The Git source Argo CD reconciles from
 
-Chapter 9's Argo CD pulls manifests from a Git URL.
-The URL shipped in this repository's manifests points at the upstream repository, which you cannot push to, so you supply your own and change it in exactly two files:
+The GitOps chapter's Argo CD pulls manifests from a Git URL.
+The URL shipped in this repository's manifests is the in-cluster lab server of option B, so option A is the one that needs edits: you supply your own URL and change it in exactly two files:
 
 - `spec.source.repoURL` in both `deployment/gitops/argocd/staging-application.yaml` and `deployment/gitops/argocd/production-application.yaml`
 - the same URL in `spec.sourceRepos` in `deployment/gitops/argocd/project.yaml`

@@ -33,6 +33,7 @@ REQUIRED = [
     "labs/ci/README.md",
     "labs/delivery/README.md",
     "labs/infrastructure/README.md",
+    "labs/cluster/README.md",
     "labs/kubernetes/README.md",
     "labs/gitops/README.md",
     "labs/observability/README.md",
