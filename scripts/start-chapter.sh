@@ -11,9 +11,12 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$repo_root"
 
-chapter="${1:?usage: start-chapter.sh NN [start|complete]}"
+chapter="${1:?usage: start-chapter.sh SUBJECT [start|complete]}"
 state="${2:-start}"
-tag="ch${chapter}-${state}"
+# Subject names, not chapter numbers: a chapter number means different
+# work in different editions, and the tag would resolve silently to the
+# wrong state. Subjects are stable across editions.
+tag="${chapter}-${state}"
 
 if ! git rev-parse --verify --quiet "refs/tags/${tag}" >/dev/null; then
   cat >&2 <<MSG
@@ -36,8 +39,8 @@ fi
 
 # The handoff tags were cut before the labs/ extraction, so a chapter's starting
 # state does not carry the lab scripts the chapter then tells you to run. Without
-# this, `make ch12-start` removes labs/ch12/preflight.sh and the very next line of
-# labs/ch12/01-run-preflight.sh cannot find it. Remember where the scripts are
+# this, `make ch12-start` removes labs/incident/preflight.sh and the very next line of
+# labs/incident/01-run-preflight.sh cannot find it. Remember where the scripts are
 # before moving the tree.
 harness_ref=""
 for candidate in HEAD main origin/main; do

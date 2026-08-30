@@ -19,13 +19,13 @@ Report the difference through the errata channel named in
 | 7 | Chapter 6 digest | The promoted digest | `infrastructure/terraform/`, fixture at `infrastructure/terraform/fixtures/` | A reviewed network foundation by the no-apply or the separately approved sandbox route | `terraform validate` |
 | 8 | Chapter 7 foundation, plus a separately supplied cluster | The promoted digest | `deployment/kubernetes/base`, `deployment/kubernetes/tests` | A hardened workload in `reference-dev` with policy behavior observed | `kubectl kustomize deployment/kubernetes/base` |
 | 9 | Chapter 8 workload | `deployment/kubernetes/base`, unchanged | `deployment/gitops/argocd`, `deployment/gitops/overlays` | Staging reconciled automatically, production promoted deliberately | `kubectl kustomize deployment/gitops/overlays/staging` |
-| 10 | Chapter 9 GitOps path | The reconciled release identity | `observability/`, `labs/ch10/` | A correlated signal, an owned alert, and a runbook | `labs/ch10/validate.sh` |
+| 10 | Chapter 9 GitOps path | The reconciled release identity | `observability/`, `labs/observability/` | A correlated signal, an owned alert, and a runbook | `labs/observability/validate.sh` |
 | 11 | Chapter 10 telemetry | The release identity | `security/`, CI jobs | Findings that carry a disposition and an owner | `./scripts/validate-offline.sh` |
-| 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `labs/ch12/` | A controlled failure diagnosed and restored under human control | `labs/ch12/validate.sh` |
+| 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `labs/incident/` | A controlled failure diagnosed and restored under human control | `labs/incident/validate.sh` |
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
-| 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/`, `labs/ch14/` | Cited read-only answers with tested refusals, evidenced by the reader's knowledge doc | `labs/ch14/validate.sh` |
+| 14 | Chapter 12 sanitized summary | `docs/incidents/ch12-controlled-failure.md` | `operations-assistant/`, `labs/assistant/` | Cited read-only answers with tested refusals, evidenced by the reader's knowledge doc | `labs/assistant/validate.sh` |
 | 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
-| 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `infrastructure/terraform/capstone/`, `labs/ch16/` | CAP-01 to CAP-07 visible and evidence-linked | `labs/ch16/capstone-verify.sh` |
+| 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `infrastructure/terraform/capstone/`, `labs/capstone/` | CAP-01 to CAP-07 visible and evidence-linked | `labs/capstone/capstone-verify.sh` |
 
 ## Canonical names
 
@@ -47,7 +47,7 @@ A chapter that uses a different name for the same thing is wrong.
 
 ## How a chapter reaches its starting state
 
-A chapter prints `make chNN-start`, never a git command. The Makefile target
+A chapter prints `make <subject>-start`, never a git command. The Makefile target
 resolves the name through `scripts/start-chapter.sh`, so this repository can be
 restructured without invalidating a printed page. If the handoff tag has not
 been cut, the target says so and exits 3 rather than failing obscurely.
@@ -70,14 +70,14 @@ differences; a chapter naming the left-hand path means the right-hand file.
 
 ## A handoff tag can predate what its chapter applies
 
-The `chNN-*` tags are cut from executed states, so each predates whatever landed
+The `<subject>-*` tags are cut from executed states, so each predates whatever landed
 after it. Where that later work includes something the chapter itself applies,
 the chapter cannot run from its own starting state.
 
 The known case is Chapter 12. `deployment/gitops/overlays/incident/` is the
-healthy baseline Step 1 deploys, and it first appears at `ch12-complete`;
-`ch12-start` carries only the staging and production overlays.
-`labs/ch12/preflight.sh` fails on it by name and prints the restore command, so
+healthy baseline Step 1 deploys, and it first appears at `incident-complete`;
+`incident-start` carries only the staging and production overlays.
+`labs/incident/preflight.sh` fails on it by name and prints the restore command, so
 this surfaces before anything is applied:
 
     git checkout main -- deployment/gitops/overlays/incident
@@ -101,6 +101,17 @@ the point.
 
 Chapter 10 additionally needs the `observability` namespace, which is created
 by `observability/collector-deployment.yaml` rather than by any chapter.
+
+## Why these names have no chapter numbers
+
+Lab folders, make targets and handoff tags are named after their subject, not
+after a chapter number. Chapter numbers change between editions and subjects do
+not, so a printed path stays correct when the book is reordered, and a reader
+adopting one piece on an existing project can find it by what it does.
+
+The first edition's `chNN-*` tags are still present and still immutable. Each
+subject tag points at the same commit as the chapter tag it replaces, so both
+editions resolve to the same verified state and neither can shadow the other.
 
 ## Known gaps in this contract
 
@@ -140,14 +151,14 @@ their lab was blocked when it was not.
 
 - **Chapter 3 arrives pre-solved on `main`.** The chapter has you build
   `reference-app`, but later chapters depend on the finished app, so it ships
-  here in full and there is no `ch03-start` tag to hide it (a tag is only cut
+  here in full and there is no `reference-app-start` tag to hide it (a tag is only cut
   from an executed state, and no pre-app state of this repository was ever
   executed). Choose a route before the chapter's Step 1: build your own
   `reference-app` from the printed page in a directory outside the clone
   (every printed command then behaves as the page says, and the shipped app is
   your solution key), or work against the shipped app and skip the scaffold
   step, whose `git init` would otherwise nest a second repository inside the
-  clone. `labs/ch03/README.md` states both routes; from Chapter 4 onward the
+  clone. `labs/reference-app/README.md` states both routes; from Chapter 4 onward the
   labs use the clone's `reference-app/` either way.
 
 - **Chapter 3's printed run command fails against the shipped app.**
@@ -166,8 +177,8 @@ their lab was blocked when it was not.
 - **Printed expected test output describes the chapter-time suites, not the
   shipped tree.** Chapter 3 says ten passing tests, but `main` runs 37 (the
   Chapter 10 and 12 suites ship alongside). Chapter 14's printed names now
-  match the shipped six-test suite, and its validator (`labs/ch14/validate.sh`,
-  also `make ch14-validate`) checks the reader's knowledge doc and the demo
+  match the shipped six-test suite, and its validator (`labs/assistant/validate.sh`,
+  also `make assistant-validate`) checks the reader's knowledge doc and the demo
   behavior, so it fails on an untouched clone by design. Chapter 3's
   validation command still passes on an untouched fresh clone, so it proves
   the shipped suite still works, not that the reader's chapter work was done -
@@ -175,14 +186,14 @@ their lab was blocked when it was not.
   renamed too, not just outnumbered: none of them exists in the shipped tree,
   so a reader grepping for one finds nothing and reads it as a missing suite.
   `reference-app/tests/test_app.py` holds exactly those ten contracts under
-  different names, and `labs/ch03/README.md` maps each printed name to its
+  different names, and `labs/reference-app/README.md` maps each printed name to its
   shipped one.
 
 - **Chapter 4's shipped Dockerfile is the Chapter 10 file, so the chapter's
   validation cannot pass against it.** `reference-app/Dockerfile` on `main` is
   single-stage on `python:3.12-alpine` with a `pip install` and no `ARG` or
   `LABEL`, not the multi-stage build the chapter prints as
-  `labs/ch04/config/03-dockerfile-final.dockerfile`. This row's validation entry
+  `labs/container/config/03-dockerfile-final.dockerfile`. This row's validation entry
   is the chapter's `docker build` and label assertions, and against the shipped
   file the three build args are rejected as unconsumed and `title`, `revision`
   and `source` come back empty. The Break It step is worse than a failure: 11's
@@ -190,7 +201,7 @@ their lab was blocked when it was not.
   is byte-for-byte the working one, it starts, and the script prints
   `unexpected success: investigate before continuing`. Write
   `config/03-dockerfile-final.dockerfile` to `reference-app/Dockerfile` for the
-  chapter and restore it afterwards; `labs/ch04/README.md` states the route.
+  chapter and restore it afterwards; `labs/container/README.md` states the route.
   Step 06 still cannot pass on the shipped-app route, because an image built
   from the chapter's Dockerfile cannot run the shipped application: the flat
   `import telemetry` does not resolve under `python3 -m src.app`, and the
@@ -201,7 +212,7 @@ their lab was blocked when it was not.
   99.99% of both, and the baseline's `COPY . .` ships whatever the build context
   holds: the byte comparison is decided by the reader's directory and has been
   measured with either sign, while the file count under `/app` and the image
-  user are stable. `labs/ch04/README.md` carries the numbers.
+  user are stable. `labs/container/README.md` carries the numbers.
 
 - **Chapter 7's scaffold creates the book's paths as empty directories, and
   Terraform then validates one of them successfully.** `01-setup-workspace.sh`
@@ -223,7 +234,7 @@ their lab was blocked when it was not.
   `terraform test` against a module that ships no `.tftest.hcl`, which reports
   `Success! 0 passed, 0 failed.` - the chapter's expected line differs only in
   the count, which is the only part carrying information. Writing
-  `labs/ch07/config/05-network.tftest.hcl` into the module is what the chapter
+  `labs/infrastructure/config/05-network.tftest.hcl` into the module is what the chapter
   intends, and it then fails as the module-interface entry below records.
 
 - **The chapters assume the application and `.github/` share one repository.**
@@ -241,13 +252,13 @@ their lab was blocked when it was not.
   regardless, so each reports success while its assertions fail - which for
   Chapter 6 is the prerequisite gate of a chapter that pushes an image and
   promotes a digest. Run the file checks from the directory that holds the
-  files and read the results rather than the exit code; `labs/ch05/README.md`
-  and `labs/ch06/README.md` name which directory is which.
+  files and read the results rather than the exit code; `labs/ci/README.md`
+  and `labs/delivery/README.md` name which directory is which.
 
 - **Chapter 5's printed workflow fails the chapter's own validation command,
   and its local check blocks report success either way.** Written to
   `.github/workflows/ci.yml` as Step 2 directs,
-  `labs/ch05/config/02-ci-workflow.yaml` exits 1 under actionlint with
+  `labs/ci/config/02-ci-workflow.yaml` exits 1 under actionlint with
   shellcheck installed - one `SC2034` for a loop variable the retry never uses,
   four `SC2317` against the `cleanup` trap - while this row's validation entry,
   `actionlint .github/workflows/ci.yml`, passes because the live workflow is
@@ -255,11 +266,11 @@ their lab was blocked when it was not.
   skips the shell analysis without it. Separately, `03-run-local-checks.sh` and
   `06-validate-local-layer.sh` set no `-e` and end on a command that succeeds
   regardless, so both exit 0 whatever Ruff and unittest reported; the same holds
-  for `02-check-tool-versions.sh` with a tool missing. `labs/ch05/README.md`
+  for `02-check-tool-versions.sh` with a tool missing. `labs/ci/README.md`
   lists these and the split-layout consequences for 04 and 07.
 
 - **Chapter 1's workspace validation checks one of the checklist's seven
-  sections.** `labs/ch01/08-validate-workspace.sh` asserts that
+  sections.** `labs/method/08-validate-workspace.sh` asserts that
   `evidence/verification-checklist.md` exists, is non-empty, carries
   `## Test results`, and holds no `| pending |` cell. The other six sections -
   `## Evidence metadata`, `## Intent`, `## Information safety`,
@@ -273,10 +284,10 @@ their lab was blocked when it was not.
   requirement that a named human owns the final decision.
 
 - **Chapter 13 prints three helper scripts this repository does not supply.**
-  The chapter's flow calls `labs/ch13/capture-baseline.sh`,
-  `labs/ch13/estimate-cost.sh` and `labs/ch13/restore.sh` alongside the
+  The chapter's flow calls `labs/capacity/capture-baseline.sh`,
+  `labs/capacity/estimate-cost.sh` and `labs/capacity/restore.sh` alongside the
   supplied `preflight.sh`, `run-experiment.sh` and `validate.sh`. The
-  experiment recorded in `ch13-complete` was executed with the supplied three;
+  experiment recorded in `capacity-complete` was executed with the supplied three;
   the other three names block the printed steps that call them until they are
   published or the steps are followed with the supplied scripts.
 
@@ -316,7 +327,7 @@ ordering is what matters.
 - `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
   `docs/security/trace-review.md` - written in Chapter 11. The ruleset encodes
   the bypass actors and required checks of one specific repository, so it
-  belongs to yours rather than to this one; `labs/ch11/verify-security-ruleset.sh`
+  belongs to yours rather than to this one; `labs/security/verify-security-ruleset.sh`
   reads it and is supplied here.
 - `docs/decisions/adr-ch13-capacity.md` and
   `docs/optimization/ch13-scaling-experiment.md` - written in Chapter 13 from
@@ -335,15 +346,15 @@ ordering is what matters.
   `02-destructive-request` cases; a supplied tree under the same name used
   different filenames and made that first `mkdir` fail in a fresh clone.
 - `reference-app/src/telemetry.py` - implemented in Chapter 10 against the
-  reviewed reference. It is absent from `ch10-start` for that reason, and
-  present from `ch10-complete` onward, including on `main`. Start the chapter
+  reviewed reference. It is absent from `observability-start` for that reason, and
+  present from `observability-complete` onward, including on `main`. Start the chapter
   from the tag, not from `main`, or the exercise is already solved for you.
 
 ## Handoff tags
 
-Chapters 10 to 13 name immutable `chNN-start` and `chNN-complete` tags, and
-all eight are cut: `ch10-start`, `ch10-complete`, `ch11-start`,
-`ch11-complete`, `ch12-start`, `ch12-complete`, `ch13-start`, `ch13-complete`.
+Chapters 10 to 13 name immutable `<subject>-start` and `<subject>-complete` tags, and
+all eight are cut: `observability-start`, `observability-complete`, `security-start`,
+`security-complete`, `incident-start`, `incident-complete`, `capacity-start`, `capacity-complete`.
 No other chapter refers to a handoff tag. Tags follow `docs/release-policy.md`:
 immutable, never moved, and named for the chapter state they capture.
 

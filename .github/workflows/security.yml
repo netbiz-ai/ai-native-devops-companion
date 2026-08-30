@@ -88,13 +88,13 @@ jobs:
           # The ch04 baseline is the book's deliberately insecure single-stage
           # Dockerfile: it runs as root because that is the defect Chapter 4
           # measures and then fixes. The hardened result stays scanned, both as
-          # labs/ch04/config/03-dockerfile-final.dockerfile and as the live
+          # labs/container/config/03-dockerfile-final.dockerfile and as the live
           # reference-app/Dockerfile, and both are clean. "Fixing" the baseline
           # would erase the measurement the chapter is built on.
           skip-files: |
             deployment/gitops/overlays/staging/ch10-lab-faults.yaml
             deployment/gitops/overlays/incident/ch12-latency-fault.yaml
-            labs/ch04/config/02-dockerfile-baseline.dockerfile
+            labs/container/config/02-dockerfile-baseline.dockerfile
 
   image:
     name: Image

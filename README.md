@@ -76,7 +76,7 @@ obvious secret patterns.
 | Chapters 10–13: telemetry, security, incidents, optimization | `observability/`, `security/`, `incidents/`, `optimization/` | Fixtures and templates |
 | Chapter 14: cited operations assistant | `operations-assistant/` | Offline |
 | Chapter 15: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
-| Chapter 16: connected acceptance path | `docs/capstone/`, `labs/ch16/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
+| Chapter 16: connected acceptance path | `docs/capstone/`, `labs/capstone/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
 
 See [docs/chapter-map.md](docs/chapter-map.md) for exact chapter handoffs.
 

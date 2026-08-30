@@ -23,7 +23,7 @@
 #
 # Apply:   kubectl -n reference-incident patch deployment reference-app \
 #            --type strategic --patch-file this-file
-# Restore: labs/ch12/restore.sh
+# Restore: labs/incident/restore.sh
 apiVersion: apps/v1
 kind: Deployment
 metadata:

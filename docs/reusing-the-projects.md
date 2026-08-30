@@ -5,7 +5,7 @@ Each chapter of *AI-Native DevOps* starts from the state the previous one ended 
 This page is for readers who want to take pieces of that work into their own delivery pipeline rather than work the book straight through.
 
 `docs/chapter-map.md` remains the canonical contract between the book and this repository, and it is authoritative over the printed page wherever the two disagree.
-`labs/chNN/` holds every printed command as a numbered runnable file, `make chNN-start` puts the tree at a chapter's starting state, `make chNN-complete` at its finished state, and the difference between the two is that chapter's work.
+`labs/<subject>/` holds every printed command as a numbered runnable file, `make <subject>-start` puts the tree at a chapter's starting state, `make <subject>-complete` at its finished state, and the difference between the two is that chapter's work.
 
 ## Three tiers of prerequisites
 

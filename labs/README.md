@@ -10,28 +10,28 @@ Chapters 10 to 13 and 16 also carry the executable validators and helpers that u
 
 | Chapter | Folder | Runs |
 |---:|---|---|
-| 1 | `labs/ch01/` | offline |
-| 2 | `labs/ch02/` | offline |
-| 3 | `labs/ch03/` | needs a tool (python3, curl) |
-| 4 | `labs/ch04/` | needs a tool (docker, trivy) |
-| 5 | `labs/ch05/` | needs a tool (docker, actionlint, ruff, bandit) |
-| 6 | `labs/ch06/` | needs a tool (docker, gh, actionlint, jq) |
-| 7 | `labs/ch07/` | needs a cluster (terraform, aws) |
-| 8 | `labs/ch08/` | needs a cluster (kubectl) |
-| 9 | `labs/ch09/` | needs a cluster (kubectl, argocd) |
-| 10 | `labs/ch10/` | needs a cluster (kubectl, promtool, otelcol-contrib) |
-| 11 | `labs/ch11/` | needs a tool (gh, docker, actionlint) |
-| 12 | `labs/ch12/` | needs a cluster (kubectl) |
-| 13 | `labs/ch13/` | needs a cluster (kubectl) |
-| 14 | `labs/ch14/` | offline |
-| 15 | `labs/ch15/` | needs a cluster (kubectl) |
-| 16 | `labs/ch16/` | needs a cluster (runs every prior chapter's evidence checks) |
+| 1 | `labs/method/` | offline |
+| 2 | `labs/prompt-library/` | offline |
+| 3 | `labs/reference-app/` | needs a tool (python3, curl) |
+| 4 | `labs/container/` | needs a tool (docker, trivy) |
+| 5 | `labs/ci/` | needs a tool (docker, actionlint, ruff, bandit) |
+| 6 | `labs/delivery/` | needs a tool (docker, gh, actionlint, jq) |
+| 7 | `labs/infrastructure/` | needs a cluster (terraform, aws) |
+| 8 | `labs/kubernetes/` | needs a cluster (kubectl) |
+| 9 | `labs/gitops/` | needs a cluster (kubectl, argocd) |
+| 10 | `labs/observability/` | needs a cluster (kubectl, promtool, otelcol-contrib) |
+| 11 | `labs/security/` | needs a tool (gh, docker, actionlint) |
+| 12 | `labs/incident/` | needs a cluster (kubectl) |
+| 13 | `labs/capacity/` | needs a cluster (kubectl) |
+| 14 | `labs/assistant/` | offline |
+| 15 | `labs/agent/` | needs a cluster (kubectl) |
+| 16 | `labs/capstone/` | needs a cluster (runs every prior chapter's evidence checks) |
 
 "Offline" means plain POSIX tools plus git and python3.
 "Needs a tool" means at least one locally installable tool from the chapter's prerequisites.
 "Needs a cluster" means a Kubernetes cluster or a cloud account is required for at least one block.
 
 Each numbered file is a separate script, so a `cd` inside one does not carry to the next; where the launch directory matters, the chapter README states it.
-Each `labs/chNN/README.md` maps its files to the book section they came from and names any printed block that is not shipped as a file.
-The book's **Configuration** blocks ship too, under `labs/chNN/config/`, one file per printed block in book order, body verbatim, so a reader copies a document rather than retypes it.
+Each `labs/<subject>/README.md` maps its files to the book section they came from and names any printed block that is not shipped as a file.
+The book's **Configuration** blocks ship too, under `labs/<subject>/config/`, one file per printed block in book order, body verbatim, so a reader copies a document rather than retypes it.
 Where a live version of the same file ships elsewhere in this repository, the chapter README's table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.

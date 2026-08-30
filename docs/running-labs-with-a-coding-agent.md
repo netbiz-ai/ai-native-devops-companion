@@ -42,7 +42,7 @@ Three responsibilities do not transfer:
 4. **Give it the starter prompt**, adjusted to the chapter:
 
    > Work through chapter 3 of this repository per AGENTS.md.
-   > Run the lab scripts in labs/ch03/ in numbered order, show me each command and its result before moving on, and stop for my confirmation before anything labeled Destructive or anything that would create a cluster or cost money.
+   > Run the lab scripts in labs/reference-app/ in numbered order, show me each command and its result before moving on, and stop for my confirmation before anything labeled Destructive or anything that would create a cluster or cost money.
    > Finish with the chapter's validation command from docs/chapter-map.md and report whether it passed.
 
    Chapters 1, 2, 3, and 14 run at the offline level and are good first chapters for this way of working.
