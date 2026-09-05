@@ -3,7 +3,9 @@
 #
 # Label: Runnable (unlabeled in the chapter)
 #
-# Expected result, per the chapter:
+# Expected result, per the chapter, when the teardown for the active run has
+# not been recorded yet. Auditing the run this repository retains, whose
+# teardown is recorded, reports RESULT: READY and cleanup: pass instead.
 #   PRE-CLEANUP RESULT: READY
 #   release identity: consistent
 #   delivery gates: pass
