@@ -112,6 +112,74 @@ require_cleanup_follows_identity() {
     "$identity_at" "$cleanup_at" "${identity_cluster:-unrecorded}"
 }
 
+# A field from the manifest's release block, addressed by name.
+manifest_release_field() {
+  sed -n "/^release:/,/^[a-z]/{s/^[[:space:]]\{1,\}$1:[[:space:]]*//p}" "$manifest" | head -1
+}
+
+# A key=value field from an evidence record.
+evidence_field() {
+  sed -n "s/.*[^a-z_]$2=\([^ ]*\).*/\1/p;s/^$2=\([^ ]*\).*/\1/p" "$1" | head -1
+}
+
+compare_field() {
+  local label="$1" left="$2" right="$3"
+  if [[ -z "$left" || -z "$right" ]]; then
+    printf 'CAP-01=incomplete %s: one side is unrecorded (%s vs %s)\n' \
+      "$label" "${left:-none}" "${right:-none}" >&2
+    return 1
+  fi
+  if [[ "$left" != "$right" ]]; then
+    printf 'CAP-01=contradicted %s: %s != %s\n' "$label" "$left" "$right" >&2
+    return 1
+  fi
+  printf '  %s=agree value=%s\n' "$label" "$left"
+}
+
+# CAP-01 claims one release identity holds across delivery and runtime. Reading
+# each file and finding it non-empty cannot see a contradiction between two
+# files, which is the failure this criterion exists to catch, so the fields are
+# compared to each other.
+#
+# On the local lab route one tie cannot be made: Argo CD reconciles the cluster
+# from a lab-local mirror, so the digest that delivery promoted is not the
+# digest the workload runs. That is a boundary of the route, not a defect, and
+# the manifest has to say so out loud - if the limitation is ever dropped from
+# the manifest, this check fails rather than letting the claim quietly widen to
+# something the evidence does not support.
+verify_identity_chain() {
+  local gates="evidence/capstone/delivery/gates.txt"
+  local workload_digest promoted_digest
+  local ok=0
+
+  compare_field source_revision \
+    "$(evidence_field "$gates" allowed_revision)" \
+    "$(manifest_release_field source_revision)" || ok=1
+  compare_field promoted_digest \
+    "$(evidence_field "$gates" allowed_digest)" \
+    "$(manifest_release_field image_digest)" || ok=1
+  compare_field gitops_revision \
+    "$(evidence_field "$identity_evidence" argocd_revision)" \
+    "$(manifest_release_field gitops_revision)" || ok=1
+
+  workload_digest="$(sed -n 's/.*workload_image=[^@]*@\([^ ]*\).*/\1/p' "$identity_evidence" | head -1)"
+  compare_field declaration_matches_workload \
+    "$(evidence_field "$identity_evidence" gitops_declared_digest)" \
+    "$workload_digest" || ok=1
+
+  [[ "$ok" -eq 0 ]] || return 1
+
+  promoted_digest="$(evidence_field "$gates" allowed_digest)"
+  if [[ "$promoted_digest" != "$workload_digest" ]]; then
+    if ! grep -q 'does not extend to a registry-published delivery digest' "$manifest"; then
+      printf 'CAP-01=overclaimed promoted_digest=%s workload_digest=%s - the manifest no longer declares the limit that makes this gap acceptable\n' \
+        "$promoted_digest" "$workload_digest" >&2
+      return 1
+    fi
+    printf '  promoted_to_workload=out-of-scope route=local-kind declared_limitation=yes\n'
+  fi
+}
+
 # The seven pre-cleanup criteria, in contract order. Cleanup is checked apart
 # from them because before the cleanup step it is legitimately unrecorded,
 # and `all` must be able to say so without failing.
@@ -145,6 +213,7 @@ case "$mode" in
   identity)
     require_manifest_agrees
     require_observed CAP-01 "$identity_evidence"
+    verify_identity_chain
     ;;
   delivery)
     require_observed CAP-02 evidence/capstone/delivery/gates.txt

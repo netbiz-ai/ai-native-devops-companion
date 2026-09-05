@@ -20,6 +20,13 @@ OTHER="capstone-acceptance-002"
 IDENTITY_AT="2026-08-10T17:50:47Z"
 CLEANUP_AT="2026-09-05T14:45:11Z"
 CLUSTER="kind-lab"
+SOURCE_REV="a567221a6f90de2ced36f182a505cddbc9c44d54"
+GITOPS_REV="0a71eca8407159d5a4fdf0d895b0091ef9b86953"
+# The digest delivery promoted, and the digest the lab workload actually runs.
+# They differ on the local route by design, because Argo CD reconciles the lab
+# cluster from a local mirror rather than from the registry.
+PROMOTED="sha256:5965c499194a5a522ad2aea1f88daed8afeaee5cdfdfc8a8c28d5847f6ce48d6"
+WORKLOAD="sha256:398773f0332fdcc30e26ddc40ec0a7314fa5ae3c900223b44fc3586dca4ac591"
 
 fixture=""
 cleanup_fixture() { [ -n "$fixture" ] && rm -rf "$fixture"; }
@@ -41,14 +48,13 @@ build_fixture() {
            "$fixture/evidence/capstone/summary"
   cp "$verifier" "$fixture/labs/capstone/capstone-verify.sh"
 
-  printf 'run_id: %s\nenvironment: non-production\ncriteria:\n  CAP-01: supported\n  CAP-07: supported\n' \
-    "$RUN" >"$fixture/docs/capstone/evidence-manifest.yaml"
-
-  printf 'criterion=CAP-01 observed_at=%s route=local-kind run_id=%s\ncluster=%s kubernetes=v1.34.0\n' \
-    "$IDENTITY_AT" "$RUN" "$CLUSTER" >"$fixture/evidence/capstone/delivery/identity.txt"
+  write_manifest "$RUN" "$PROMOTED" declared-limit
+  write_identity "$WORKLOAD"
+  printf 'criterion=CAP-02 observed_at=%s run_id=%s\nallowed_revision=%s\nallowed_digest=%s\n' \
+    "$IDENTITY_AT" "$RUN" "$SOURCE_REV" "$PROMOTED" \
+    >"$fixture/evidence/capstone/delivery/gates.txt"
 
   local rest=(
-    "delivery/gates.txt CAP-02"
     "runtime/reconciliation.txt CAP-03"
     "runtime/service-targets.txt CAP-04"
     "incident/timeline.md CAP-05"
@@ -64,6 +70,34 @@ build_fixture() {
   done
 
   write_cleanup "$RUN" "$CLUSTER" "$CLEANUP_AT"
+}
+
+write_manifest() {
+  local run="$1" image_digest="$2" limit="$3"
+  {
+    printf 'run_id: %s\nenvironment: non-production\n' "$run"
+    printf 'release:\n  source_revision: %s\n  image_digest: %s\n  gitops_revision: %s\n' \
+      "$SOURCE_REV" "$image_digest" "$GITOPS_REV"
+    printf 'criteria:\n  CAP-01: supported\n  CAP-07: supported\n'
+    printf 'limitations:\n'
+    if [ "$limit" = "declared-limit" ]; then
+      printf '  - The identity chain is the local lab route; it does not extend to a registry-published delivery digest.\n'
+    else
+      printf '  - Nothing here is evidence about a cloud provider account.\n'
+    fi
+  } >"$fixture/docs/capstone/evidence-manifest.yaml"
+}
+
+write_identity() {
+  local workload_digest="$1"
+  {
+    printf 'criterion=CAP-01 observed_at=%s route=local-kind run_id=%s\n' "$IDENTITY_AT" "$RUN"
+    printf 'workload_image=kind-registry:5000/reference-app@%s\n' "$workload_digest"
+    printf 'gitops_declared_digest=%s\n' "$workload_digest"
+    printf 'argocd_revision=%s\n' "$GITOPS_REV"
+    printf 'declaration_matches_workload=true\n'
+    printf 'cluster=%s kubernetes=v1.34.0\n' "$CLUSTER"
+  } >"$fixture/evidence/capstone/delivery/identity.txt"
 }
 
 write_cleanup() {
@@ -129,9 +163,29 @@ write_cleanup "$RUN" "someone-elses-cluster" "$CLEANUP_AT"
 check "a teardown of a different cluster is refused" fail "different-cluster" final
 
 build_fixture
-printf 'run_id: %s\nenvironment: non-production\ncriteria:\n  CAP-01: supported\n  CAP-07: supported\n' \
-  "$OTHER" >"$fixture/docs/capstone/evidence-manifest.yaml"
+write_manifest "$OTHER" "$PROMOTED" declared-limit
 check "a manifest describing another run is refused" fail "mixed" final
+
+# CAP-01 is the criterion two files can contradict each other about, which no
+# amount of per-file checking can see.
+build_fixture
+write_manifest "$RUN" "sha256:0000000000000000000000000000000000000000000000000000000000000000" \
+  declared-limit
+check "a promoted digest the manifest disagrees with is refused" fail "contradicted" identity
+
+# The declared digest and the running one are written from a single value, so
+# the disagreement has to be introduced into the declaration itself.
+build_fixture
+sed -i 's/^gitops_declared_digest=.*/gitops_declared_digest=sha256:1111111111111111111111111111111111111111111111111111111111111111/' \
+  "$fixture/evidence/capstone/delivery/identity.txt"
+check "a declaration that disagrees with the workload is refused" fail "contradicted" identity
+
+# The gap between the promoted digest and the running workload is acceptable
+# only while the manifest says the route cannot close it. Dropping that
+# sentence must not silently widen what CAP-01 claims.
+build_fixture
+write_manifest "$RUN" "$PROMOTED" no-limit
+check "an undeclared identity gap is refused" fail "overclaimed" identity
 
 # `all` runs before the teardown and must stay usable then: a foreign cleanup
 # record is not this run's pending teardown, and reporting it as outstanding is
