@@ -24,6 +24,16 @@ cd "$repo_root"
 evidence="${CAPSTONE_CLEANUP_EVIDENCE:-evidence/capstone/summary/cleanup.txt}"
 context="$(kubectl config current-context 2>/dev/null || echo "none")"
 
+# The teardown has to say which acceptance run it tore down. Without that, the
+# file it writes is indistinguishable from the one an earlier run left behind,
+# and the verifier cannot tell a current teardown from a retained one.
+run_id="${CAPSTONE_RUN_ID:-$(sed -n 's/^run_id:[[:space:]]*//p' \
+  docs/capstone/evidence-manifest.yaml 2>/dev/null | head -1)}"
+if [ -z "$run_id" ]; then
+  printf 'STOP: no acceptance run declared. Export CAPSTONE_RUN_ID before cleanup.\n' >&2
+  exit 1
+fi
+
 # The lab namespaces, and nothing else. reference-dev is Chapter 8's,
 # staging and production Chapter 9's, incident Chapter 12's, observability
 # Chapter 10's, lab-source the disposable Git server, capstone-iac the
@@ -71,6 +81,7 @@ mkdir -p "$(dirname "$evidence")"
 record() { printf '%s\n' "$1" | tee -a "$evidence"; }
 
 record "capstone cleanup"
+record "run_id: ${run_id}"
 record "context: ${context}"
 record "run_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 record ""

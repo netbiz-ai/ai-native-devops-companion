@@ -1,4 +1,4 @@
-criterion=CAP-07-cost observed_at=2026-08-10T17:50:47Z route=local-kind
+criterion=CAP-07-cost observed_at=2026-08-10T17:50:47Z route=local-kind run_id=capstone-acceptance-001
 container_resource_bounds={"limits":{"cpu":"250m","memory":"128Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}
 replicas=2
 namespace_resourcequota_count=0

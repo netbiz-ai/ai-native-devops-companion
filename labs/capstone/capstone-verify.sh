@@ -7,6 +7,48 @@ cd "$repo_root"
 mode="${1:-design}"
 manifest="${CAPSTONE_MANIFEST:-docs/capstone/evidence-manifest.yaml}"
 cleanup_evidence="evidence/capstone/summary/cleanup.txt"
+identity_evidence="evidence/capstone/delivery/identity.txt"
+
+# The active run. Evidence is only evidence of the run it was observed for, so
+# every check below is made against one declared identifier rather than against
+# whatever files happen to be on disk. The reader exports CAPSTONE_RUN_ID in
+# Step 1; with nothing exported the manifest's own run_id is the declaration.
+manifest_run_id() {
+  sed -n 's/^run_id:[[:space:]]*//p' "$manifest" | head -1
+}
+
+active_run="${CAPSTONE_RUN_ID:-$(manifest_run_id)}"
+
+if [[ -z "$active_run" ]]; then
+  printf 'run=undeclared manifest=%s - export CAPSTONE_RUN_ID or set run_id in the manifest\n' \
+    "$manifest" >&2
+  exit 1
+fi
+
+# A run identifier that the manifest does not share is a mixed claim: the index
+# describes one run and the shell is asking about another.
+require_manifest_agrees() {
+  local declared
+  declared="$(manifest_run_id)"
+  if [[ "$declared" != "$active_run" ]]; then
+    printf 'run=mixed active=%s manifest=%s evidence=%s\n' \
+      "$active_run" "${declared:-none}" "$manifest" >&2
+    return 1
+  fi
+}
+
+# Both spellings are accepted because the evidence files are two formats: the
+# criterion records are key=value, the cleanup record is a written report.
+evidence_run_id() {
+  sed -n -e 's/.*[^a-z_]run_id=\([^ ]*\).*/\1/p' -e 's/^run_id[=:][[:space:]]*//p' "$1" \
+    | head -1
+}
+
+# An ISO 8601 UTC stamp sorts correctly as a string, so no date parsing is
+# needed to order two observations.
+evidence_observed_at() {
+  sed -n -e 's/.*observed_at=\([^ ]*\).*/\1/p' -e 's/^run_at:[[:space:]]*//p' "$1" | head -1
+}
 
 require_observed() {
   local criterion="$1"
@@ -19,7 +61,55 @@ require_observed() {
     printf '%s=not-supported evidence=%s\n' "$criterion" "$evidence" >&2
     return 1
   fi
-  printf '%s=supported evidence=%s\n' "$criterion" "$evidence"
+  # Presence and completeness are not currency. A file retained from an earlier
+  # acceptance run satisfies both and still says nothing about this one, which
+  # is how a stale record reaches a PASS. Binding it to the declared run is what
+  # makes the check answer the question actually being asked.
+  local observed_run
+  observed_run="$(evidence_run_id "$evidence")"
+  if [[ -z "$observed_run" ]]; then
+    printf '%s=unbound evidence=%s - no run_id recorded, cannot be tied to run %s\n' \
+      "$criterion" "$evidence" "$active_run" >&2
+    return 1
+  fi
+  if [[ "$observed_run" != "$active_run" ]]; then
+    printf '%s=stale evidence=%s observed_for=%s active_run=%s\n' \
+      "$criterion" "$evidence" "$observed_run" "$active_run" >&2
+    return 1
+  fi
+  printf '%s=supported evidence=%s run_id=%s\n' "$criterion" "$evidence" "$active_run"
+}
+
+# The cleanup claim is the one claim whose whole meaning is temporal: it says
+# the platform this run stood up is gone. A teardown recorded before this run's
+# release identity was observed cannot be describing this run's teardown, and a
+# teardown recorded against a different cluster is not describing this cluster.
+require_cleanup_follows_identity() {
+  local identity_at cleanup_at identity_cluster cleanup_context
+  identity_at="$(evidence_observed_at "$identity_evidence")"
+  cleanup_at="$(evidence_observed_at "$cleanup_evidence")"
+
+  if [[ -z "$identity_at" || -z "$cleanup_at" ]]; then
+    printf 'CAP-07-cleanup=unordered identity_at=%s cleanup_at=%s - both must record when they were observed\n' \
+      "${identity_at:-none}" "${cleanup_at:-none}" >&2
+    return 1
+  fi
+  if [[ "$cleanup_at" < "$identity_at" ]]; then
+    printf 'CAP-07-cleanup=precedes-identity cleanup_at=%s identity_at=%s - a teardown observed before the release cannot be this run\n' \
+      "$cleanup_at" "$identity_at" >&2
+    return 1
+  fi
+
+  identity_cluster="$(sed -n 's/.*cluster=\([^ ]*\).*/\1/p' "$identity_evidence" | head -1)"
+  cleanup_context="$(sed -n 's/^context:[[:space:]]*//p' "$cleanup_evidence" | head -1)"
+  if [[ -n "$identity_cluster" && -n "$cleanup_context" && "$identity_cluster" != "$cleanup_context" ]]; then
+    printf 'CAP-07-cleanup=different-cluster cleanup_context=%s identity_cluster=%s\n' \
+      "$cleanup_context" "$identity_cluster" >&2
+    return 1
+  fi
+
+  printf 'CAP-07-cleanup=same-run identity_at=%s cleanup_at=%s cluster=%s\n' \
+    "$identity_at" "$cleanup_at" "${identity_cluster:-unrecorded}"
 }
 
 # The seven pre-cleanup criteria, in contract order. Cleanup is checked apart
@@ -53,7 +143,8 @@ case "$mode" in
     printf 'capstone_design=pass live_acceptance=not_evaluated\n'
     ;;
   identity)
-    require_observed CAP-01 evidence/capstone/delivery/identity.txt
+    require_manifest_agrees
+    require_observed CAP-01 "$identity_evidence"
     ;;
   delivery)
     require_observed CAP-02 evidence/capstone/delivery/gates.txt
@@ -81,10 +172,15 @@ case "$mode" in
       printf 'CAP-07-cleanup=not-complete evidence=%s\n' "$cleanup_evidence" >&2
       exit 1
     fi
+    require_cleanup_follows_identity
     ;;
   all)
     verify_criteria
-    if [[ -s "$cleanup_evidence" ]]; then
+    # A cleanup record for some other run is not this run's pending teardown and
+    # not this run's completed one, so `all` reports it as still outstanding
+    # rather than checking it and failing the pre-cleanup summary.
+    if [[ -s "$cleanup_evidence" ]] && \
+       [[ "$(evidence_run_id "$cleanup_evidence")" == "$active_run" ]]; then
       "$0" cleanup
       printf 'RESULT: READY\n'
       criteria_summary
@@ -96,6 +192,7 @@ case "$mode" in
     fi
     ;;
   final)
+    require_manifest_agrees
     verify_criteria
     "$0" cleanup
     if [[ ! -s "$manifest" ]] || grep -Eq 'REPLACE|pending' "$manifest"; then
@@ -107,7 +204,7 @@ case "$mode" in
     printf 'cost guardrail: pass\n'
     printf 'cleanup: pass\n'
     printf 'sanitized manifest: consistent\n'
-    printf 'capstone_final=pass criteria=CAP-01..CAP-07 cleanup=recorded\n'
+    printf 'capstone_final=pass criteria=CAP-01..CAP-07 cleanup=recorded run_id=%s\n' "$active_run"
     ;;
   *)
     printf 'Usage: %s {design|identity|delivery|runtime|reliability|incident|agent|cost|cleanup|all|final}\n' "$0" >&2

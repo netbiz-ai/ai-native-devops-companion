@@ -1,20 +1,19 @@
 capstone cleanup
+run_id: capstone-acceptance-001
 context: kind-ch10-lab
-run_at: 2026-08-27T13:41:15Z
+run_at: 2026-09-05T14:45:11Z
 
 namespaces
   absent    reference-dev
   deleted   reference-staging
-  deleted   reference-production
-  deleted   reference-incident
-  deleted   observability
-  deleted   lab-source
+  absent    reference-production
+  absent    reference-incident
+  absent    observability
+  absent    lab-source
   absent    capstone-iac
 
 argo cd applications and project
-  deleted   application.argoproj.io/reference-production
-  deleted   application.argoproj.io/reference-staging
-  deleted   appproject/ai-native-devops
+  absent    appproject/ai-native-devops
 
 local images
   absent    ai-native-devops/reference-service:baseline

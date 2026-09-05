@@ -89,6 +89,9 @@ The script order reviews before it applies (validate, PSA check, diff, then appl
 **Chapter 16 - the gate becomes the deliverable.**
 The evidence manifest is a gate ledger: every criterion CAP-01 to CAP-07 carries `status: pending` *and* `reviewer: pending`, one named-human signature per criterion, and its release identities ship as `REPLACE_AFTER_BUILD` values only a real run may fill.
 `capstone-verify.sh` is Chapter 1's release gate grown up: it fails a criterion on missing evidence *and* on evidence still containing `REPLACE`, `pending`, or `not_evaluated`, so it cannot false-pass on hollow files, and its design mode honestly prints `live_acceptance=not_evaluated` on a fresh clone.
+It also refuses evidence that belongs to a different acceptance run.
+Every criterion must record the `run_id` being accepted, the teardown must name the same run and the same cluster as the release identity, and it must have been observed after that identity rather than before it.
+That closes the gap where a cleanup file retained from an earlier run carried the final check to `PASS` while describing a cluster torn down on another day - the failure mode is a stale record, not a hollow one, and presence checks cannot see it.
 The evidence itself can only come from your own executed chapters, and the final gate is a human audience: the five-minute demo requires showing a *failed* gate that blocked promotion, the human incident decision, and the agent's write refusal - the gates proven by their refusals, not their approvals.
 
 An agent can execute every command along that arc; what the capstone verifies is precisely the trail of human decisions no agent could have made.

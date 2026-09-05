@@ -58,6 +58,12 @@ fi
 python3 -m unittest discover -s reference-app/tests -p 'test_*.py'
 python3 -m unittest discover -s operations-assistant/tests -p 'test_*.py'
 python3 -m unittest discover -s operations-agent/tests -p 'test_*.py'
+
+# The capstone verifier decides whether this repository's central claim holds,
+# so the thing worth testing offline is that it still refuses the evidence it
+# should. It runs against a throwaway fixture and needs no cluster.
+bash scripts/test-capstone-run-binding.sh
+
 python3 scripts/validate_repo.py
 
 printf 'offline_validation=pass\n'

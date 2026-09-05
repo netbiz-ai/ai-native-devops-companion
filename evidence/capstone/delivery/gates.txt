@@ -1,4 +1,4 @@
-criterion=CAP-02 observed_at=2026-08-10T17:50:47Z repository=netbiz-ai/ai-native-devops-companion
+criterion=CAP-02 observed_at=2026-08-10T17:50:47Z repository=netbiz-ai/ai-native-devops-companion run_id=capstone-acceptance-001
 blocked_promotion_1=run 31408727813 staging failed closed, production skipped
 blocked_promotion_1_reason=reference-app dependencies were not installed, the gate held
 blocked_promotion_2=run 31410570438 protected-check gate refused the commit
