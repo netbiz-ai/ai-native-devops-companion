@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Cost and Cleanup - delete the chapter's RBAC objects and confirm they are gone
+# The agent lab, Cost and Cleanup - delete the chapter's RBAC objects and confirm they are gone
 #
 # Label: Runnable (unlabeled in the chapter)
 # Destructive: deletes the diagnostics-agent ServiceAccount, Role, and RoleBinding from the reference-staging namespace

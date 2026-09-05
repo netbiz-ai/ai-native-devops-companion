@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Troubleshooting: The service account can read more resources than expected - list effective permissions to diagnose over-broad access
+# The agent lab, Troubleshooting: The service account can read more resources than expected - list effective permissions to diagnose over-broad access
 #
 # Label: Runnable (unlabeled in the chapter)
 #

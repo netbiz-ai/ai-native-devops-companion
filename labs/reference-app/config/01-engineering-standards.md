@@ -23,5 +23,5 @@
 ## Scope
 
 - New dependencies require a documented reason.
-- Container behavior belongs to Chapter 4.
+- Container behavior belongs to the container lab.
 - Deployment behavior belongs to later delivery and platform chapters.

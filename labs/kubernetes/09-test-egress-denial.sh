@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 5 - prove the application Pod cannot open unapproved egress to the API Service
+# The kubernetes lab, Build It Step 5 - prove the application Pod cannot open unapproved egress to the API Service
 #
 # Label: Runnable
 #

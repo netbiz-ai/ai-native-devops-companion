@@ -1,4 +1,6 @@
-# Chapter 2 lab scripts - Prompting for Infrastructure and Operations
+# prompt-library lab scripts - Prompting for Infrastructure and Operations
+
+Second edition: chapter 1. That chapter covers `method` and `prompt-library`. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
@@ -23,7 +25,7 @@ They are printed as Configuration blocks in the book and are not duplicated in t
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

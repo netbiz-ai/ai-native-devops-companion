@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Test and Validate - gather controller, scope, history, and runtime evidence
+# The gitops lab, Test and Validate - gather controller, scope, history, and runtime evidence
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

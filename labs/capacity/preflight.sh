@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13 preflight.
+# The capacity lab preflight.
 #
 # The experiment compares two resource configurations and asks whether the
 # difference is real. That question is only answerable if the measurements are

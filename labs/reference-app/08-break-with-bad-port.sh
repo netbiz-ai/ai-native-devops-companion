@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Break It Deliberately - start with a non-numeric port to force a safe failure
+# The reference-app lab, Break It Deliberately - start with a non-numeric port to force a safe failure
 #
 # Label: Runnable
 #

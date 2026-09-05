@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Step 2 - Assemble the controlled delivery workflow - build and push once with Buildx metadata and verify the registry digest
+# delivery lab, Step 2 - Assemble the controlled delivery workflow - build and push once with Buildx metadata and verify the registry digest
 #
 # Label: Partial
 # Substitute before running: set "$IMAGE" and "$VERSION" for your repository and registry.

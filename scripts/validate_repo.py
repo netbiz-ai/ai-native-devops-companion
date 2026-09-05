@@ -19,8 +19,8 @@ REQUIRED = [
     "operations-assistant/src/assistant.py",
     "operations-agent/src/agent.py",
     "docs/capstone/evidence-manifest.yaml",
-    "docs/chapter-map.md",
-    "scripts/start-chapter.sh",
+    "docs/subject-map.md",
+    "scripts/start-lab.sh",
     "templates/verification-checklist.md",
     "docs/decisions/adr-template.md",
     "docs/optimization/experiment-template.md",
@@ -53,7 +53,7 @@ JSON_FILES = [
     "operations-agent/policy/approval.schema.json",
     "patches/sync-policy.json",
 ]
-# Chapter 11 needs one detectable value in the repository so the reader can
+# The security lab needs one detectable value in the repository so the reader can
 # prove the secret gate fires. Exempted by exact path and nowhere else, which
 # is the same narrowness .gitleaks.toml uses: the reader's copy of this file to
 # testdata/security/fake.env is not exempt, and both scanners catch it. An

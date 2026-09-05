@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 1 - refuse an existing namespace, dry-run, diff, then apply namespace.yaml and record its UID
+# The kubernetes lab, Build It Step 1 - refuse an existing namespace, dry-run, diff, then apply namespace.yaml and record its UID
 #
 # Label: Runnable
 # Destructive: creates the reference-dev Namespace on the target Kubernetes cluster

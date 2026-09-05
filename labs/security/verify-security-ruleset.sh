@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Verify a GitHub repository ruleset before anyone applies it.
 #
-# Chapter 11 has the reader author docs/security/security-ruleset.json and POST
+# The security lab has the reader author docs/security/security-ruleset.json and POST
 # it to a repository. A ruleset decides which checks are required and who may
 # bypass them, so applying one you have not read is handing over the gate you
 # just built. This script reads it for you and refuses the shapes that quietly

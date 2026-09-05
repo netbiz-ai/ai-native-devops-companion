@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Cost and Cleanup - remove the labeled lab container, image, and virtualenv session
+# The ci lab, Cost and Cleanup - remove the labeled lab container, image, and virtualenv session
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

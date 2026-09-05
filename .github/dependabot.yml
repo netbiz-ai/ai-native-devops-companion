@@ -28,7 +28,7 @@ updates:
         patterns:
           - "github/codeql-action*"
 
-    # Six of these actions are also pinned in the manuscript, and Chapter 5
+    # Six of these actions are also pinned in the manuscript, and the ci lab
     # records the reviewed identity of each. A major bump accepted here alone
     # puts the book and its executable counterpart back into the disagreement
     # issue #3 was about, and the manuscript cannot follow without a render.

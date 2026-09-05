@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Step 4 - apply the security ruleset once and verify the effective rules
+# security lab, Step 4 - apply the security ruleset once and verify the effective rules
 #
 # Label: Runnable
 # Destructive: creates an active ruleset on the GitHub repository via gh api POST, changing merge behavior

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Cost and Cleanup - delete the disposable test branch and local safety refs
+# The security lab, Cost and Cleanup - delete the disposable test branch and local safety refs
 #
 # Label: Runnable
 # Destructive: deletes the ch11-secret-gate-test branch on the origin remote and local test branches

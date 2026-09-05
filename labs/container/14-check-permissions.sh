@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Troubleshooting "The container exits with a permission error" - show identity and path ownership
+# The container lab, Troubleshooting "The container exits with a permission error" - show identity and path ownership
 #
 # Label: Runnable (unlabeled in the chapter)
 #

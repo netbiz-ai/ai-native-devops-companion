@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Step 1 - write the project .gitignore
+# reference-app lab, Step 1 - write the project .gitignore
 #
 # Label: Configuration
 #

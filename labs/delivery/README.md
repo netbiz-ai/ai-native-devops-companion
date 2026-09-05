@@ -1,10 +1,12 @@
-# Chapter 6 lab scripts - Design Continuous Delivery with Human and AI Guardrails
+# delivery lab scripts - Design Continuous Delivery with Human and AI Guardrails
+
+Second edition: chapter 4. That chapter covers `ci` and `delivery`. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
 | File | Book section | Label | Purpose |
 |---|---|---|---|
-| `01-check-prereqs.sh` | Required environment | Runnable | Verify Chapter 5 files, local tooling, and GitHub CLI authentication. |
+| `01-check-prereqs.sh` | Required environment | Runnable | Verify the ci lab files, local tooling, and GitHub CLI authentication. |
 | `02-verify-protected-checks.sh` | Step 2 - Assemble the controlled delivery workflow | Partial | Require exactly one successful run per protected check name from the expected source app. |
 | `03-build-push-image.sh` | Step 2 - Assemble the controlled delivery workflow | Partial | Build and push once with Buildx metadata and verify the registry digest. |
 | `04-probe-staging-container.sh` | Step 2 - Assemble the controlled delivery workflow | Partial | Pull the candidate digest, start a runner-local staging container, and probe `/health`. |
@@ -44,7 +46,7 @@ Everything else in 01 behaves as the chapter says: Docker, Buildx, curl, jq, rip
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

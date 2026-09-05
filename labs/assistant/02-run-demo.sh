@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 14, Step 4 - Test the assistant before a live model - run the fake-client command-line demonstration
+# assistant lab, Step 4 - Test the assistant before a live model - run the fake-client command-line demonstration
 #
 # Label: Runnable (unlabeled in the chapter)
 #

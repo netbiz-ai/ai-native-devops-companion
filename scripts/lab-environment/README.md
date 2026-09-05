@@ -1,7 +1,7 @@
 # Lab environment: the three things you supply
 
 From the cluster chapters onward the labs need three things that cannot ship in this repository, because they are yours.
-`docs/chapter-map.md` ("What you supply, and where it goes") defines them; this folder makes each one a copy-paste template.
+`docs/subject-map.md` ("What you supply, and where it goes") defines them; this folder makes each one a copy-paste template.
 The chapter numbers moved between editions and these three things did not, so they are named by subject here.
 `labs/cluster/` is the reader's path through this folder, one numbered file per block the second edition's Bridge to the Cluster interlude prints.
 

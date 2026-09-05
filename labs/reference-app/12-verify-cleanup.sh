@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Cost and Cleanup - verify no listener remains and only intended files appear
+# The reference-app lab, Cost and Cleanup - verify no listener remains and only intended files appear
 #
 # Label: Runnable (unlabeled in the chapter)
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Test and Validate - record the local immutable image ID
+# The container lab, Test and Validate - record the local immutable image ID
 #
 # Label: Runnable
 #

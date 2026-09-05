@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Troubleshooting - check whether something is listening on port 8080
+# The reference-app lab, Troubleshooting - check whether something is listening on port 8080
 #
 # Label: Runnable
 #

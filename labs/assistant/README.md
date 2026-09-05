@@ -1,4 +1,6 @@
-# Chapter 14 lab commands - Build a DevOps Operations Assistant
+# assistant lab commands - Build a DevOps Operations Assistant
+
+Second edition: chapter 11. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
@@ -12,18 +14,18 @@ These are the chapter's commands exactly as the book prints them.
 
 All commands must be run from the `operations-assistant/` directory of this repository, except `validate.sh`, which resolves the repository root itself.
 
-This chapter's carried-in artifact is the sanitized `docs/incidents/ch12-controlled-failure.md` you wrote in Chapter 12: Step 1 has you distill it into the approved knowledge doc below.
+This chapter's carried-in artifact is the sanitized `docs/incidents/ch12-controlled-failure.md` you wrote in the incident lab: Step 1 has you distill it into the approved knowledge doc below.
 No shipped script reads that record directly, so the labs run without it, but the knowledge doc you write from it is the chapter's actual work.
 `validate.sh` (also `make ch14-validate`) checks that work: the knowledge doc exists with its governance frontmatter and no leftover Break It poison, the demo answers the known question from it, an action request is refused, and the six-test suite passes.
 It fails on an untouched clone by design, so a pass is evidence of the reader's chapter work, not only of the shipped code.
 
 The Python modules these commands invoke live in this repository under `operations-assistant/` (`src/assistant.py`, `src/retriever.py`, `src/demo.py`, `tests/test_assistant.py`); do not duplicate them here.
-The shipped code is canonical per `docs/chapter-map.md` where its details differ from the chapter's listings; `src/demo.py` is the fake-client demonstration the chapter invokes, and it prints the chapter's safe answer only after your Step 1 knowledge doc exists (see the note in `02-run-demo.sh`).
+The shipped code is canonical per `docs/subject-map.md` where its details differ from the chapter's listings; `src/demo.py` is the fake-client demonstration the chapter invokes, and it prints the chapter's safe answer only after your Step 1 knowledge doc exists (see the note in `02-run-demo.sh`).
 
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

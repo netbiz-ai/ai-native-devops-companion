@@ -29,7 +29,7 @@ markers of the state a chapter begins from and the state it produces. They are
 cut only from a state that has actually been executed and whose observed output
 matches what the chapter asserts.
 
-Tags that have not been cut are listed as gaps in `docs/chapter-map.md` rather
+Tags that have not been cut are listed as gaps in `docs/subject-map.md` rather
 than promised silently.
 
 ## Compatibility window
@@ -51,7 +51,7 @@ the code.
 
 The most useful report names the chapter, the step, what the book said would
 happen, and what happened instead. Where the book and
-`docs/chapter-map.md` disagree, the map is correct and the book is the defect.
+`docs/subject-map.md` disagree, the map is correct and the book is the defect.
 
 ## Update cadence
 

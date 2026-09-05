@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 5 - remove the client label and prove the unlabeled client is denied
+# The kubernetes lab, Build It Step 5 - remove the client label and prove the unlabeled client is denied
 #
 # Label: Runnable
 # Destructive: removes the app.kubernetes.io/name label from the reference-client Pod

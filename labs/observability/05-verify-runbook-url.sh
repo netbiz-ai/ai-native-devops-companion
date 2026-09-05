@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Step 5 - Write the runbook before routing - confirm the runbook URL placeholder is gone and retest the rules
+# observability lab, Step 5 - Write the runbook before routing - confirm the runbook URL placeholder is gone and retest the rules
 #
 # Label: Runnable
 #

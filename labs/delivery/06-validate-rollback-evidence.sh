@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Step 4 - Assemble and audit rollback - validate a rollback request against recorded release evidence before pulling the digest
+# delivery lab, Step 4 - Assemble and audit rollback - validate a rollback request against recorded release evidence before pulling the digest
 #
 # Label: Partial
 # Substitute before running: set "$DIGEST", "$REFERENCE", and "$IMAGE", and provide the release-evidence.json asset from the approved release.

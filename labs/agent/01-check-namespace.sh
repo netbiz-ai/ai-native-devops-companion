@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Data Box - required environment - confirm the reference-staging namespace exists
+# The agent lab, Data Box - required environment - confirm the reference-staging namespace exists
 #
 # Label: Runnable (unlabeled in the chapter)
 #

@@ -1,4 +1,4 @@
-# The Collector the Chapter 10 scripts inspect.
+# The Collector the observability lab scripts inspect.
 #
 # observability/collector.yaml is the Collector's configuration. Nothing in this
 # repository deployed it, so 03-validate-collector.sh could validate the config
@@ -61,7 +61,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: collector
-          # Pinned by digest, as Chapter 4 requires of the application image.
+          # Pinned by digest, as the container lab requires of the application image.
           # otel/opentelemetry-collector-contrib:0.159.0
           image: otel/opentelemetry-collector-contrib@sha256:1f2c54a30e713fac6b3ae77a1ec84010c2007e29ced8ec666214fc2f6739c1cc
           args: ["--config=/conf/collector.yaml"]

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Break It Deliberately - diff the broken and working Dockerfiles to verify the cause
+# The container lab, Break It Deliberately - diff the broken and working Dockerfiles to verify the cause
 #
 # Label: Runnable
 #

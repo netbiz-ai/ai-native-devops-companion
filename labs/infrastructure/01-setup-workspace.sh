@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Prerequisites - create the lab branch, record tool versions, scaffold directories
+# The infrastructure lab, Prerequisites - create the lab branch, record tool versions, scaffold directories
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

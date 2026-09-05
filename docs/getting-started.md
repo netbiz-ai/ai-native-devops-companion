@@ -1,7 +1,7 @@
 # Getting started: a reader's guide
 
 This page walks you through the book's projects chapter by chapter: what to install, how to set up, and how this repository is meant to be used alongside the printed page.
-It is a walkthrough, not a contract: [chapter-map.md](chapter-map.md) is the authority on what each chapter starts from, produces, and validates, and where anything on this page disagrees with the map, the map is correct.
+It is a walkthrough, not a contract: [subject-map.md](subject-map.md) is the authority on what each chapter starts from, produces, and validates, and where anything on this page disagrees with the map, the map is correct.
 
 ## What this repository is
 
@@ -17,10 +17,10 @@ There are three levels, and each includes the ones before it:
 1. **Offline** - Python 3.11 to 3.13, Bash 4+, and Git 2.40+.
    Enough for Chapters 1, 2, 3, and 14 in full, and the offline parts of every other chapter.
 2. **Local tools** - Docker, plus small per-chapter tools such as `actionlint`, `trivy`, `gh`, `ruff`, and `jq`.
-   Needed from Chapter 4 onward; each chapter's first lab script checks for exactly what that chapter uses.
+   Needed from the container lab onward; each chapter's first lab script checks for exactly what that chapter uses.
 3. **A disposable cluster** - `kubectl` plus a local [kind](https://kind.sigs.k8s.io/) cluster is enough, and is what the book's own reference environment used.
-   Needed from Chapter 8 onward.
-   A cloud account is only relevant to Chapter 7's optional Terraform apply route; every chapter works without one.
+   Needed from the kubernetes lab onward.
+   A cloud account is only relevant to the infrastructure lab's optional Terraform apply route; every chapter works without one.
 
 Exact versions live in [supported-versions.md](supported-versions.md).
 Which level each chapter needs is in the table in [`labs/README.md`](../labs/README.md), and repeated on the chapter cards below.
@@ -62,7 +62,7 @@ curl --fail http://127.0.0.1:8080/health
 curl --fail http://127.0.0.1:8080/ready
 ```
 
-Three successful responses mean you are ready for Chapter 1.
+Three successful responses mean you are ready for the method lab.
 
 ## How to work through a chapter
 
@@ -79,7 +79,7 @@ Each chapter is the same loop:
    A script whose header says `Partial` keeps the book's placeholders and fails until you substitute your own values - exactly as the printed page would.
    A script whose header says `Destructive` creates or changes real things (containers, cluster objects); read it before you run it.
    The documents the chapter prints as **Configuration** blocks (task briefs, policies, manifests) ship in `labs/<subject>/config/` - copy the file to the destination the chapter README names rather than retyping it from the page.
-4. **Check yourself** with the chapter's validation command - each card below states it, taken from [chapter-map.md](chapter-map.md).
+4. **Check yourself** with the chapter's validation command - each card below states it, taken from [subject-map.md](subject-map.md).
 5. **Keep what you made.**
    Some chapters produce artifacts a later chapter reads; the cards say when.
 
@@ -90,29 +90,29 @@ A prompt to start from, adjusted to the chapter:
 
 > Work through chapter 3 of this repository per AGENTS.md.
 > Run the lab scripts in labs/reference-app/ in numbered order, show me each command and its result before moving on, and stop for my confirmation before anything labeled Destructive or anything that would create a cluster or cost money.
-> Finish with the chapter's validation command from docs/chapter-map.md and report whether it passed.
+> Finish with the chapter's validation command from docs/subject-map.md and report whether it passed.
 
 ### Things you create yourself
 
 Some paths the book names are deliberately absent here, because they are your output, not the repository's:
 
-- `ai-native-workspace/` - you build it in Chapter 1 (the blank checklist to copy is `templates/verification-checklist.md`); where the book says `workspace/`, it means this directory.
-- `devops-prompt-library/` - you build it in Chapter 2, starting from `mkdir`.
-- `docs/security/` policy files - you write them in Chapter 11.
-- `docs/incidents/ch12-controlled-failure.md` - you write it in Chapter 12; Chapter 14 reads it.
-- The Chapter 13 ADR and experiment record - you write them from the templates in `docs/decisions/` and `docs/optimization/`.
+- `ai-native-workspace/` - you build it in the method lab (the blank checklist to copy is `templates/verification-checklist.md`); where the book says `workspace/`, it means this directory.
+- `devops-prompt-library/` - you build it in the prompt-library lab, starting from `mkdir`.
+- `docs/security/` policy files - you write them in the security lab.
+- `docs/incidents/ch12-controlled-failure.md` - you write it in the incident lab; the assistant lab reads it.
+- The the capacity lab ADR and experiment record - you write them from the templates in `docs/decisions/` and `docs/optimization/`.
 
 If a chapter names one of these, it is telling you to create it, not reporting a missing file.
-The full list is in [chapter-map.md](chapter-map.md) under "What the reader writes, and when".
+The full list is in [subject-map.md](subject-map.md) under "What the reader writes, and when".
 
 ### Things you supply for the cluster chapters
 
-From Chapter 8 onward the labs need three things that cannot live in this repository because they are yours: a disposable cluster, a registry with your image digest in it, and a Git source you can push to.
+From the kubernetes lab onward the labs need three things that cannot live in this repository because they are yours: a disposable cluster, a registry with your image digest in it, and a Git source you can push to.
 [`scripts/lab-environment/`](../scripts/lab-environment/README.md) supplies a copy-paste template for each, and a cluster chapter that appears not to work is usually one of these three left unset.
 
 ## The chapters
 
-### Chapter 1 - The AI-Native DevOps Mindset
+### The method lab - The AI-Native DevOps Mindset
 
 - **You build:** a verified release-gate script with an observed success and failure path, and a recorded decision.
 - **You need:** the offline level.
@@ -120,75 +120,75 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **Labs:** [`labs/method/`](../labs/method/README.md)
 - **Check:** the chapter's own syntax, success, and failure runs.
 
-### Chapter 2 - Prompting for Infrastructure and Operations
+### The prompt-library lab - Prompting for Infrastructure and Operations
 
 - **You build:** a reusable prompt library with deterministic evaluation cases.
 - **You need:** the offline level.
-- **Enter it:** continue from Chapter 1; you create `devops-prompt-library/` yourself here.
+- **Enter it:** continue from the method lab; you create `devops-prompt-library/` yourself here.
 - **Labs:** [`labs/prompt-library/`](../labs/prompt-library/README.md)
 - **Check:** the chapter's own artifact-presence block.
 
-### Chapter 3 - Build the Book's Reference Application
+### The reference-app lab - Build the Book's Reference Application
 
 - **You build:** `reference-app` serving `/`, `/health`, and `/ready` on port 8080.
 - **You need:** the offline level, plus `curl`.
-- **Enter it:** continue from Chapter 2, and pick an entry route first: the clone already ships the finished app, so you either build your own outside the clone (the chapter as written) or work against the shipped one - [`labs/reference-app/README.md`](../labs/reference-app/README.md) states both ways.
+- **Enter it:** continue from the prompt-library lab, and pick an entry route first: the clone already ships the finished app, so you either build your own outside the clone (the chapter as written) or work against the shipped one - [`labs/reference-app/README.md`](../labs/reference-app/README.md) states both ways.
 - **Labs:** [`labs/reference-app/`](../labs/reference-app/README.md)
 - **Check:** `cd reference-app && python3 -m unittest discover -s tests`
 
-### Chapter 4 - Containerize and Optimize with AI
+### The container lab - Containerize and Optimize with AI
 
 - **You build:** a non-root container image, measured against a single-stage baseline.
 - **You need:** Docker and `trivy`.
-- **Enter it:** continue from Chapter 3.
+- **Enter it:** continue from the reference-app lab.
 - **Labs:** [`labs/container/`](../labs/container/README.md) - note two scripts there share a shell variable and must run in one session; its README says which.
 - **Check:** the chapter's `docker build` and label assertions.
 
-### Chapter 5 - Build an AI-Assisted CI Pipeline
+### The ci lab - Build an AI-Assisted CI Pipeline
 
 - **You build:** a CI pipeline whose required checks are enforced on `main`.
 - **You need:** Docker, `actionlint`, `ruff`, `bandit`.
-- **Enter it:** continue from Chapter 4.
+- **Enter it:** continue from the container lab.
 - **Labs:** [`labs/ci/`](../labs/ci/README.md)
 - **Check:** `actionlint .github/workflows/ci.yml`
 
-### Chapter 6 - Design Continuous Delivery with Human and AI Guardrails
+### The delivery lab - Design Continuous Delivery with Human and AI Guardrails
 
 - **You build:** a delivery workflow that promotes one immutable digest through human approval, with a tested rollback.
 - **You need:** Docker, `gh`, `actionlint`, `jq`.
-- **Enter it:** continue from Chapter 5.
+- **Enter it:** continue from the ci lab.
 - **Labs:** [`labs/delivery/`](../labs/delivery/README.md)
 - **Check:** `actionlint .github/workflows/*.yml`
 - **Heads-up:** the delivery route runs against *your own* GitHub repository, and needs two repository environments (`staging` and `production`) with deployment branches restricted to `main` and a `production` reviewer who is not the person dispatching the run.
-  Details in [chapter-map.md](chapter-map.md) under "Known gaps".
+  Details in [subject-map.md](subject-map.md) under "Known gaps".
 
-### Chapter 7 - Infrastructure as Code with AI
+### The infrastructure lab - Infrastructure as Code with AI
 
 - **You build:** a reviewed Terraform network foundation, by the no-apply route unless you approve your own sandbox.
 - **You need:** `terraform`; an AWS account only for the optional apply route.
-- **Enter it:** continue from Chapter 6.
+- **Enter it:** continue from the delivery lab.
 - **Labs:** [`labs/infrastructure/`](../labs/infrastructure/README.md)
 - **Check:** `terraform validate`
 - **Heads-up:** the module interface the chapter prints differs from the module shipped here; writing the printed files gives you a working module of your own, but the printed test does not pass against the shipped one.
-  Details in [chapter-map.md](chapter-map.md) under "Known gaps".
+  Details in [subject-map.md](subject-map.md) under "Known gaps".
 
-### Chapter 8 - Kubernetes with AI as a Reviewer
+### The kubernetes lab - Kubernetes with AI as a Reviewer
 
 - **You build:** a hardened workload running in a namespace with its policy behavior observed.
 - **You need:** `kubectl` and a disposable cluster - set one up with [`scripts/lab-environment/`](../scripts/lab-environment/README.md), which also covers the registry and image digest this chapter needs.
-- **Enter it:** continue from Chapter 7.
+- **Enter it:** continue from the infrastructure lab.
 - **Labs:** [`labs/kubernetes/`](../labs/kubernetes/README.md)
 - **Check:** `kubectl kustomize deployment/kubernetes/base`
 
-### Chapter 9 - GitOps and Platform Automation
+### The gitops lab - GitOps and Platform Automation
 
 - **You build:** a GitOps path where staging reconciles automatically and production is promoted deliberately.
-- **You need:** the Chapter 8 cluster, `argocd`, and a Git source Argo CD can reach - the third template in [`scripts/lab-environment/`](../scripts/lab-environment/README.md).
-- **Enter it:** continue from Chapter 8.
+- **You need:** the kubernetes lab cluster, `argocd`, and a Git source Argo CD can reach - the third template in [`scripts/lab-environment/`](../scripts/lab-environment/README.md).
+- **Enter it:** continue from the kubernetes lab.
 - **Labs:** [`labs/gitops/`](../labs/gitops/README.md)
 - **Check:** `kubectl kustomize deployment/gitops/overlays/staging`
 
-### Chapter 10 - Observability with AI
+### The observability lab - Observability with AI
 
 - **You build:** a correlated telemetry signal, an owned alert, and a runbook.
 - **You need:** the cluster, `promtool`, `otelcol-contrib`.
@@ -196,7 +196,7 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **Labs:** [`labs/observability/`](../labs/observability/README.md)
 - **Check:** `labs/observability/validate.sh` (also `make observability-validate`)
 
-### Chapter 11 - Design an AI-Assisted DevSecOps Pipeline
+### The security lab - Design an AI-Assisted DevSecOps Pipeline
 
 - **You build:** security findings that carry a disposition and an owner.
 - **You need:** `gh`, Docker, `actionlint`.
@@ -204,16 +204,16 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **Labs:** [`labs/security/`](../labs/security/README.md)
 - **Check:** `./scripts/validate-offline.sh`
 
-### Chapter 12 - AI for Incident Response and Troubleshooting
+### The incident lab - AI for Incident Response and Troubleshooting
 
 - **You build:** a controlled failure diagnosed and restored under human control.
 - **You need:** the cluster.
 - **Enter it:** `make incident-start`
 - **Labs:** [`labs/incident/`](../labs/incident/README.md)
 - **Check:** `labs/incident/validate.sh` (also `make incident-validate`)
-- **Keep:** the sanitized `docs/incidents/ch12-controlled-failure.md` you write here is Chapter 14's input.
+- **Keep:** the sanitized `docs/incidents/ch12-controlled-failure.md` you write here is the assistant lab's input.
 
-### Chapter 13 - Reliability, Performance, and Cost Optimization
+### The capacity lab - Reliability, Performance, and Cost Optimization
 
 - **You build:** comparable performance candidates and a retain-or-revert decision.
 - **You need:** the cluster.
@@ -221,33 +221,33 @@ From Chapter 8 onward the labs need three things that cannot live in this reposi
 - **Labs:** [`labs/capacity/`](../labs/capacity/README.md)
 - **Check:** `./scripts/validate-offline.sh` (also `make capacity-validate` for the experiment itself)
 - **Heads-up:** three helper scripts the chapter prints are not shipped here; follow those steps with the supplied `preflight.sh`, `run-experiment.sh`, and `validate.sh`.
-  Details in [chapter-map.md](chapter-map.md) under "Known gaps".
+  Details in [subject-map.md](subject-map.md) under "Known gaps".
 
-### Chapter 14 - Build a DevOps Operations Assistant
+### The assistant lab - Build a DevOps Operations Assistant
 
 - **You build:** a read-only assistant that answers with citations and refuses action requests.
 - **You need:** the offline level.
-- **Enter it:** continue with the `docs/incidents/ch12-controlled-failure.md` you wrote in Chapter 12 - the assistant has no input until Chapter 12 has been run.
+- **Enter it:** continue with the `docs/incidents/ch12-controlled-failure.md` you wrote in the incident lab - the assistant has no input until the incident lab has been run.
 - **Labs:** [`labs/assistant/`](../labs/assistant/README.md)
 - **Check:** `labs/assistant/validate.sh` (also `make assistant-validate`); it checks your knowledge doc and the demo behavior, so it fails on an untouched clone by design.
 
-### Chapter 15 - Design a Bounded AI Operations Agent
+### The agent lab - Design a Bounded AI Operations Agent
 
 - **You build:** a diagnostics agent with allowlisted reads, one bounded proposal, an audit record, and no mutation path.
 - **You need:** the offline level for the fixture route; the cluster only for the optional live route.
-- **Enter it:** continue from Chapter 14.
+- **Enter it:** continue from the assistant lab.
 - **Labs:** [`labs/agent/`](../labs/agent/README.md)
 - **Check:** `cd operations-agent && python3 -m unittest discover -s tests`
 
-### Chapter 16 - Capstone: Design the AI-Native Delivery Platform
+### The capstone lab - Capstone: Design the AI-Native Delivery Platform
 
 - **You build:** the connected acceptance path - capstone criteria CAP-01 to CAP-07, each visible and evidence-linked.
 - **You need:** everything the prior chapters used; the verifier checks every prior chapter's evidence.
-- **Enter it:** continue from Chapter 15.
+- **Enter it:** continue from the agent lab.
 - **Labs:** [`labs/capstone/`](../labs/capstone/README.md)
 - **Check:** `labs/capstone/capstone-verify.sh` (also `make capstone-validate`)
 
 ## When something disagrees
 
-Where the book and this repository disagree about a path or a name, [chapter-map.md](chapter-map.md) is correct and the book is the defect - the map's "Path aliases" section lists the known cases.
+Where the book and this repository disagree about a path or a name, [subject-map.md](subject-map.md) is correct and the book is the defect - the map's "Path aliases" section lists the known cases.
 Report anything new through [GitHub Issues](https://github.com/netbiz-ai/ai-native-devops-companion/issues), the errata channel named in [release-policy.md](release-policy.md).

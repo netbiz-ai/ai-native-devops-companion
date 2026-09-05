@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Break It Deliberately - create an isolated disposable worktree for the safety experiment
+# The prompt-library lab, Break It Deliberately - create an isolated disposable worktree for the safety experiment
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

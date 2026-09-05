@@ -6,6 +6,6 @@
 #
 # Expected result, per the interlude:
 #   image=localhost:5001/reference-app digest=sha256:...
-#   followed by the two values Chapter 6 pastes into kustomization.yaml.
+#   followed by the two values the delivery lab pastes into kustomization.yaml.
 # --- command as printed, verbatim ---
 ./scripts/lab-environment/push-image.sh | tee evidence/cluster/image-digest.txt

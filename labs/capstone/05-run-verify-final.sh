@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 16, Cost and Cleanup - final acceptance check after cleanup evidence is recorded
+# The capstone lab, Cost and Cleanup - final acceptance check after cleanup evidence is recorded
 #
 # Label: Runnable (unlabeled in the chapter)
 #

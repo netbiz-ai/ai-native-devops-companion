@@ -1,4 +1,6 @@
-# Chapter 8 lab scripts - Kubernetes with AI as a Reviewer
+# kubernetes lab scripts - Kubernetes with AI as a Reviewer
+
+Second edition: chapter 6. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
@@ -36,7 +38,7 @@ The chapter also prints `deployment/kubernetes/tests/connect.py` as a Python blo
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

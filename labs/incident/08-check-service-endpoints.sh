@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Troubleshooting: The alert fires but requests appear healthy - inspect service and endpoints, then regenerate traffic
+# The incident lab, Troubleshooting: The alert fires but requests appear healthy - inspect service and endpoints, then regenerate traffic
 #
 # Label: Runnable
 #

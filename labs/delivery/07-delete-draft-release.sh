@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Cost and Cleanup - delete the failed training draft release after confirming it is a draft with the expected tag
+# The delivery lab, Cost and Cleanup - delete the failed training draft release after confirming it is a draft with the expected tag
 #
 # Label: Runnable
 # Destructive: deletes a draft GitHub release in the training repository via gh

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Prerequisites - Required environment - record cluster context, namespaces, and tool versions
+# The observability lab, Prerequisites - Required environment - record cluster context, namespaces, and tool versions
 #
 # Label: Runnable
 #

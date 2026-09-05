@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Break It Deliberately - remove the unsafe commit by resetting and force-pushing the disposable branch
+# The security lab, Break It Deliberately - remove the unsafe commit by resetting and force-pushing the disposable branch
 #
 # Label: Runnable
 # Destructive: discards every change after ch11-safe-base and force-pushes rewritten history to origin

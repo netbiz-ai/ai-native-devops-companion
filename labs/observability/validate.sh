@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10 validation.
+# The observability lab validation.
 #
 # The previous version of this script checked that the observability files
 # existed. Existence is not evidence: a dashboard, a rule set and a runbook can

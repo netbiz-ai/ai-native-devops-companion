@@ -17,105 +17,105 @@ assistant:
 agent:
 	python3 operations-agent/src/agent.py deployment-status
 
-# Chapter entry points. A chapter prints `make chNN-start`; this file decides
+# Lab entry points, one per subject. A chapter prints `make <subject>-start`; this file decides
 # what that resolves to, so restructuring the repository never invalidates a
-# printed page. See scripts/start-chapter.sh and docs/release-policy.md.
+# printed page. See scripts/start-lab.sh and docs/release-policy.md.
 
 method-start:
-	./scripts/start-chapter.sh method start
+	./scripts/start-lab.sh method start
 
 method-complete:
-	./scripts/start-chapter.sh method complete
+	./scripts/start-lab.sh method complete
 
 prompt-library-start:
-	./scripts/start-chapter.sh prompt-library start
+	./scripts/start-lab.sh prompt-library start
 
 prompt-library-complete:
-	./scripts/start-chapter.sh prompt-library complete
+	./scripts/start-lab.sh prompt-library complete
 
 reference-app-start:
-	./scripts/start-chapter.sh reference-app start
+	./scripts/start-lab.sh reference-app start
 
 reference-app-complete:
-	./scripts/start-chapter.sh reference-app complete
+	./scripts/start-lab.sh reference-app complete
 
 container-start:
-	./scripts/start-chapter.sh container start
+	./scripts/start-lab.sh container start
 
 container-complete:
-	./scripts/start-chapter.sh container complete
+	./scripts/start-lab.sh container complete
 
 ci-start:
-	./scripts/start-chapter.sh ci start
+	./scripts/start-lab.sh ci start
 
 ci-complete:
-	./scripts/start-chapter.sh ci complete
+	./scripts/start-lab.sh ci complete
 
 delivery-start:
-	./scripts/start-chapter.sh delivery start
+	./scripts/start-lab.sh delivery start
 
 delivery-complete:
-	./scripts/start-chapter.sh delivery complete
+	./scripts/start-lab.sh delivery complete
 
 infrastructure-start:
-	./scripts/start-chapter.sh infrastructure start
+	./scripts/start-lab.sh infrastructure start
 
 infrastructure-complete:
-	./scripts/start-chapter.sh infrastructure complete
+	./scripts/start-lab.sh infrastructure complete
 
 kubernetes-start:
-	./scripts/start-chapter.sh kubernetes start
+	./scripts/start-lab.sh kubernetes start
 
 kubernetes-complete:
-	./scripts/start-chapter.sh kubernetes complete
+	./scripts/start-lab.sh kubernetes complete
 
 gitops-start:
-	./scripts/start-chapter.sh gitops start
+	./scripts/start-lab.sh gitops start
 
 gitops-complete:
-	./scripts/start-chapter.sh gitops complete
+	./scripts/start-lab.sh gitops complete
 
 observability-start:
-	./scripts/start-chapter.sh observability start
+	./scripts/start-lab.sh observability start
 
 observability-complete:
-	./scripts/start-chapter.sh observability complete
+	./scripts/start-lab.sh observability complete
 
 security-start:
-	./scripts/start-chapter.sh security start
+	./scripts/start-lab.sh security start
 
 security-complete:
-	./scripts/start-chapter.sh security complete
+	./scripts/start-lab.sh security complete
 
 incident-start:
-	./scripts/start-chapter.sh incident start
+	./scripts/start-lab.sh incident start
 
 incident-complete:
-	./scripts/start-chapter.sh incident complete
+	./scripts/start-lab.sh incident complete
 
 capacity-start:
-	./scripts/start-chapter.sh capacity start
+	./scripts/start-lab.sh capacity start
 
 capacity-complete:
-	./scripts/start-chapter.sh capacity complete
+	./scripts/start-lab.sh capacity complete
 
 assistant-start:
-	./scripts/start-chapter.sh assistant start
+	./scripts/start-lab.sh assistant start
 
 assistant-complete:
-	./scripts/start-chapter.sh assistant complete
+	./scripts/start-lab.sh assistant complete
 
 agent-start:
-	./scripts/start-chapter.sh agent start
+	./scripts/start-lab.sh agent start
 
 agent-complete:
-	./scripts/start-chapter.sh agent complete
+	./scripts/start-lab.sh agent complete
 
 capstone-start:
-	./scripts/start-chapter.sh capstone start
+	./scripts/start-lab.sh capstone start
 
 capstone-complete:
-	./scripts/start-chapter.sh capstone complete
+	./scripts/start-lab.sh capstone complete
 
 # Chapter validators migrated from scripts/ into labs/. Only the five chapters
 # that ship an executable validator get a target; extracted verbatim commands

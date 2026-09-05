@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Drive traffic at the incident service for a bounded interval.
 #
-# Chapter 12 calls this with --duration, which the previous version did not
+# The incident lab calls this with --duration, which the previous version did not
 # accept: it took a positional target and a REQUESTS count. A script whose
 # printed invocation does not parse is indistinguishable from a broken lab,
 # so both forms now work and --duration is the documented one.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Step 1 - Create the prompt library structure - check repository-local Git identity
+# prompt-library lab, Step 1 - Create the prompt library structure - check repository-local Git identity
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

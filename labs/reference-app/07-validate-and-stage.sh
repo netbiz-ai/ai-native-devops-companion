@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Test and Validate - rerun tests, compile, and stage the intended files
+# The reference-app lab, Test and Validate - rerun tests, compile, and stage the intended files
 #
 # Label: Runnable
 #

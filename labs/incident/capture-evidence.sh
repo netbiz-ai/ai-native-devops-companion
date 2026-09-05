@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Capture a bounded, sanitized evidence packet for one incident phase.
 #
-# Chapter 12 calls this as `--phase recovery --output evidence/ch12/recovery.txt`,
+# The incident lab calls this as `--phase recovery --output evidence/ch12/recovery.txt`,
 # which the previous version did not accept: it copied a file from a source to
 # a destination. Both forms now work, and the flag form is the documented one.
 #

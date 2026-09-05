@@ -1,4 +1,6 @@
-# Chapter 12 lab commands - AI for Incident Response and Troubleshooting
+# incident lab commands - AI for Incident Response and Troubleshooting
+
+Second edition: chapter 10. That chapter covers `incident` and `capacity`. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
@@ -33,8 +35,8 @@ They are listed for orientation only and are not modified or renamed by this ext
 
 - **The incident overlay is not in this chapter's starting state.** Step 1
   deploys `deployment/gitops/overlays/incident/`, the healthy baseline the
-  chapter then breaks, and that overlay was added after `ch12-start` was cut -
-  it first appears at `ch12-complete`. So `make ch12-start`, which
+  chapter then breaks, and that overlay was added after `incident-start` was cut -
+  it first appears at `incident-complete`. So `make incident-start`, which
   `01-run-preflight.sh` runs, lands in a state that cannot deploy it.
 
   The preflight catches this and exits 1, naming both files and where to get

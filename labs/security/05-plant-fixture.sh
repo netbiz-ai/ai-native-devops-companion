@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Break It Deliberately - commit the harmless secret fixture on a disposable branch and push it
+# The security lab, Break It Deliberately - commit the harmless secret fixture on a disposable branch and push it
 #
 # Label: Runnable
 # Destructive: pushes the new ch11-secret-gate-test branch, carrying the fake credential, to the origin remote

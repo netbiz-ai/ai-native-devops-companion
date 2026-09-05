@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Step 1 - fail on unresolved pin placeholders, then lint the workflow
+# security lab, Step 1 - fail on unresolved pin placeholders, then lint the workflow
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

@@ -12,7 +12,7 @@
 # anything it cannot identify as this book's: a cleanup script that guesses is
 # more dangerous than no cleanup script.
 #
-# Terraform and cloud resources are Chapter 7's, and are removed by
+# Terraform and cloud resources are the infrastructure lab's, and are removed by
 # labs/infrastructure/07-destroy-lab.sh against the reader's own approved sandbox. This
 # script records whether that was done rather than doing it, because it has no
 # way to know which account is approved.
@@ -34,9 +34,9 @@ if [ -z "$run_id" ]; then
   exit 1
 fi
 
-# The lab namespaces, and nothing else. reference-dev is Chapter 8's,
-# staging and production Chapter 9's, incident Chapter 12's, observability
-# Chapter 10's, lab-source the disposable Git server, capstone-iac the
+# The lab namespaces, and nothing else. reference-dev is the kubernetes lab's,
+# staging and production the gitops lab's, incident the incident lab's, observability
+# The observability lab's, lab-source the disposable Git server, capstone-iac the
 # capstone's Terraform-managed namespace - normally already destroyed by
 # `terraform -chdir=infrastructure/terraform/capstone destroy`, listed here
 # as a backstop so a skipped destroy still gets recorded and removed.

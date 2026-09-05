@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Break It Deliberately - run the module's mock-provider Terraform tests
+# The infrastructure lab, Break It Deliberately - run the module's mock-provider Terraform tests
 #
 # Label: Runnable
 #

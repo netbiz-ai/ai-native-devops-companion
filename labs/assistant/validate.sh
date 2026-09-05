@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Chapter 14 validation.
+# The assistant lab validation.
 #
-# The chapter-map's earlier validation command (the unit suite alone) passed on
+# The subject-map's earlier validation command (the unit suite alone) passed on
 # an untouched clone, so it proved the shipped suite still worked, not that the
 # reader's chapter work was done. This validator checks the reader's artifacts
 # and the assistant's behavior together, and fails on a fresh clone by design:

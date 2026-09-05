@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Build It / Step 1 - create the workspace repository and sample artifact
+# The method lab, Build It / Step 1 - create the workspace repository and sample artifact
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

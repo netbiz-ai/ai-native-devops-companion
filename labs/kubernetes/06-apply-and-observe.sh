@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 4 - apply policy then workload, watch the rollout, and inspect endpoints
+# The kubernetes lab, Build It Step 4 - apply policy then workload, watch the rollout, and inspect endpoints
 #
 # Label: Runnable
 # Destructive: applies the NetworkPolicy, Deployment, and Service to the reference-dev namespace

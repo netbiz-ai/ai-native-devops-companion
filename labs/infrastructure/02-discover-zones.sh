@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Step 3 - Call the module from development - discover two available zones in the approved region
+# infrastructure lab, Step 3 - Call the module from development - discover two available zones in the approved region
 #
 # Label: Runnable
 #

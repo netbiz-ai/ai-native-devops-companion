@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Step 1 - Create a least-privilege diagnostic identity - dry-run, apply the RBAC manifest, then verify effective permissions by impersonation
+# agent lab, Step 1 - Create a least-privilege diagnostic identity - dry-run, apply the RBAC manifest, then verify effective permissions by impersonation
 #
 # Label: Runnable (unlabeled in the chapter)
 # Destructive: creates the diagnostics-agent ServiceAccount, Role, and RoleBinding in the reference-staging namespace

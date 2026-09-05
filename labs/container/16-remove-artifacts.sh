@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Cost and Cleanup - remove the lab container, baseline and broken images, and temporary Dockerfiles
+# The container lab, Cost and Cleanup - remove the lab container, baseline and broken images, and temporary Dockerfiles
 #
 # Label: Runnable
 #

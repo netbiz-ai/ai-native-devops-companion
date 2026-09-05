@@ -13,7 +13,7 @@ Taking pieces of this work into your own pipeline rather than working the
 book straight through? [docs/reusing-the-projects.md](docs/reusing-the-projects.md)
 maps each chapter to what it leaves behind that you can reuse.
 
-`docs/chapter-map.md` is the canonical contract between the book and this
+`docs/subject-map.md` is the canonical contract between the book and this
 repository: what each chapter starts from, carries in, produces, and how to
 validate it. Where the book and that map disagree, the map is correct.
 `docs/release-policy.md` states how this repository is versioned, supported,
@@ -71,14 +71,14 @@ obvious secret patterns.
 |---|---|---|
 | Chapters 1–2: bounded AI work and prompt evaluation | You create `ai-native-workspace/` and `devops-prompt-library/`; this repository supplies neither | Offline |
 | Chapters 3–6: application, container, CI, delivery | `reference-app/`, `.github/workflows/` | Offline plus Docker/GitHub |
-| Chapter 7: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
+| The infrastructure lab: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
 | Chapters 8–9: Kubernetes and GitOps | `deployment/` | Static; cluster is opt-in |
 | Chapters 10–13: telemetry, security, incidents, optimization | `observability/`, `security/`, `incidents/`, `optimization/` | Fixtures and templates |
-| Chapter 14: cited operations assistant | `operations-assistant/` | Offline |
-| Chapter 15: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
-| Chapter 16: connected acceptance path | `docs/capstone/`, `labs/capstone/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
+| The assistant lab: cited operations assistant | `operations-assistant/` | Offline |
+| The agent lab: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
+| The capstone lab: connected acceptance path | `docs/capstone/`, `labs/capstone/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
 
-See [docs/chapter-map.md](docs/chapter-map.md) for exact chapter handoffs.
+See [docs/subject-map.md](docs/subject-map.md) for exact chapter handoffs.
 
 ## Supported baseline
 

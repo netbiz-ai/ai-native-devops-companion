@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Troubleshooting "The health request cannot connect" - read container logs and published ports
+# The container lab, Troubleshooting "The health request cannot connect" - read container logs and published ports
 #
 # Label: Runnable (unlabeled in the chapter)
 #

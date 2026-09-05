@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 14, Break It Deliberately - poison the approved knowledge set and watch the injection surface
+# The assistant lab, Break It Deliberately - poison the approved knowledge set and watch the injection surface
 #
 # Label: Runnable
 #

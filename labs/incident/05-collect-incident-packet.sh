@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 4 - Collect a bounded incident packet - capture incident-phase evidence and cluster state
+# incident lab, Step 4 - Collect a bounded incident packet - capture incident-phase evidence and cluster state
 #
 # Label: Runnable
 #

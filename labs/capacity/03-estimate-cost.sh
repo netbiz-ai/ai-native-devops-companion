@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13, Step 4 - Estimate cost and unit cost - build the dated cost model from the evidence files
+# capacity lab, Step 4 - Estimate cost and unit cost - build the dated cost model from the evidence files
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

@@ -1,4 +1,6 @@
-# Chapter 10 lab commands - Observability with AI
+# observability lab commands - Observability with AI
+
+Second edition: chapter 8. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
@@ -39,7 +41,7 @@ Those files already exist in this repository under observability/ (collector.yam
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

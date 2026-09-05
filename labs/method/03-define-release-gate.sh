@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Build It / Step 1 - the samples/release-gate.sh script body (with its deliberate defect)
+# The method lab, Build It / Step 1 - the samples/release-gate.sh script body (with its deliberate defect)
 #
 # Label: Runnable
 #

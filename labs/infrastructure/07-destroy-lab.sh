@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Cost and Cleanup - plan, review, and apply destruction, then verify empty state
+# The infrastructure lab, Cost and Cleanup - plan, review, and apply destruction, then verify empty state
 #
 # Label: Runnable - destructive
 # Destructive: deletes the lab VPC and subnets from the sandbox AWS account

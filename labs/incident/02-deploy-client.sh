@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 1 - Establish the healthy baseline - deploy and label the in-namespace traffic client
+# incident lab, Step 1 - Establish the healthy baseline - deploy and label the in-namespace traffic client
 #
 # Label: Runnable
 # Destructive: applies and labels the reference-client Pod in the reference-incident namespace

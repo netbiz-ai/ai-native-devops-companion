@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Cost and Cleanup - non-cascading application deletion, then delete the owned namespaces
+# The gitops lab, Cost and Cleanup - non-cascading application deletion, then delete the owned namespaces
 #
 # Label: Runnable
 # Destructive: deletes both Application resources and the reference-staging and reference-production namespaces

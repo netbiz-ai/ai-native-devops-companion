@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Step 1 - create the repository structure and initialize Git
+# reference-app lab, Step 1 - create the repository structure and initialize Git
 #
 # Label: Runnable
 #

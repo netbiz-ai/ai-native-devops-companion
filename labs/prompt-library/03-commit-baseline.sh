@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Step 8 - Commit the baseline - stage, inspect, and commit the initial library state
+# prompt-library lab, Step 8 - Commit the baseline - stage, inspect, and commit the initial library state
 #
 # Label: Runnable
 #

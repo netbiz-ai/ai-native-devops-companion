@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Break It Deliberately - inspect deployment state, events, and logs before restoring the file
+# The kubernetes lab, Break It Deliberately - inspect deployment state, events, and logs before restoring the file
 #
 # Label: Runnable
 #

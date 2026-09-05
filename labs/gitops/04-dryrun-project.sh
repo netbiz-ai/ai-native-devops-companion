@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 2 - server dry-run the bounded AppProject
+# The gitops lab, Build It, Step 2 - server dry-run the bounded AppProject
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

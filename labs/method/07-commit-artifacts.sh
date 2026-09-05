@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Commit the artifacts - commit the workspace and tag the verified state
+# The method lab, Commit the artifacts - commit the workspace and tag the verified state
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

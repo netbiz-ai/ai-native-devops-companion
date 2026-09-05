@@ -1,4 +1,4 @@
-# Chapter 10 alert sink. Staging only.
+# The observability lab alert sink. Staging only.
 #
 # An alert that fires into nothing has not been tested. This receiver is the
 # cheapest honest end of the delivery path: it accepts the webhook Alertmanager

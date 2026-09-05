@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Prerequisites - confirm the Chapter 4 repository state and passing tests
+# The ci lab, Prerequisites - confirm the container lab repository state and passing tests
 #
 # Label: Runnable
 #

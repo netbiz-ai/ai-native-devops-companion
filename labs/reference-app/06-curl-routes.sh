@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Step 4 - probe the root, health, and missing routes over HTTP
+# reference-app lab, Step 4 - probe the root, health, and missing routes over HTTP
 #
 # Label: Runnable
 #

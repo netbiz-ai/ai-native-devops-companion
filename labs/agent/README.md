@@ -1,4 +1,6 @@
-# Chapter 15 lab commands - Design a Bounded AI Operations Agent
+# agent lab commands - Design a Bounded AI Operations Agent
+
+Second edition: chapter 12. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
@@ -16,7 +18,7 @@ All six blocks shipped; no block was printed without being shipped as a file.
 ## What does not behave as printed here
 
 - **Every block addresses `agents/k8s-diagnostics/`, which is not a path here.**
-  `docs/chapter-map.md` maps it to `operations-agent/`. The RBAC file has no
+  `docs/subject-map.md` maps it to `operations-agent/`. The RBAC file has no
   alias entry and no matching name either: the blocks name
   `rbac/diagnostics-reader.yml`, and the file is `operations-agent/policy/rbac.yaml`.
 

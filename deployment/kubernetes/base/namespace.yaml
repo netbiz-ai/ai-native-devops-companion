@@ -4,7 +4,7 @@ metadata:
   name: reference-dev
   labels:
     app.kubernetes.io/part-of: ai-native-devops
-    # Chapter 8 proves that Restricted admission rejects a noncompliant Pod.
+    # The kubernetes lab proves that Restricted admission rejects a noncompliant Pod.
     # Without these labels nothing is enforced, the negative test passes for
     # the wrong reason, and the chapter demonstrates nothing. The workload in
     # this base already satisfies Restricted: non-root uid 10001, no privilege

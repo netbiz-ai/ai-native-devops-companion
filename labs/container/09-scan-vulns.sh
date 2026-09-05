@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Test and Validate - scan for HIGH and CRITICAL vulnerabilities under the learning policy
+# The container lab, Test and Validate - scan for HIGH and CRITICAL vulnerabilities under the learning policy
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Step 2 - Instrument and deploy one route - run unit tests and check the diff for whitespace errors
+# observability lab, Step 2 - Instrument and deploy one route - run unit tests and check the diff for whitespace errors
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

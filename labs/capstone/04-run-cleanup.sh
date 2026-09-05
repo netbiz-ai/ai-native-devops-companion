@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 16, Cost and Cleanup - remove the capstone's temporary resources
+# The capstone lab, Cost and Cleanup - remove the capstone's temporary resources
 #
 # Label: Runnable (unlabeled in the chapter)
 # Destructive: destroys the capstone's Terraform-managed objects, then deletes

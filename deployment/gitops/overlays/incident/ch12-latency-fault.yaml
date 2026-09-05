@@ -1,4 +1,4 @@
-# Chapter 12's controlled fault. Not applied by the overlay.
+# The incident lab's controlled fault. Not applied by the overlay.
 #
 # Step 2 applies this as its own change, and Step 6 restores by reverting it.
 # That separation is the whole point: an incident restored by editing a value
@@ -16,7 +16,7 @@
 # outage to diagnose that never reached anyone.
 #
 # It is above the 0.5s p95 threshold in observability/alerts/reference-app.yaml,
-# so ReferenceAppHighLatency fires - the alert the reader built in Chapter 10,
+# so ReferenceAppHighLatency fires - the alert the reader built in the observability lab,
 # now earning its keep. The incident is a real, served degradation: every
 # request succeeds and every one of them is slow, which is the failure mode
 # that hides behind a green deployment.

@@ -7,7 +7,7 @@
 # one ConfigMap on the lab cluster, local state, no cloud account - then
 # detects an induced out-of-band change, reconciles it, and proves the second
 # plan is clean. The cloud-sandbox route reads the same drift result from
-# Chapter 7's sandbox workspace instead, for a reader whose approved account
+# The infrastructure lab's sandbox workspace instead, for a reader whose approved account
 # still holds that state.
 #
 # Route selection:
@@ -117,7 +117,7 @@ case "$route" in
     record "iac_config=${dir} backend=local account=approved-sandbox-alias"
 
     if [ ! -e "$dir/terraform.tfstate" ] && [ ! -e "$dir/.terraform" ]; then
-      record "drift_source=missing - apply Chapter 7's sandbox track first"
+      record "drift_source=missing - apply the infrastructure lab's sandbox track first"
       exit 1
     fi
     drift="$(plan_exitcode "$dir")"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13, Step 3 - Compare two changes within one cost boundary - run both candidates with a baseline restore between them
+# capacity lab, Step 3 - Compare two changes within one cost boundary - run both candidates with a baseline restore between them
 #
 # Label: Runnable
 # Destructive: applies candidate scaling changes to and restores the reference-optimization namespace

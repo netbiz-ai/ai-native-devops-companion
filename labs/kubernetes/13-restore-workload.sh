@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Break It Deliberately - restore the reviewed declaration and wait for recovery
+# The kubernetes lab, Break It Deliberately - restore the reviewed declaration and wait for recovery
 #
 # Label: Runnable
 # Destructive: re-applies the reviewed workload manifest to the reference-dev namespace

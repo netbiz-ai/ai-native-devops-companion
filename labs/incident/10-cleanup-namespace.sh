@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Cost and Cleanup - restore, validate, then delete the disposable lab namespace
+# The incident lab, Cost and Cleanup - restore, validate, then delete the disposable lab namespace
 #
 # Label: Runnable
 # Destructive: deletes the reference-incident namespace from the cluster

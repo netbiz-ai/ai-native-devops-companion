@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Chapter 12 validation.
+# The incident lab validation.
 #
 # The chapter's claim is that a controlled failure was diagnosed and restored
 # under human control, so what this checks is the restoration, not the fault.
 # A lab that can break a service and cannot prove it put it back has taught
 # the wrong half.
 #
-# Tiers, as in Chapter 10: assets, then the running environment. The cluster
+# Tiers, as in the observability lab: assets, then the running environment. The cluster
 # tier reports what it could not check rather than passing silently.
 set -euo pipefail
 
@@ -56,7 +56,7 @@ else
   skip "readiness timeout not found in the incident overlay"
 fi
 
-# The threshold the reader's own Chapter 10 alert uses.
+# The threshold the reader's own the observability lab alert uses.
 threshold_s="$(grep -oE 'p95_5m\{environment="staging"\} > [0-9.]+' \
   observability/alerts/reference-app.yaml | grep -oE '[0-9.]+$' | head -1)"
 if [[ -n "$threshold_s" ]]; then

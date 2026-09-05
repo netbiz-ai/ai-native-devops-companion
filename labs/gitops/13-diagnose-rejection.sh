@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Troubleshooting - diagnose a controller-rejected resource or destination
+# The gitops lab, Troubleshooting - diagnose a controller-rejected resource or destination
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

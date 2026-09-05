@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Apply Chapter 12's controlled fault, and record what it replaced.
+# Apply the incident lab's controlled fault, and record what it replaced.
 #
 # The previous version of this script refused to do anything and printed
 # "design-only". It now applies a real fault to a disposable namespace, and

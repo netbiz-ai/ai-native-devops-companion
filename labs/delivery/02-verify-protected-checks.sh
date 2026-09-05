@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Step 2 - Assemble the controlled delivery workflow - require exactly one successful run per protected check name from the expected source app
+# delivery lab, Step 2 - Assemble the controlled delivery workflow - require exactly one successful run per protected check name from the expected source app
 #
 # Label: Partial
 # Substitute before running: "$all_check_runs" must hold the fully traversed check-run JSON for the checked-out commit, and confirm "expected_app" from a valid run - it is repository policy, not a constant.

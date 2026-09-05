@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Prerequisites - stop-or-proceed preflight for cluster, Argo CD, and repository access
+# The gitops lab, Prerequisites - stop-or-proceed preflight for cluster, Argo CD, and repository access
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 4 - stage and push the production digest promotion for review
+# The gitops lab, Build It, Step 4 - stage and push the production digest promotion for review
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 16, Step 3 - Define one verification entry point - run all live-platform checks before the demonstration
+# capstone lab, Step 3 - Define one verification entry point - run all live-platform checks before the demonstration
 #
 # Label: Runnable (unlabeled in the chapter)
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13 validation.
+# The capacity lab validation.
 #
 # The chapter's claim is comparable candidates and a retain-or-revert decision.
 # So this checks two things a scorecard cannot fake: that the measurements were

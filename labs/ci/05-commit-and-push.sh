@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Build It Step 4 - commit the workflow and push the branch to observe the gates
+# The ci lab, Build It Step 4 - commit the workflow and push the branch to observe the gates
 #
 # Label: Runnable
 # Destructive: pushes a commit to the origin remote on GitHub

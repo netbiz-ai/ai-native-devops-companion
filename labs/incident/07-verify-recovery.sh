@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 7 - Verify recovery and complete the review - validate the three evidence files
+# incident lab, Step 7 - Verify recovery and complete the review - validate the three evidence files
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Step 2 - Assemble the controlled delivery workflow - pull the candidate digest, start a runner-local staging container, and probe /health
+# delivery lab, Step 2 - Assemble the controlled delivery workflow - pull the candidate digest, start a runner-local staging container, and probe /health
 #
 # Label: Partial
 # Substitute before running: set "$IMAGE" and "$DIGEST" to the candidate published by the build step.

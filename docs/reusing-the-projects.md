@@ -4,7 +4,7 @@ This repository is cumulative and designed to be raided, not only followed.
 Each chapter of *AI-Native DevOps* starts from the state the previous one ended in, and every chapter's own validation command is what proves that state is real.
 This page is for readers who want to take pieces of that work into their own delivery pipeline rather than work the book straight through.
 
-`docs/chapter-map.md` remains the canonical contract between the book and this repository, and it is authoritative over the printed page wherever the two disagree.
+`docs/subject-map.md` remains the canonical contract between the book and this repository, and it is authoritative over the printed page wherever the two disagree.
 `labs/<subject>/` holds every printed command as a numbered runnable file, `make <subject>-start` puts the tree at a chapter's starting state, `make <subject>-complete` at its finished state, and the difference between the two is that chapter's work.
 
 ## Three tiers of prerequisites
@@ -15,7 +15,7 @@ Nothing is needed before the chapter that uses it.
 - Chapters 4 to 6: add Docker and a GitHub repository of your own.
 - Chapters 8 to 13: add a disposable cluster, for which a local `kind` cluster is enough.
 
-Three things cannot ship here because they are yours, and a lab that appears broken from Chapter 8 onward is usually one of them left unset: a disposable cluster in your `kubectl` context, a registry the cluster can pull from with the digest set in `deployment/kubernetes/base/kustomization.yaml`, and a Git source Argo CD can reach.
+Three things cannot ship here because they are yours, and a lab that appears broken from the kubernetes lab onward is usually one of them left unset: a disposable cluster in your `kubectl` context, a registry the cluster can pull from with the digest set in `deployment/kubernetes/base/kustomization.yaml`, and a Git source Argo CD can reach.
 The published image digest is an all-zero placeholder on purpose, so an unreplaced value fails at admission instead of deploying something you never reviewed.
 
 ## What to lift directly into your own work
@@ -42,7 +42,7 @@ The published image digest is an all-zero placeholder on purpose, so an unreplac
 
 **1. Run the book straight through as a training track.**
 Work chapters in order, always finishing with the chapter's confirmation command before starting the next.
-This is the right path for onboarding an engineer or a team into AI-assisted delivery, and it takes you from an empty directory to a verified platform without ever needing a paid cloud account, since Chapter 7's no-apply route and a local kind cluster cover the rest.
+This is the right path for onboarding an engineer or a team into AI-assisted delivery, and it takes you from an empty directory to a verified platform without ever needing a paid cloud account, since the infrastructure lab's no-apply route and a local kind cluster cover the rest.
 A coding agent can drive the labs for you: `AGENTS.md` at the repository root and `docs/running-labs-with-a-coding-agent.md` set that up, and destructive or cost-bearing steps still stop for your confirmation.
 
 **2. Use it as a gap audit against your existing pipeline.**

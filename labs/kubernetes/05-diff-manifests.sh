@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 3 - run kubectl diff on the policy and workload manifests before approval
+# The kubernetes lab, Build It Step 3 - run kubectl diff on the policy and workload manifests before approval
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 3 - prove Restricted admission rejects a noncompliant server-dry-run Pod
+# The kubernetes lab, Build It Step 3 - prove Restricted admission rejects a noncompliant server-dry-run Pod
 #
 # Label: Runnable
 #

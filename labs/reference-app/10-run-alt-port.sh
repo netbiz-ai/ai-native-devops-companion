@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Troubleshooting - restart the service on the unoccupied port 8081
+# The reference-app lab, Troubleshooting - restart the service on the unoccupied port 8081
 #
 # Label: Runnable (unlabeled in the chapter)
 #

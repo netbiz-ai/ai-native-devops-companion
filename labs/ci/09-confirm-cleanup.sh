@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Cost and Cleanup - confirm the lab container and image are gone
+# The ci lab, Cost and Cleanup - confirm the lab container and image are gone
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

@@ -12,7 +12,7 @@ import telemetry
 # delay is a denial of service the reader would be installing on themselves.
 MAX_DELAY_MS = 1000
 
-# Chapter 12's injected latency is allowed to exceed Chapter 10's per-request
+# The incident lab's injected latency is allowed to exceed the observability lab's per-request
 # bound, because the incident it stages has to be bad enough to fail a
 # readiness probe rather than merely slow. It is still bounded: an unbounded
 # value would take the pod out and leave nothing to diagnose.
@@ -29,10 +29,10 @@ def _flag(name: str) -> bool:
 
 
 def _injected_latency(environment: str) -> int:
-    """Chapter 12's injected latency, in milliseconds.
+    """The incident lab's injected latency, in milliseconds.
 
     Refuses outright in a protected environment, and refuses a value it cannot
-    read. Chapter 10's per-request header ignores a malformed value because a
+    read. The observability lab's per-request header ignores a malformed value because a
     fat-fingered lab header should not fail a real request; this one is the
     opposite case. It arrives through a reviewed deployment change, so an
     unreadable value means the change under review is not the change being
@@ -70,11 +70,11 @@ class Settings:
     host: str
     port: int
     # Both default off. The lab is opt-in, and a Settings built without them -
-    # as every test and every environment before Chapter 10 does - must be a
+    # as every test and every environment before the observability lab does - must be a
     # normally behaving service.
     omit_trace_id: bool = False
     fault_gate_enabled: bool = False
-    # Chapter 12's incident. Unlike Chapter 10's gate, which delays only the
+    # The incident lab's incident. Unlike the observability lab's gate, which delays only the
     # requests that ask for it, this delays every request - including the
     # readiness probe. That is the point: it is a deployment-level change that
     # degrades the service for everyone, which is what an incident looks like
@@ -170,7 +170,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         try:
             # The incident first: it applies to every request, including the
             # readiness probe, so the degradation is the service's and not the
-            # caller's. Chapter 10's opt-in delay stacks on top of it, which is
+            # caller's. The observability lab's opt-in delay stacks on top of it, which is
             # what lets a reader keep probing a degraded service.
             if settings.injected_latency_ms:
                 time.sleep(settings.injected_latency_ms / 1000)

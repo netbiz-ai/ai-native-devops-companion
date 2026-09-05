@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Break It Deliberately Failure 1 - inspect the diff and reproduce the failing test locally
+# The ci lab, Break It Deliberately Failure 1 - inspect the diff and reproduce the failing test locally
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

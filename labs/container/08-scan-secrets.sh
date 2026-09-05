@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Test and Validate - run Trivy secret scanners against image files and configuration
+# The container lab, Test and Validate - run Trivy secret scanners against image files and configuration
 #
 # Label: Runnable
 #

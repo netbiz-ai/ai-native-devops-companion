@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Cost and Cleanup - remove the named local staging container and review remaining images and worktree state
+# The delivery lab, Cost and Cleanup - remove the named local staging container and review remaining images and worktree state
 #
 # Label: Runnable
 #

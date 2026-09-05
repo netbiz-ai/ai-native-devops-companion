@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Prerequisites - start the chapter state and run the lab preflight checks
+# The incident lab, Prerequisites - start the chapter state and run the lab preflight checks
 #
 # Label: Runnable
 #
@@ -10,6 +10,6 @@
 #   PASS: observability queries return baseline data
 #   PASS: incident scripts affect only reference-incident
 # --- command as printed, verbatim ---
-make ch12-start
+make incident-start
 test -x labs/incident/preflight.sh
 labs/incident/preflight.sh

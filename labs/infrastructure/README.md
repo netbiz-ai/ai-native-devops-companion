@@ -1,4 +1,6 @@
-# Chapter 7 lab commands - Infrastructure as Code with AI
+# infrastructure lab commands - Infrastructure as Code with AI
+
+Second edition: chapter 5. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
@@ -19,14 +21,14 @@ The chapter's HCL listings (the network module contract and resources, the dev e
 ## What does not behave as printed here
 
 - **01 scaffolds empty directories at the book's paths.** Its final `mkdir -p` names `infrastructure/modules/network` and `infrastructure/environments/dev`, which are this repository's `infrastructure/terraform/modules/` and `infrastructure/terraform/environments/` under the book's names. `mkdir -p` creates them empty rather than resolving them, and every later `cd` in the chapter then finds the empty copy first.
-- **03 reports the chapter's expected success against an empty directory.** After 01, `cd infrastructure/environments/dev` lands in the empty directory, where `terraform init` reports no configuration files and `terraform validate` prints `Success! The configuration is valid.` at exit 0. That is the chapter's expected result exactly, and Chapter 7's validation entry in `docs/chapter-map.md` is this command, so a correct run and a meaningless one are indistinguishable from the output. Run it from `infrastructure/terraform/environments/dev`, where the configuration is real.
+- **03 reports the chapter's expected success against an empty directory.** After 01, `cd infrastructure/environments/dev` lands in the empty directory, where `terraform init` reports no configuration files and `terraform validate` prints `Success! The configuration is valid.` at exit 0. That is the chapter's expected result exactly, and the infrastructure lab's validation entry in `docs/subject-map.md` is this command, so a correct run and a meaningless one are indistinguishable from the output. Run it from `infrastructure/terraform/environments/dev`, where the configuration is real.
 - **06 reports success having run no tests.** The module ships no `.tftest.hcl`, so `terraform test` prints `Success! 0 passed, 0 failed.` The chapter expects `Success! 2 passed, 0 failed.`, and only the count distinguishes them. Write `config/05-network.tftest.hcl` into `infrastructure/terraform/modules/network/` to run the chapter's test - it then fails against the shipped module, which the chapter map's Known gaps entry records and explains.
 - **06 depends on 03 having run.** It copies `../../environments/dev/.terraform.lock.hcl`, which exists only after 03's `terraform init`. As printed it also `cd`s to the aliased `infrastructure/modules/network`, which 01 has just created empty.
 
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

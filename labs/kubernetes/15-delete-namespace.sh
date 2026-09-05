@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Cost and Cleanup - delete the reference-dev Namespace after explicit confirmation
+# The kubernetes lab, Cost and Cleanup - delete the reference-dev Namespace after explicit confirmation
 #
 # Label: Runnable
 # Destructive: deletes the reference-dev Namespace and every object it contains

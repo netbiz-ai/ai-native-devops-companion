@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Break It Deliberately - negative test against a missing artifact
+# The method lab, Break It Deliberately - negative test against a missing artifact
 #
 # Label: Runnable
 #

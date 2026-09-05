@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 3 - create the AppProject and both Applications, then inspect them
+# The gitops lab, Build It, Step 3 - create the AppProject and both Applications, then inspect them
 #
 # Label: Runnable
 # Destructive: creates the AppProject and the staging and production Application resources in the argocd namespace

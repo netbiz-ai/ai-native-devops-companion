@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Cost and Cleanup - prove ownership and inventory every namespaced resource before deletion
+# The kubernetes lab, Cost and Cleanup - prove ownership and inventory every namespaced resource before deletion
 #
 # Label: Runnable
 #

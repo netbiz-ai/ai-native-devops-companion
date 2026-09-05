@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 16, Step 3 - Define one verification entry point - top-level verifier script listing
+# capstone lab, Step 3 - Define one verification entry point - top-level verifier script listing
 #
 # Label: Partial
 # The reader must implement and test the helper scripts this dispatches to

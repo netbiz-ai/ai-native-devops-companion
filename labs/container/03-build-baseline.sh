@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Build It Step 2 - build the baseline image and measure time, size, and file count
+# The container lab, Build It Step 2 - build the baseline image and measure time, size, and file count
 #
 # Label: Runnable
 #

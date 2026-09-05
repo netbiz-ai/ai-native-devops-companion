@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Build It Step 3 - build the final image with the recorded base identity and assert the label contract
+# The container lab, Build It Step 3 - build the final image with the recorded base identity and assert the label contract
 #
 # Label: Runnable
 #

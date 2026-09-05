@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Test and Validate - run unit tests and list the agent identity's effective permissions
+# The agent lab, Test and Validate - run unit tests and list the agent identity's effective permissions
 #
 # Label: Runnable (unlabeled in the chapter)
 #

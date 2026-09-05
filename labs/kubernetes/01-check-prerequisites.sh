@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Prerequisites - verify required tools, cluster access, and namespace permissions
+# The kubernetes lab, Prerequisites - verify required tools, cluster access, and namespace permissions
 #
 # Label: Runnable
 #

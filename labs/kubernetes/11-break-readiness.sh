@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Break It Deliberately - change only the readiness path and confirm the rollout stalls
+# The kubernetes lab, Break It Deliberately - change only the readiness path and confirm the rollout stalls
 #
 # Label: Runnable
 # Destructive: applies a deliberately broken workload manifest to the reference-dev namespace

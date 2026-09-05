@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 6 - Restore the accepted state - run the reviewed restoration and capture recovery evidence
+# incident lab, Step 6 - Restore the accepted state - run the reviewed restoration and capture recovery evidence
 #
 # Label: Runnable
 # Destructive: restores the accepted deployment state of reference-app in the reference-incident namespace

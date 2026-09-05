@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 1 - verify namespace owner tokens, dry-run, then create both owned namespaces
+# The gitops lab, Build It, Step 1 - verify namespace owner tokens, dry-run, then create both owned namespaces
 #
 # Label: Runnable
 # Destructive: creates the reference-staging and reference-production namespaces in the cluster

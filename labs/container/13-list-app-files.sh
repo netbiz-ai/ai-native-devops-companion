@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Troubleshooting "The application package is missing" - list files under /app in the image
+# The container lab, Troubleshooting "The application package is missing" - list files under /app in the image
 #
 # Label: Runnable (unlabeled in the chapter)
 #

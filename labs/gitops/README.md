@@ -1,4 +1,6 @@
-# Chapter 9 lab commands - GitOps and Platform Automation
+# gitops lab commands - GitOps and Platform Automation
+
+Second edition: chapter 7. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
@@ -62,12 +64,12 @@ Several scripts reference placeholders the book tells you to replace before runn
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|
-| `config/01-base-kustomization.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | the base kustomization | `deployment/kubernetes/base/kustomization.yaml` |
-| `config/02-staging-namespace.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | `overlays/staging/namespace.yaml` | - |
-| `config/03-staging-kustomization.yaml` | Step 1 - Adapt the Chapter 8 base and create namespaces | `overlays/staging/kustomization.yaml` | `deployment/gitops/overlays/staging/kustomization.yaml` |
+| `config/01-base-kustomization.yaml` | Step 1 - Adapt the kubernetes lab base and create namespaces | the base kustomization | `deployment/kubernetes/base/kustomization.yaml` |
+| `config/02-staging-namespace.yaml` | Step 1 - Adapt the kubernetes lab base and create namespaces | `overlays/staging/namespace.yaml` | - |
+| `config/03-staging-kustomization.yaml` | Step 1 - Adapt the kubernetes lab base and create namespaces | `overlays/staging/kustomization.yaml` | `deployment/gitops/overlays/staging/kustomization.yaml` |
 | `config/04-argocd-project.yaml` | Step 2 - Bound controller authority | the Argo CD project | `deployment/gitops/argocd/project.yaml` |
 | `config/05-argocd-applications.yaml` | Step 3 - Declare staging and production applications | the staging and production applications | `deployment/gitops/argocd/staging-application.yaml` (the live tree splits this into staging- and production-application.yaml) |

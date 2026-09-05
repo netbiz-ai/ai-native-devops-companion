@@ -1,11 +1,13 @@
-# Chapter 11 lab commands - Design an AI-Assisted DevSecOps Pipeline
+# security lab commands - Design an AI-Assisted DevSecOps Pipeline
+
+Second edition: chapter 9. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
 | File | Book section | Label | Purpose |
 |---|---|---|---|
 | 01-run-preflight.sh | Prerequisites | Runnable | Verify required files, fixtures, and tool availability before starting |
-| 02-start-chapter.sh | Prerequisites | Runnable | Enter the chapter starting state and create the workflow, docs, and evidence directories |
+| 02-start-lab.sh | Prerequisites | Runnable | Enter the chapter starting state and create the workflow, docs, and evidence directories |
 | 03-check-workflow-pins.sh | Build It, Step 1 | Runnable | Fail on unresolved pin placeholders in the security workflow, then lint it with actionlint |
 | 04-apply-ruleset.sh | Build It, Step 4 | Runnable | Apply the security ruleset once, capture the effective rules, and verify them |
 | 05-plant-fixture.sh | Break It Deliberately | Runnable | Commit the harmless secret fixture on a disposable branch and push it to trigger the secret gate |

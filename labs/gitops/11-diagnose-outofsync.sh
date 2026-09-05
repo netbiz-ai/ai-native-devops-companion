@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Troubleshooting - diagnose an application that remains OutOfSync
+# The gitops lab, Troubleshooting - diagnose an application that remains OutOfSync
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

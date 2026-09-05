@@ -29,7 +29,7 @@ Chapters 10 to 13 and 16 also carry the executable validators and helpers that u
 | 16 | `labs/capstone/` | needs a cluster (runs every prior chapter's evidence checks) |
 
 The row with no chapter number is `labs/cluster/`, which builds the lab environment the cluster chapters assume rather than a chapter's project.
-It is the second edition's Bridge to the Cluster interlude, and it is the executable form of the first edition's Bridge to the Cluster section in Chapter 7, so it carries no chapter number of its own.
+It is the second edition's Bridge to the Cluster interlude, and it is the executable form of the first edition's Bridge to the Cluster section in the infrastructure lab, so it carries no chapter number of its own.
 Run it before `labs/kubernetes/` in either edition.
 
 "Offline" means plain POSIX tools plus git and python3.
@@ -39,4 +39,4 @@ Run it before `labs/kubernetes/` in either edition.
 Each numbered file is a separate script, so a `cd` inside one does not carry to the next; where the launch directory matters, the chapter README states it.
 Each `labs/<subject>/README.md` maps its files to the book section they came from and names any printed block that is not shipped as a file.
 The book's **Configuration** blocks ship too, under `labs/<subject>/config/`, one file per printed block in book order, body verbatim, so a reader copies a document rather than retypes it.
-Where a live version of the same file ships elsewhere in this repository, the chapter README's table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships elsewhere in this repository, the chapter README's table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.

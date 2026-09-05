@@ -1,4 +1,6 @@
-# Chapter 13 lab commands - Reliability, Performance, and Cost Optimization
+# capacity lab commands - Reliability, Performance, and Cost Optimization
+
+Second edition: chapter 10. That chapter covers `incident` and `capacity`. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 

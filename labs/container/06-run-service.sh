@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Build It Step 4 - run the service read-only, probe /health, check identity, and stop it
+# The container lab, Build It Step 4 - run the service read-only, probe /health, check identity, and stop it
 #
 # Label: Runnable
 #

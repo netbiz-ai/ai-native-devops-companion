@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Prerequisites - verify the required tool versions are installed
+# The ci lab, Prerequisites - verify the required tool versions are installed
 #
 # Label: Runnable
 #

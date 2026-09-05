@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Cost and Cleanup - confirm removals and print the retained image ID
+# The container lab, Cost and Cleanup - confirm removals and print the retained image ID
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Test and Validate / Validate syntax and the success path - syntax-check the release gate
+# The method lab, Test and Validate / Validate syntax and the success path - syntax-check the release gate
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Test and Validate - port-forward the staging service for local requests
+# The observability lab, Test and Validate - port-forward the staging service for local requests
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

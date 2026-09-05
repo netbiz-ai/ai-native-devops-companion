@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Break It Deliberately - inspect the change, then remove the disposable worktree and branch
+# The prompt-library lab, Break It Deliberately - inspect the change, then remove the disposable worktree and branch
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

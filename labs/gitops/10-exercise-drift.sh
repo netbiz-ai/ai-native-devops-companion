@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Break It Deliberately - inject replica drift in staging and watch self-heal restore it
+# The gitops lab, Break It Deliberately - inject replica drift in staging and watch self-heal restore it
 #
 # Label: Runnable
 # Destructive: patches the staging Application sync policy and scales the staging Deployment

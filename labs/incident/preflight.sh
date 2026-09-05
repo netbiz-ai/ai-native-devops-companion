@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12 preflight.
+# The incident lab preflight.
 #
 # The previous version checked four files existed and printed mode=design-only.
 # The templates it checked for are still checked, because an incident record
@@ -34,8 +34,8 @@ for path in \
 done
 
 # The incident overlay is the healthy baseline Step 1 deploys, and it was added
-# after ch12-start was cut - it first appears at ch12-complete. So entering the
-# chapter the documented way, with `make ch12-start`, lands in a state that
+# after incident-start was cut - it first appears at ch12-complete. So entering the
+# chapter the documented way, with `make incident-start`, lands in a state that
 # cannot deploy the thing the chapter breaks. Naming the file is not enough
 # here; say where it comes from.
 if (( missing_incident_overlay )); then

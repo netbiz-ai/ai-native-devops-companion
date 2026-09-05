@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Chapter 6, Required environment - verify the Chapter 5 files, local tooling, and GitHub CLI authentication
+# The delivery lab, Required environment - verify the ci lab files, local tooling, and GitHub CLI authentication
 #
 # Label: Runnable
 #
 # Expected result, per the chapter:
-#   The Chapter 5 files exist.
+#   The the ci lab files exist.
 #   Docker is reachable.
 #   Every local validator reports a version.
 #   GitHub CLI is authenticated to the intended training repository.

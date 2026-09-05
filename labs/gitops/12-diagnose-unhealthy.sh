@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Troubleshooting - diagnose Synced but not Healthy
+# The gitops lab, Troubleshooting - diagnose Synced but not Healthy
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

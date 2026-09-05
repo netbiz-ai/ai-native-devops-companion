@@ -86,7 +86,7 @@ jobs:
           # stanza carrying one environment variable. It was added without
           # this line and turned Security red from f149211 onward.
           # The ch04 baseline is the book's deliberately insecure single-stage
-          # Dockerfile: it runs as root because that is the defect Chapter 4
+          # Dockerfile: it runs as root because that is the defect the container lab
           # measures and then fixes. The hardened result stays scanned, both as
           # labs/container/config/03-dockerfile-final.dockerfile and as the live
           # reference-app/Dockerfile, and both are clean. "Fixing" the baseline

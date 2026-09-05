@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 5 - deploy the labeled test client and prove it reaches /ready through the Service
+# The kubernetes lab, Build It Step 5 - deploy the labeled test client and prove it reaches /ready through the Service
 #
 # Label: Runnable
 # Destructive: creates the reference-client Pod in the reference-dev namespace

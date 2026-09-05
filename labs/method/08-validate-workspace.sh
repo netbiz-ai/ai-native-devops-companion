@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Validate the workspace - check that every required artifact exists and is complete
+# The method lab, Validate the workspace - check that every required artifact exists and is complete
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 1 - render both overlays, check digests, and server dry-run the output
+# The gitops lab, Build It, Step 1 - render both overlays, check digests, and server dry-run the output
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

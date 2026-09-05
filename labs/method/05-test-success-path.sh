@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Test and Validate / Validate syntax and the success path - run the gate against a present artifact
+# The method lab, Test and Validate / Validate syntax and the success path - run the gate against a present artifact
 #
 # Label: Runnable
 #

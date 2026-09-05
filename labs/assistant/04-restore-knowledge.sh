@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 14, Break It Deliberately - restore the approved knowledge set and prove the recovery
+# The assistant lab, Break It Deliberately - restore the approved knowledge set and prove the recovery
 #
 # Label: Runnable
 #

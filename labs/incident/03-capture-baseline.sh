@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 1 - Establish the healthy baseline - create the incident record and capture baseline evidence
+# incident lab, Step 1 - Establish the healthy baseline - create the incident record and capture baseline evidence
 #
 # Label: Runnable
 #

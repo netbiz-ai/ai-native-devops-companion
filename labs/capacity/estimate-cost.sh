@@ -4,7 +4,7 @@
 #
 # labs/capacity/03-estimate-cost.sh calls this and it did not exist, which left the
 # "Estimated cost" row of optimization/scorecard-template.md with nothing able
-# to fill it - and Chapter 13's decision is a trade-off, so half of it was
+# to fill it - and the capacity lab's decision is a trade-off, so half of it was
 # unmeasurable.
 #
 # It does not invent a price. Rates differ by provider, region, commitment and

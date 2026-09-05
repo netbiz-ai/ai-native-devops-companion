@@ -1,4 +1,6 @@
-# Chapter 1 lab - The AI-Native DevOps Mindset
+# method lab - The AI-Native DevOps Mindset
+
+Second edition: chapter 1. That chapter covers `method` and `prompt-library`. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them.
 
@@ -25,13 +27,13 @@ File 03 is a script body: write it to `samples/release-gate.sh` in your workspac
 Between 06 and 07 comes the chapter's correction: 06 fails by design because the gate exits 0 on a missing artifact, and the chapter has you edit your `samples/release-gate.sh` so the missing-artifact path exits 1, then re-run 06 to observe it pass before committing with 07.
 
 The chapter also prints the workspace documents (task brief, AI usage policy, verification checklist, review record) in Markdown fences.
-You write those yourself into the `ai-native-workspace/` you create in this chapter - per `docs/chapter-map.md`, it is the reader's output (the book sometimes says `workspace/` for short) and this repository deliberately does not supply one.
+You write those yourself into the `ai-native-workspace/` you create in this chapter - per `docs/subject-map.md`, it is the reader's output (the book sometimes says `workspace/` for short) and this repository deliberately does not supply one.
 The blank checklist to copy is `templates/verification-checklist.md`.
 
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13, Test and Validate - validate both candidates against baseline and confirm restoration
+# The capacity lab, Test and Validate - validate both candidates against baseline and confirm restoration
 #
 # Label: Runnable
 #

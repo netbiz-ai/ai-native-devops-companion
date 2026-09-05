@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Step 5 - Create and review a saved plan - assert the sandbox account, then save and render the plan
+# infrastructure lab, Step 5 - Create and review a saved plan - assert the sandbox account, then save and render the plan
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Step 4 - Format, initialize, and validate - run fmt, init, validate, and the Trivy scan
+# infrastructure lab, Step 4 - Format, initialize, and validate - run fmt, init, validate, and the Trivy scan
 #
 # Label: Runnable
 #

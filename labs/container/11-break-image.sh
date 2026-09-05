@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Break It Deliberately - build a Dockerfile without the application copy and confirm the startup failure
+# The container lab, Break It Deliberately - build a Dockerfile without the application copy and confirm the startup failure
 #
 # Label: Runnable
 #

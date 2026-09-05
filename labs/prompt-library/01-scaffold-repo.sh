@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Step 1 - Create the prompt library structure - scaffold the devops-prompt-library repository
+# prompt-library lab, Step 1 - Create the prompt library structure - scaffold the devops-prompt-library repository
 #
 # Label: Runnable
 #

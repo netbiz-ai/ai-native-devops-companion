@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Prerequisites - confirm the Chapter 3 state and start the service
+# The container lab, Prerequisites - confirm the reference-app lab state and start the service
 #
 # Label: Runnable
 #

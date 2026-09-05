@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Test and Validate - inspect the image user, command, and layer history
+# The container lab, Test and Validate - inspect the image user, command, and layer history
 #
 # Label: Runnable
 #

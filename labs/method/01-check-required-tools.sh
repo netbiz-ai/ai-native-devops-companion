@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 1, Prerequisites / Required tools - confirm bash and git are installed
+# The method lab, Prerequisites / Required tools - confirm bash and git are installed
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 6, Step 3 - Validate before dispatch - stage both workflow files and inspect them locally
+# delivery lab, Step 3 - Validate before dispatch - stage both workflow files and inspect them locally
 #
 # Label: Runnable
 #

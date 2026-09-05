@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 12, Step 2 - Inject one controlled failure - apply the latency fault and drive traffic through it
+# incident lab, Step 2 - Inject one controlled failure - apply the latency fault and drive traffic through it
 #
 # Label: Runnable
 # Destructive: applies the CH12_INJECTED_LATENCY_MS fault overlay to the reference application in reference-incident

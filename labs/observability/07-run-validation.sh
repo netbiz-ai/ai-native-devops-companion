@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Test and Validate - send a delayed request, generate traffic, and run the validation script
+# The observability lab, Test and Validate - send a delayed request, generate traffic, and run the validation script
 #
 # Label: Runnable (unlabeled in the chapter)
 #

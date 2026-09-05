@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 11, Prerequisites - preflight check for required files and tools
+# The security lab, Prerequisites - preflight check for required files and tools
 #
 # Label: Runnable
 #

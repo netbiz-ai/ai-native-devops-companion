@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Build It Step 3 - pull the base tag and record its registry digest
+# The container lab, Build It Step 3 - pull the base tag and record its registry digest
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Cost and Cleanup - remove the AppProject once no application references it
+# The gitops lab, Cost and Cleanup - remove the AppProject once no application references it
 #
 # Label: Runnable
 # Destructive: deletes the reference-app AppProject from the argocd namespace

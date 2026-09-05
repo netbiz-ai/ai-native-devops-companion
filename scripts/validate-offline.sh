@@ -44,7 +44,7 @@ python3 -m compileall -q \
   operations-agent/src \
   scripts/validate_repo.py
 
-# From Chapter 10 the reference application has runtime dependencies, so its
+# From the observability lab the reference application has runtime dependencies, so its
 # tests cannot run against a bare interpreter. Say that plainly and name the
 # fix: the alternative is a ModuleNotFoundError inside a test loader, which
 # reads as a broken test suite rather than a missing install.

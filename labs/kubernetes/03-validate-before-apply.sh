@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 3 - prove namespace ownership, check permissions, and server-dry-run the manifests
+# The kubernetes lab, Build It Step 3 - prove namespace ownership, check permissions, and server-dry-run the manifests
 #
 # Label: Runnable
 #

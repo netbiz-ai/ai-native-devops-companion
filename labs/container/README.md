@@ -1,10 +1,12 @@
-# Chapter 4 lab scripts - Containerize and Optimize with AI
+# container lab scripts - Containerize and Optimize with AI
+
+Second edition: chapter 3. First edition and the full mapping: [docs/subject-map.md](../../docs/subject-map.md).
 
 These are the chapter's commands exactly as the book prints them, one file per bash block, in book order.
 
 | File | Book section | Label | Purpose |
 |---|---|---|---|
-| 01-verify-prereqs.sh | Prerequisites | Runnable | Confirm the Chapter 3 files and start the service locally |
+| 01-verify-prereqs.sh | Prerequisites | Runnable | Confirm the reference-app lab files and start the service locally |
 | 02-check-environment.sh | Prerequisites - Required publication environment | Runnable | Record Git state, Docker, Buildx, Trivy, OS, and architecture |
 | 03-build-baseline.sh | Build It - Step 2 | Runnable | Build the baseline image and measure time, size, and file count |
 | 04-record-digest.sh | Build It - Step 3 | Runnable | Pull the base tag and record its registry digest into python_base |
@@ -28,22 +30,22 @@ The chapter's `.dockerignore`, `Dockerfile.baseline`, and multi-stage `Dockerfil
 
 ## The shipped Dockerfile is not this chapter's Dockerfile
 
-`reference-app/Dockerfile` on `main` is the Chapter 10 evolution of the file, not the multi-stage build this chapter prints as `config/03-dockerfile-final.dockerfile`.
+`reference-app/Dockerfile` on `main` is the observability lab evolution of the file, not the multi-stage build this chapter prints as `config/03-dockerfile-final.dockerfile`.
 It is single-stage on `python:3.12-alpine`, installs `requirements.txt`, copies the contents of `src/` to `/app`, and carries no `ARG` and no `LABEL`.
 Later chapters need that file, so it cannot be replaced here.
 
 Two of the chapter's steps therefore cannot behave as printed against it.
 
-- **05 asserts a label contract the shipped file does not carry.** The three `--build-arg` values are rejected as unconsumed, `title`, `revision` and `source` all come back empty, and every assertion fails. Chapter 4's validation entry in `docs/chapter-map.md` is these assertions, so the chapter cannot validate against the shipped file.
+- **05 asserts a label contract the shipped file does not carry.** The three `--build-arg` values are rejected as unconsumed, `title`, `revision` and `source` all come back empty, and every assertion fails. The container lab's validation entry in `docs/subject-map.md` is these assertions, so the chapter cannot validate against the shipped file.
 - **11 never breaks the image.** Its `awk` deletes the line `COPY --from=builder --chown=10001:10001 /build/src ./src`, which the shipped file does not contain, so `Dockerfile.broken` would be identical to `Dockerfile` and the image would start normally. The script now checks for that transfer before it filters anything, and stops with `this Dockerfile has no builder-to-runtime source transfer to remove` plus a pointer to this section. Without that guard it did not report `unexpected success` as this note previously claimed: the shipped image's `ENTRYPOINT` starts a server that never exits, so `docker run --rm` blocked indefinitely and the script hung. A `timeout` now bounds the run and reports a started container distinctly from a failed one.
 
 To run the chapter as printed, write `config/03-dockerfile-final.dockerfile` to `reference-app/Dockerfile` first and restore it afterwards with `git checkout -- reference-app/Dockerfile`.
 The label assertions pass on that route, and the Break It step fails for the reason the chapter intends.
 
-One step still cannot pass on it, and this is the Chapter 3 route choice reaching forward.
+One step still cannot pass on it, and this is the reference-app lab route choice reaching forward.
 06 runs the image, and an image built from the chapter's Dockerfile cannot run the shipped application: the chapter copies `src` as a package and runs `python3 -m src.app`, while the shipped `src/app.py` does a flat `import telemetry` that only resolves when the module lands at `/app/telemetry.py` as the shipped Dockerfile places it.
 The chapter's Dockerfile also has no `pip install`, so the `opentelemetry` packages `src/telemetry.py` imports are absent either way.
-A reader who built their own Chapter 3 application outside the clone is unaffected, because that application is standard library only.
+A reader who built their own the reference-app lab application outside the clone is unaffected, because that application is standard library only.
 
 ## What the baseline comparison measures
 
@@ -72,7 +74,7 @@ None - all 17 bash blocks in the chapter are commands and are shipped as files.
 ## Configuration blocks
 
 The chapter's **Configuration** blocks ship in `config/`, one file per printed block, in book order, body verbatim - copy a file to its destination rather than retype it.
-Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/chapter-map.md`, and the config copy is what the page prints.
+Where a live version of the same file ships in this repository, the table names it; the live file is canonical per `docs/subject-map.md`, and the config copy is what the page prints.
 
 | File | Book section | Goes to | Live file here |
 |---|---|---|---|

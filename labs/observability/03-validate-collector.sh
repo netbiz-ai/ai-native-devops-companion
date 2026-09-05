@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Step 3 - Configure and inspect telemetry flow - validate the Collector config and inspect its rollout and logs
+# observability lab, Step 3 - Configure and inspect telemetry flow - validate the Collector config and inspect its rollout and logs
 #
 # Label: Runnable
 #

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Build It Step 1 - install pinned dev tools and run lint, tests, and Bandit
+# The ci lab, Build It Step 1 - install pinned dev tools and run lint, tests, and Bandit
 #
 # Label: Runnable
 #

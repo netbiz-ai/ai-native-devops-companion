@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 7, Test and Validate - apply the reviewed plan and check convergence
+# The infrastructure lab, Test and Validate - apply the reviewed plan and check convergence
 #
 # Label: Runnable
 # Destructive: creates the lab VPC and two subnets in the sandbox AWS account

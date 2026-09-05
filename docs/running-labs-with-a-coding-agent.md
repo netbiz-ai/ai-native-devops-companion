@@ -22,7 +22,7 @@ Three responsibilities do not transfer:
   A script whose header says `Destructive` creates or changes real things, and cluster creation, Terraform apply, and anything on your cloud or GitHub credentials can cost money.
   `AGENTS.md` instructs agents to stop and ask you before each of these; expect those questions and read the script before answering yes.
 - **The three things you supply.**
-  From Chapter 8 onward you provide the disposable cluster, the registry with your image digest, and the Git source Argo CD can reach, exactly as in [getting-started.md](getting-started.md).
+  From the kubernetes lab onward you provide the disposable cluster, the registry with your image digest, and the Git source Argo CD can reach, exactly as in [getting-started.md](getting-started.md).
   A script whose header says `Partial` waits for your values; the agent should ask you for them, never invent them.
 
 ## Step by step
@@ -43,14 +43,14 @@ Three responsibilities do not transfer:
 
    > Work through chapter 3 of this repository per AGENTS.md.
    > Run the lab scripts in labs/reference-app/ in numbered order, show me each command and its result before moving on, and stop for my confirmation before anything labeled Destructive or anything that would create a cluster or cost money.
-   > Finish with the chapter's validation command from docs/chapter-map.md and report whether it passed.
+   > Finish with the chapter's validation command from docs/subject-map.md and report whether it passed.
 
    Chapters 1, 2, 3, and 14 run at the offline level and are good first chapters for this way of working.
 5. **Supervise the run.**
    Expect the agent to stop and ask at exactly the points `AGENTS.md` names: before anything labeled `Destructive`, before anything that creates a cluster or could cost money, and whenever a `Partial` script needs your values - supply real ones; it must never invent them.
    Read each script the agent asks about before answering yes, and read the chapter alongside the run: the agent executes the *Build It* section, but the reasoning around it is the book.
 6. **Close the chapter.**
-   The chapter is done when its validation command from [chapter-map.md](chapter-map.md) passes; ask for each check's actual output rather than a bare "passed", since a few chapters validate through their own success and failure runs rather than one command.
+   The chapter is done when its validation command from [subject-map.md](subject-map.md) passes; ask for each check's actual output rather than a bare "passed", since a few chapters validate through their own success and failure runs rather than one command.
    Keep the artifacts the chapter produced - later chapters read some of them, and the cards in [getting-started.md](getting-started.md) say which.
 
 ## Where the human gate lives
@@ -65,8 +65,8 @@ It survives at three layers, and knowing them tells you what your supervision is
    Step 3 says to keep your agent's own permission prompts on rather than granting blanket approval.
    The two layers overlap on purpose: `AGENTS.md` catches a safe-looking script whose label says `Destructive`, and the harness catches anything an agent might rationalize past.
 3. **The book's gate artifacts.**
-   The chapter work itself is human-gate machinery only you can operate: the verification checklist ends with a named human owning the decision, review records and ADRs need your dispositions, Chapter 6's delivery route requires a production reviewer who is not the dispatcher - a gate no agent can satisfy for you - and the Chapter 14 and 15 assistants are read-only and proposal-only by construction.
-   `AGENTS.md` forbids the agent from inventing those judgments, and the Chapter 14 demo will not produce its safe answer until the knowledge doc you write in Step 1 exists.
+   The chapter work itself is human-gate machinery only you can operate: the verification checklist ends with a named human owning the decision, review records and ADRs need your dispositions, the delivery lab's delivery route requires a production reviewer who is not the dispatcher - a gate no agent can satisfy for you - and the assistant lab and 15 assistants are read-only and proposal-only by construction.
+   `AGENTS.md` forbids the agent from inventing those judgments, and the assistant lab demo will not produce its safe answer until the knowledge doc you write in Step 1 exists.
 
 In short: the agent executes inside the gates; it never becomes one.
 
@@ -74,21 +74,21 @@ In short: the agent executes inside the gates; it never becomes one.
 
 The gate changes form as the book progresses, and three chapters show the whole arc.
 
-**Chapter 1 - the gate is the artifacts you sign.**
+**The method lab - the gate is the artifacts you sign.**
 No lab here is `Destructive`, so no stop fires; the gate is the work itself.
 The AI Prompt Lab runs in *your* approved assistant, and the draft's provenance header records which route it came from.
 The verification checklist's result cells start as `pending` and only your observed outputs may replace them, ending with a named human owning the decision.
 The correction between labs 06 and 07 - seeing the release gate exit 0 on a missing artifact and deciding to make it exit 1 - is your judgment, and the review record takes your disposition on every suggestion before anything is committed.
 The chapter's namesake artifact is itself the lesson: a machine gate that false-passes until a human verifies it.
 
-**Chapter 8 - the gate has migrated into the system.**
+**The kubernetes lab - the gate has migrated into the system.**
 Every lab is `Runnable` (the blast radius is your disposable cluster), so the label layer stays quiet here too; the stop that fires is the one before cluster creation, crossed knowingly and once.
 After that the gate is compiled into the deployment: the shipped image digest is an all-zero placeholder that cannot pull, so an unreplaced value fails at admission rather than deploying something you never reviewed, and labs 02 and 07 refuse to proceed while placeholders remain - the only way through is the digest of the image *you* built and promoted in Chapters 4 to 6.
 The script order reviews before it applies (validate, PSA check, diff, then apply), and the denial tests make you witness the platform saying no - lab 09 even hard-stops on ambiguity (`STOP: the egress test failed ambiguously`) rather than classify it as success.
 
-**Chapter 16 - the gate becomes the deliverable.**
+**The capstone lab - the gate becomes the deliverable.**
 The evidence manifest is a gate ledger: every criterion CAP-01 to CAP-07 carries `status: pending` *and* `reviewer: pending`, one named-human signature per criterion, and its release identities ship as `REPLACE_AFTER_BUILD` values only a real run may fill.
-`capstone-verify.sh` is Chapter 1's release gate grown up: it fails a criterion on missing evidence *and* on evidence still containing `REPLACE`, `pending`, or `not_evaluated`, so it cannot false-pass on hollow files, and its design mode honestly prints `live_acceptance=not_evaluated` on a fresh clone.
+`capstone-verify.sh` is the method lab's release gate grown up: it fails a criterion on missing evidence *and* on evidence still containing `REPLACE`, `pending`, or `not_evaluated`, so it cannot false-pass on hollow files, and its design mode honestly prints `live_acceptance=not_evaluated` on a fresh clone.
 It also refuses evidence that belongs to a different acceptance run.
 Every criterion must record the `run_id` being accepted, the teardown must name the same run and the same cluster as the release identity, and it must have been observed after that identity rather than before it.
 That closes the gap where a cleanup file retained from an earlier run carried the final check to `PASS` while describing a cluster torn down on another day - the failure mode is a stale record, not a hollow one, and presence checks cannot see it.

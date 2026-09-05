@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13, Break It Deliberately - run a short-window candidate so the validator rejects the comparison
+# The capacity lab, Break It Deliberately - run a short-window candidate so the validator rejects the comparison
 #
 # Label: Runnable
 # Destructive: runs candidate-a against the reference-optimization namespace

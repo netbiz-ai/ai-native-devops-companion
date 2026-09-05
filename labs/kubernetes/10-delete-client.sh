@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 8, Build It Step 5 - delete the test client Pod after retaining the result
+# The kubernetes lab, Build It Step 5 - delete the test client Pod after retaining the result
 #
 # Label: Runnable
 # Destructive: deletes the reference-client Pod from the reference-dev namespace

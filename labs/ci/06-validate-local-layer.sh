@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Test and Validate - run the local layer: checks, image build, and health probe
+# The ci lab, Test and Validate - run the local layer: checks, image build, and health probe
 #
 # Label: Runnable
 #

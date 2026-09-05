@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Required environment - verify Python, Git, and curl versions
+# The reference-app lab, Required environment - verify Python, Git, and curl versions
 #
 # Label: Runnable
 #

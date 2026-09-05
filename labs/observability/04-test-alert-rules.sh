@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Step 4 - Provision the dashboard and alert - check and unit-test the Prometheus alert rules
+# observability lab, Step 4 - Provision the dashboard and alert - check and unit-test the Prometheus alert rules
 #
 # Label: Runnable
 #

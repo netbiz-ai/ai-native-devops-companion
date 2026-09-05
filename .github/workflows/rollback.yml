@@ -1,6 +1,6 @@
 name: Rollback proposal
 
-# Chapter 6, Step 4. A rollback is a promotion in reverse and gets the same
+# delivery lab, Step 4. A rollback is a promotion in reverse and gets the same
 # treatment: the requested digest must appear in approved release evidence for
 # the expected image, the image must still pull and answer its health contract,
 # and only then may an independent reviewer move the marker. A digest that

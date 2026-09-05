@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Restore the accepted state after Chapter 12's controlled fault.
+# Restore the accepted state after the incident lab's controlled fault.
 #
 # Restores to the value inject-failure.sh recorded, not to a value assumed
 # here. If the baseline had been something other than zero, restoring to zero

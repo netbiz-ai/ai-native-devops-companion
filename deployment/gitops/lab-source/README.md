@@ -1,14 +1,14 @@
 # A Git source for the lab
 
 Argo CD reconciles from Git, not from your working tree.
-Chapter 9 onward therefore needs a repository that the cluster can reach and
+The gitops lab onward therefore needs a repository that the cluster can reach and
 that you can push to, holding your edited copy of `deployment/`.
 This directory supplies one, for readers who do not already have a Git host the
 cluster can reach.
 
 Use your own host if you have one.
 A fork of this repository, or any Git URL Argo CD can resolve, is the better
-answer, and a private one needs the scoped read-only credential Chapter 9
+answer, and a private one needs the scoped read-only credential the gitops lab
 describes.
 What follows is the fallback, and it is deliberately disposable.
 
@@ -56,7 +56,7 @@ permitted in project 'ai-native-devops'
 which reports an application-level error for a project-level rule.
 Apply the three files and Argo CD reconciles from your copy.
 Commit and re-run `seed.sh` for every later change you want reconciled;
-promotion between environments is still the Chapter 9 exercise, and this server
+promotion between environments is still the gitops lab exercise, and this server
 changes nothing about it.
 
 If an application was created before the source was seeded, it caches the
@@ -74,8 +74,8 @@ The Git source is one of three things this repository cannot contain for you.
 
 | What | Where it goes | Where it comes from |
 |---|---|---|
-| A disposable cluster | `kubectl` context | Chapter 8; a local `kind` cluster is enough |
-| A registry the cluster can pull from, and the image digest in it | `newName` and `digest` in `../../kubernetes/base/kustomization.yaml` | Chapter 4 builds the image, Chapter 6 promotes the digest |
+| A disposable cluster | `kubectl` context | The kubernetes lab; a local `kind` cluster is enough |
+| A registry the cluster can pull from, and the image digest in it | `newName` and `digest` in `../../kubernetes/base/kustomization.yaml` | The container lab builds the image, the delivery lab promotes the digest |
 | A Git source Argo CD can reach | `spec.source.repoURL` in `../argocd/*.yaml` | Your own host, or this directory |
 
 The published `digest` is an all-zero placeholder, and an all-zero digest cannot

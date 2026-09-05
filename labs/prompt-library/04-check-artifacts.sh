@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 2, Test and Validate - verify prompt, case, result, and review artifacts are present
+# The prompt-library lab, Test and Validate - verify prompt, case, result, and review artifacts are present
 #
 # Label: Runnable
 #

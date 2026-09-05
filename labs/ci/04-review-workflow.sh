@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 5, Build It Step 3 - stage and statically review the CI workflow before pushing
+# The ci lab, Build It Step 3 - stage and statically review the CI workflow before pushing
 #
 # Label: Runnable
 #

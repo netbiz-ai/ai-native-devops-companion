@@ -5,7 +5,7 @@ The repository is the companion project for *AI-Native DevOps*; the reader works
 
 ## Where truth lives
 
-- [docs/chapter-map.md](docs/chapter-map.md) is the canonical contract: what each chapter starts from, carries in, produces, and the single command that validates it.
+- [docs/subject-map.md](docs/subject-map.md) is the canonical contract: what each chapter starts from, carries in, produces, and the single command that validates it.
   Where anything else disagrees with the map, the map is correct.
 - `labs/<subject>/README.md` lists that chapter's script files in printed order, mapped to the book section each came from, and names any printed block that is not shipped as a file.
 - [labs/README.md](labs/README.md) says what each chapter needs to run: offline, a named local tool, or a disposable cluster.
@@ -13,14 +13,14 @@ The repository is the companion project for *AI-Native DevOps*; the reader works
 
 ## How to execute a chapter
 
-1. Read `labs/<subject>/README.md` and the chapter's entry in `docs/chapter-map.md` first.
+1. Read `labs/<subject>/README.md` and the chapter's entry in `docs/subject-map.md` first.
 2. Confirm the prerequisites for the chapter's tier are present before running anything; if a tool or cluster is missing, say so and stop rather than improvising a substitute.
 3. Enter the chapter's starting state.
    Chapters 10 to 13 use `make <subject>-start`; every other chapter continues from where the previous chapter left the clone.
 4. Run the numbered `labs/<subject>/*.sh` files in order, showing the reader each result.
    Copy the chapter's Configuration documents from `labs/<subject>/config/` to the destination the chapter README names.
    Some numbered files are not commands but the body of a script the chapter has you create; the chapter README's Purpose column says which, and those are written to the destination the chapter names, like a Configuration block, rather than executed where they sit.
-5. Finish with the chapter's validation entry from `docs/chapter-map.md` and report the result.
+5. Finish with the chapter's validation entry from `docs/subject-map.md` and report the result.
    Where that entry is a command, the chapter is done when it passes, not before.
    Where it is prose (some chapters validate through their own success and failure runs), re-run the checks it describes and report each outcome; do not treat a single exit code as proof.
 
@@ -36,13 +36,13 @@ The repository is the companion project for *AI-Native DevOps*; the reader works
   Ask the reader for the values; do not invent them.
 - `make <subject>-start` exiting 3 with a plain message means that chapter's snapshot tag has not been cut.
   That is by design, not a defect: continue from the clone's current state and tell the reader.
-- Some paths the book names are deliberately absent because the reader creates them (`ai-native-workspace/`, `devops-prompt-library/`, and others listed in `docs/chapter-map.md` under "What the reader writes, and when").
+- Some paths the book names are deliberately absent because the reader creates them (`ai-native-workspace/`, `devops-prompt-library/`, and others listed in `docs/subject-map.md` under "What the reader writes, and when").
   Creating them by following the chapter is the lab; do not scaffold them ahead of the reader.
 - Nothing here is evidence that a cloud, cluster, alert, or promotion succeeded until the applicable path has actually been run.
   Report only what you observed.
 
 ## What the reader supplies
 
-From Chapter 8 onward the labs need three things that are the reader's, not the repository's: a disposable cluster, a registry holding their image digest, and a Git source their Argo CD can reach.
+From the kubernetes lab onward the labs need three things that are the reader's, not the repository's: a disposable cluster, a registry holding their image digest, and a Git source their Argo CD can reach.
 Templates for all three are in [scripts/lab-environment/](scripts/lab-environment/README.md).
 When a cluster chapter appears not to work, check these three before anything else.

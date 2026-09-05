@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 15, Step 6 - Run the diagnostic agent - create a venv, install dependencies, and run one diagnosis
+# agent lab, Step 6 - Run the diagnostic agent - create a venv, install dependencies, and run one diagnosis
 #
 # Label: Runnable (unlabeled in the chapter)
 #

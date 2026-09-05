@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 13, Cost and Cleanup - restore the baseline, then delete the disposable namespace
+# The capacity lab, Cost and Cleanup - restore the baseline, then delete the disposable namespace
 #
 # Label: Runnable
 # Destructive: restores the application configuration and deletes the reference-optimization namespace

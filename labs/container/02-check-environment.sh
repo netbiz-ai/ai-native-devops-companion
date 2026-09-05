@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 4, Prerequisites / Required publication environment - record tool versions and builder state
+# The container lab, Prerequisites / Required publication environment - record tool versions and builder state
 #
 # Label: Runnable
 #

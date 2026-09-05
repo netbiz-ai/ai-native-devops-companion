@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run Chapter 13's capacity experiment: baseline, then candidate, then compare.
+# Run the capacity lab's capacity experiment: baseline, then candidate, then compare.
 #
 # This script measures. It does not decide. Whether to retain or revert is a
 # judgement about risk and cost that belongs to a named person, and a script

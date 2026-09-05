@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Cost and Cleanup - inventory application finalizers, namespaces, and external resources
+# The gitops lab, Cost and Cleanup - inventory application finalizers, namespaces, and external resources
 #
 # Label: Runnable
 # --- command as printed, verbatim ---

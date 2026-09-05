@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 3, Step 3 - run the automated contract test suite
+# reference-app lab, Step 3 - run the automated contract test suite
 #
 # Label: Runnable
 #
@@ -12,7 +12,7 @@
 #   test_non_numeric_port_is_rejected ... ok
 #
 # Against this repository's shipped tree expect `Ran 37 tests ... OK`: the clone
-# also carries the Chapter 10 and 12 suites. The chapter's count describes the
+# also carries the observability lab and 12 suites. The chapter's count describes the
 # app as you write it in this chapter.
 #   test_out_of_range_port_is_rejected ... ok
 #   test_query_string_preserves_root_response ... ok

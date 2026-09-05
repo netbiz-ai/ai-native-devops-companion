@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Chapter 13, Step 1 - Establish the accepted baseline - start the lab, run preflight, capture baseline evidence
+# capacity lab, Step 1 - Establish the accepted baseline - start the lab, run preflight, capture baseline evidence
 #
 # Label: Runnable
-# Destructive: make ch13-start deploys the ch13 lab state into the disposable cluster
+# Destructive: make capacity-start deploys the capacity lab state into the disposable cluster
 #
 # Expected result, per the chapter:
 #   PASS: context targets the disposable lab cluster
@@ -12,7 +12,7 @@
 #   PASS: restore path is available
 #   PASS: baseline evidence written to evidence/ch13/baseline.json
 # --- command as printed, verbatim ---
-make ch13-start
+make capacity-start
 test -x labs/capacity/preflight.sh
 labs/capacity/preflight.sh
 labs/capacity/capture-baseline.sh \

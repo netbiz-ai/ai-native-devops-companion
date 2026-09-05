@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 9, Build It, Step 4 - pin the approved revision, sync production, and verify rollout and image
+# The gitops lab, Build It, Step 4 - pin the approved revision, sync production, and verify rollout and image
 #
 # Label: Runnable
 # Destructive: synchronizes the production Application, changing the reference-production workload

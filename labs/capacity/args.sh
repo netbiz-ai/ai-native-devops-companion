@@ -1,4 +1,4 @@
-# Shared argument handling for the Chapter 13 lab scripts.
+# Shared argument handling for the capacity lab scripts.
 #
 # The chapter's printed commands pass --candidate, --namespace, --output,
 # --baseline, --cost-model, --state and --duration. The scripts read only

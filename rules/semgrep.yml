@@ -1,4 +1,4 @@
-# Chapter 11 static analysis rules.
+# The security lab static analysis rules.
 #
 # Deliberately small. A large imported rule pack produces a long report on
 # first run, and a long report on first run is how a team learns to skim

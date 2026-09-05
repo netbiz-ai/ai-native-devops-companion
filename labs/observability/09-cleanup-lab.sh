@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Chapter 10, Cost and Cleanup - delete the temporary alert sink and confirm the app is healthy
+# The observability lab, Cost and Cleanup - delete the temporary alert sink and confirm the app is healthy
 #
 # Label: Runnable
 # Destructive: deletes the ch10-alert-sink deployment in the observability namespace
