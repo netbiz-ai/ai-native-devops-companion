@@ -49,6 +49,11 @@ namespaces=(
   lab-source
   capstone-iac
 )
+# The Argo CD Applications this book's chapters create, and only those.
+applications=(
+  reference-staging
+  reference-production
+)
 images=(
   ai-native-devops/reference-service:baseline
   ai-native-devops/reference-service:broken
@@ -99,9 +104,26 @@ done
 record ""
 record "argo cd applications and project"
 if kubectl get crd applications.argoproj.io >/dev/null 2>&1; then
-  for app in $(kubectl -n argocd get applications -o name 2>/dev/null); do
-    kubectl -n argocd delete "$app" --cascade=false >/dev/null 2>&1 \
-      && record "  deleted   ${app}" || record "  FAILED    ${app}"
+  # By name, like the namespaces. Deleting every Application the namespace
+  # happens to list makes the blast radius depend on who else shares the
+  # cluster, which is not something this script can know and not something the
+  # reader agreed to when they confirmed a context. Anything else present is
+  # recorded as left alone, so the narrowing is visible in the evidence rather
+  # than only in this comment.
+  for name in "${applications[@]}"; do
+    if kubectl -n argocd get "application/${name}" >/dev/null 2>&1; then
+      kubectl -n argocd delete "application/${name}" --cascade=false >/dev/null 2>&1 \
+        && record "  deleted   application.argoproj.io/${name}" \
+        || record "  FAILED    application.argoproj.io/${name}"
+    else
+      record "  absent    application.argoproj.io/${name}"
+    fi
+  done
+  for found in $(kubectl -n argocd get applications -o name 2>/dev/null); do
+    case " ${applications[*]} " in
+      *" ${found#application.argoproj.io/} "*) ;;
+      *) record "  left      ${found} (not this book's)" ;;
+    esac
   done
   if kubectl -n argocd get appproject ai-native-devops >/dev/null 2>&1; then
     kubectl -n argocd delete appproject ai-native-devops >/dev/null 2>&1 \

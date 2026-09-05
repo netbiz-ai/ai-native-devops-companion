@@ -194,5 +194,29 @@ build_fixture
 write_cleanup "$OTHER" "$CLUSTER" "$CLEANUP_AT"
 check "a foreign teardown leaves cleanup pending, not failed" pass "cleanup: pending" all
 
+# The teardown's blast radius is a cluster property, so the behavioural test for
+# it lives with the cluster lab. What can be checked without a cluster is that
+# the script still names its targets: the bug it replaced deleted whatever the
+# argocd namespace happened to list, which made the damage depend on who else
+# used the cluster.
+check_cleanup_targets_are_named() {
+  local script="$repo_root/scripts/capstone-cleanup.sh"
+  checks=$((checks + 1))
+  if ! grep -q '^applications=(' "$script"; then
+    printf 'FAIL  the teardown names its Applications: no explicit list remains\n' >&2
+    failures=$((failures + 1))
+    return
+  fi
+  if grep -qE 'for [a-z_]+ in \$\(kubectl .*get applications' "$script" \
+     && grep -qE 'kubectl -n argocd delete "\$(app|found)"' "$script"; then
+    printf 'FAIL  the teardown names its Applications: it deletes whatever the namespace lists\n' >&2
+    failures=$((failures + 1))
+    return
+  fi
+  printf 'ok    the teardown names its Applications\n'
+}
+
+check_cleanup_targets_are_named
+
 printf '\n%s check(s), %s failure(s)\n' "$checks" "$failures"
 [ "$failures" -eq 0 ]
