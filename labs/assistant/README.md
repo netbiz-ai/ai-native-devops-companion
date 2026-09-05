@@ -10,13 +10,13 @@ These are the chapter's commands exactly as the book prints them.
 | `02-run-demo.sh` | Step 4 - Test the assistant before a live model | Runnable (unlabeled in the chapter) | Run the fake-client command-line demonstration |
 | `03-break-approved-knowledge.sh` | Break It Deliberately | Runnable | Poison the approved knowledge doc and watch the injected sentence surface, quoted, in the cited answer |
 | `04-restore-knowledge.sh` | Break It Deliberately | Runnable | Restore the clean doc, rerun the question, and rerun the suite |
-| `validate.sh` | Test and Validate | helper (not a printed block) | Chapter validator behind `make ch14-validate`; see below |
+| `validate.sh` | Test and Validate | helper (not a printed block) | Chapter validator behind `make assistant-validate`; see below |
 
 All commands must be run from the `operations-assistant/` directory of this repository, except `validate.sh`, which resolves the repository root itself.
 
 This chapter's carried-in artifact is the sanitized `docs/incidents/ch12-controlled-failure.md` you wrote in the incident lab: Step 1 has you distill it into the approved knowledge doc below.
 No shipped script reads that record directly, so the labs run without it, but the knowledge doc you write from it is the chapter's actual work.
-`validate.sh` (also `make ch14-validate`) checks that work: the knowledge doc exists with its governance frontmatter and no leftover Break It poison, the demo answers the known question from it, an action request is refused, and the six-test suite passes.
+`validate.sh` (also `make assistant-validate`) checks that work: the knowledge doc exists with its governance frontmatter and no leftover Break It poison, the demo answers the known question from it, an action request is refused, and the six-test suite passes.
 It fails on an untouched clone by design, so a pass is evidence of the reader's chapter work, not only of the shipped code.
 
 The Python modules these commands invoke live in this repository under `operations-assistant/` (`src/assistant.py`, `src/retriever.py`, `src/demo.py`, `tests/test_assistant.py`); do not duplicate them here.
