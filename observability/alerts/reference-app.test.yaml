@@ -1,0 +1,28 @@
+rule_files:
+  - ../recording-rules.yaml
+  - reference-app.yaml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_count{job="reference-app",environment="staging",http_response_status_code="200"}'
+        values: '0+60x15'
+      - series: 'http_server_request_duration_seconds_bucket{job="reference-app",environment="staging",http_response_status_code="200",le="0.5"}'
+        values: '0+1x15'
+      - series: 'http_server_request_duration_seconds_bucket{job="reference-app",environment="staging",http_response_status_code="200",le="+Inf"}'
+        values: '0+60x15'
+    alert_rule_test:
+      - eval_time: 15m
+        alertname: ReferenceAppHighLatency
+        exp_alerts:
+          - exp_labels:
+              alertname: ReferenceAppHighLatency
+              environment: staging
+              job: reference-app
+              owner: platform-learning
+              severity: warning
+            exp_annotations:
+              summary: Reference app staging latency exceeds the lab threshold
+              runbook_url: docs://observability/runbooks/high-latency.md

@@ -1,0 +1,31 @@
+# Chapter 10 fault injection. Staging only.
+#
+# This file is the single switch the chapter's "Break It Deliberately" section
+# asks you to flip. It is a separate file rather than an edit to the overlay's
+# kustomization so that turning the lab on and off is one reviewable diff, and
+# so that a production overlay that accidentally inherits this directory still
+# has to name the patch explicitly to apply it.
+#
+# CH10_OMIT_TRACE_ID stops the application emitting the X-Trace-Id response
+# header. Nothing else changes: the request still succeeds, the duration metric
+# still records, the log line still prints. Only the thread joining the three
+# together is cut, which is the point being taught.
+#
+# CH10_FAULT_GATE_ENABLED lets a request carry X-CH10-Delay-Ms and be delayed by
+# that many milliseconds, bounded to 0-1000 by the application. The application
+# refuses to start with this set in a production environment, so a misapplied
+# overlay fails closed rather than quietly injecting latency into production.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reference-app
+spec:
+  template:
+    spec:
+      containers:
+        - name: app
+          env:
+            - name: CH10_OMIT_TRACE_ID
+              value: "false"
+            - name: CH10_FAULT_GATE_ENABLED
+              value: "true"

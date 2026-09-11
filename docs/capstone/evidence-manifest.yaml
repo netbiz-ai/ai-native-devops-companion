@@ -1,0 +1,40 @@
+run_id: capstone-acceptance-001
+environment: non-production
+release:
+  source_revision: REPLACE_AFTER_BUILD
+  image_digest: REPLACE_AFTER_BUILD
+  gitops_revision: REPLACE_AFTER_PROMOTION
+incident_id: pending
+criteria:
+  CAP-01:
+    status: pending
+    command: scripts/capstone-verify.sh identity
+    evidence: evidence/capstone/delivery/identity.txt
+    reviewer: pending
+  CAP-02:
+    status: pending
+    evidence: evidence/capstone/delivery/gates.txt
+    reviewer: pending
+  CAP-03:
+    status: pending
+    evidence: evidence/capstone/runtime/reconciliation.txt
+    reviewer: pending
+  CAP-04:
+    status: pending
+    evidence: evidence/capstone/runtime/service-targets.txt
+    reviewer: pending
+  CAP-05:
+    status: pending
+    evidence: evidence/capstone/incident/timeline.md
+    reviewer: pending
+  CAP-06:
+    status: pending
+    evidence: evidence/capstone/ai/boundary-tests.txt
+    reviewer: pending
+  CAP-07:
+    status: pending
+    cost_guardrail_evidence: evidence/capstone/summary/cost-control.txt
+    cleanup_evidence: evidence/capstone/summary/cleanup.txt
+    reviewer: pending
+limitations:
+  - This template contains no observed live-platform result.

@@ -1,0 +1,12 @@
+finding_id: REPLACE
+scanner: REPLACE
+artifact_identity: REPLACE
+severity: REPLACE
+status: open
+disposition: pending
+owner: pending
+validation_plan: pending
+expiry: pending
+sanitization_status: pending
+evidence_path: pending
+notes: ""

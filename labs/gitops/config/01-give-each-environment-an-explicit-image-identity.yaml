@@ -1,0 +1,4 @@
+images:
+  - name: RENDERED_IMAGE_NAME_FROM_STEP_1
+    newName: YOUR_APPROVED_REGISTRY/reference-app
+    digest: sha256:YOUR_VERIFIED_DIGEST

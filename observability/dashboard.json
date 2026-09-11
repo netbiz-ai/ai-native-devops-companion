@@ -1,0 +1,27 @@
+{
+  "title": "Reference App - Staging",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["ai-native-devops", "reference-app"],
+  "templating": {"list": []},
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Request rate",
+      "targets": [{"expr": "job:http_requests:rate5m{environment=\"staging\"}", "refId": "A"}]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Error ratio",
+      "targets": [{"expr": "job:http_errors:ratio5m{environment=\"staging\"}", "refId": "A"}]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "p95 latency",
+      "targets": [{"expr": "job:http_request_duration_seconds:p95_5m{environment=\"staging\"}", "refId": "A"}]
+    }
+  ]
+}

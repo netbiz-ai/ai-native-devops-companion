@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reference-production
+  namespace: argocd
+spec:
+  project: ai-native-devops
+  source:
+    repoURL: https://github.com/netbiz-ai/ai-native-devops-companion.git
+    targetRevision: main
+    path: deployment/gitops/overlays/production
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: reference-production
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

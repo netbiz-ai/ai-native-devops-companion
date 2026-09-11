@@ -1,0 +1,32 @@
+name: Rollback proposal
+
+on:
+  workflow_dispatch:
+    inputs:
+      approved_digest:
+        description: Previously accepted sha256 digest
+        required: true
+        type: string
+      incident_id:
+        description: Incident or change record
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Validate rollback identity
+        env:
+          APPROVED_DIGEST: ${{ inputs.approved_digest }}
+          INCIDENT_ID: ${{ inputs.incident_id }}
+        run: |
+          [[ "$APPROVED_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          test -n "$INCIDENT_ID"
+          printf 'rollback=proposal-only digest=%s incident=%s\n' \
+            "$APPROVED_DIGEST" "$INCIDENT_ID"
+          printf 'Apply the known digest through an approved GitOps pull request.\n'

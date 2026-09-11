@@ -1,0 +1,67 @@
+# Chapter 11 static analysis rules.
+#
+# Deliberately small. A large imported rule pack produces a long report on
+# first run, and a long report on first run is how a team learns to skim
+# scanner output rather than read it. Each rule here exists because this
+# repository can actually violate it, and each one names the evidence a
+# reviewer needs to dispose of the finding.
+rules:
+  - id: subprocess-shell-true
+    languages: [python]
+    severity: ERROR
+    message: >-
+      subprocess called with shell=True. The argument reaches a shell, so any
+      caller-controlled part of it is command injection. Pass an argument list
+      instead, or record why the input cannot be influenced.
+    patterns:
+      - pattern: subprocess.$FUNC(..., shell=True, ...)
+
+  - id: yaml-unsafe-load
+    languages: [python]
+    severity: ERROR
+    message: >-
+      yaml.load without SafeLoader constructs arbitrary Python objects from
+      input. Use yaml.safe_load unless the document is trusted and the reason
+      is recorded.
+    patterns:
+      - pattern: yaml.load($X)
+
+  - id: requests-verify-disabled
+    languages: [python]
+    severity: ERROR
+    message: >-
+      TLS verification disabled. This turns an authenticated channel into an
+      unauthenticated one, and the failure it hides is the one worth seeing.
+    patterns:
+      - pattern-either:
+          - pattern: requests.$FUNC(..., verify=False, ...)
+          - pattern: urllib3.disable_warnings(...)
+
+  - id: bind-all-interfaces-in-code
+    languages: [python]
+    severity: WARNING
+    message: >-
+      A hard-coded 0.0.0.0 bind. Acceptable inside a container where the
+      network boundary is the pod, and wrong in a process that expected to
+      listen on loopback. Make it configurable rather than literal.
+    patterns:
+      - pattern-not-inside: |
+          os.getenv(...)
+      - pattern-regex: '"0\.0\.0\.0"'
+
+  - id: kubernetes-privileged-container
+    languages: [yaml]
+    severity: ERROR
+    # The message deliberately does not quote the pattern it matches, and this
+    # file is excluded from the rule. A regex rule whose own message contains
+    # the string it looks for reports itself, which is how a rule set acquires
+    # a permanent finding that everyone learns to ignore.
+    message: >-
+      A container requesting elevated privilege removes the container boundary.
+      If a workload genuinely needs it, the finding needs an owner and an
+      expiry, not a waiver.
+    paths:
+      exclude:
+        - rules/
+    patterns:
+      - pattern-regex: 'privileged:\s*true'

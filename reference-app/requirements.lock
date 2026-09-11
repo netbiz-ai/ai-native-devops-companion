@@ -1,0 +1,28 @@
+# Fully resolved dependency set, including transitive packages.
+#
+# requirements.txt records what this application asks for. This file records
+# what it actually got, which is the one a scanner's findings refer to and the
+# one Chapter 11's dependency job reviews. A CVE almost never lands in the
+# three packages named directly; it lands in protobuf or urllib3, and without
+# this file there is no record of which version was present when the scan ran.
+#
+# Regenerate with:
+#   pip install -r requirements.txt && pip freeze > requirements.lock
+#
+# Resolved 2026-08-07 against Python 3.12.
+certifi==2026.7.22
+charset-normalizer==3.4.9
+googleapis-common-protos==1.75.1
+idna==3.18
+importlib_metadata==8.7.1
+opentelemetry-api==1.38.0
+opentelemetry-exporter-otlp-proto-common==1.38.0
+opentelemetry-exporter-otlp-proto-http==1.38.0
+opentelemetry-proto==1.38.0
+opentelemetry-sdk==1.38.0
+opentelemetry-semantic-conventions==0.59b0
+protobuf==6.33.6
+requests==2.34.2
+typing_extensions==4.16.0
+urllib3==2.7.0
+zipp==4.1.0
