@@ -1,0 +1,38 @@
+# Chapter 12's incident environment.
+#
+# A separate namespace from staging, and separate on purpose. The incident lab
+# deliberately breaks the service it deploys, and a reader diagnosing an
+# outage should not be wondering whether the thing they just broke is also the
+# thing Chapter 10's telemetry lab is using.
+#
+# This overlay is the healthy baseline. The fault lives in ch12-latency-fault.yaml
+# and is not applied here: applying it is Step 2, and it is applied as its own
+# reviewed change so that restoration is a revert rather than an edit.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: reference-incident
+resources:
+  - ../../../kubernetes/base
+patches:
+  - target:
+      kind: Namespace
+      name: reference
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: reference-incident
+  # A readiness probe that tolerates a second of latency would not notice this
+  # chapter's fault, and the incident would be a slow dashboard rather than an
+  # outage. One second, failing after two consecutive misses.
+  - target:
+      kind: Deployment
+      name: reference-app
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/readinessProbe/timeoutSeconds
+        value: 1
+      - op: add
+        path: /spec/template/spec/containers/0/readinessProbe/failureThreshold
+        value: 2
+commonLabels:
+  app.kubernetes.io/environment: incident
