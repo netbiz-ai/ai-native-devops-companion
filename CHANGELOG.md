@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 - 2026-09-11
+
+- Fix a garbled sentence in `deployment/kubernetes/base/kustomization.yaml`: the comment telling you which two fields to replace read "the digest your the container lab build produced". It now reads "the digest the container lab build produced". Comment text only; no manifest field changes, and the all-zero placeholder digest is untouched.
+
 ## 1.0.0 - 2026-09-11
 
 First public release, and the release *AI-Native DevOps* is written against.
