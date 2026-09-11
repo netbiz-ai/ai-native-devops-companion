@@ -1,5 +1,14 @@
 name: Delivery
 
+# Chapter 6 tells the reader to copy this file and audit it against the
+# contract printed in the chapter. Everything the chapter names is enforced
+# here: default denial, a shared production concurrency group, protected check
+# verification bound to the dispatched commit, one registry push whose digest
+# the registry confirms, a staging job that actually runs the image and probes
+# its health contract, and a production job that records a previous digest,
+# writes release evidence, and moves the marker only after an independent
+# approval.
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,54 +16,122 @@ on:
         description: Reviewed release/run identifier
         required: true
         type: string
+      bootstrap:
+        description: >-
+          Establish the production marker when none exists. The bootstrap run
+          records previous_digest as unavailable and is not a complete release.
+        required: false
+        default: false
+        type: boolean
 
-permissions:
-  contents: read
-  packages: write
+# Default denial. Every job below opts into exactly what it needs.
+permissions: {}
+
+# One production release at a time, and never cancel one in flight: a
+# cancelled promotion can leave the marker describing a digest that was never
+# deployed.
+concurrency:
+  group: delivery-production
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}/reference-app
+  MARKER_TAG: production-marker
 
 jobs:
   candidate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      checks: read
     outputs:
       digest: ${{ steps.build.outputs.digest }}
     steps:
+      - name: Refuse dispatch from anywhere but main
+        run: |
+          test "${GITHUB_REF}" = "refs/heads/main" || {
+            printf 'Delivery may only be dispatched from main, got %s\n' "${GITHUB_REF}" >&2
+            exit 1
+          }
+
       - uses: actions/checkout@v6
+
+      # Bind the release to the checked-out commit. A protected name is only
+      # evidence when exactly one run carries it, it succeeded, and it came
+      # from the expected app - otherwise a fork, a re-run, or a same-named
+      # check from another source can be mistaken for the gate.
+      - name: Require the protected checks on this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_APP: github-actions
+        run: |
+          all_check_runs="$(gh api --paginate \
+            "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/check-runs" \
+            --jq '.check_runs[]' | jq -s '.')"
+          for name in "quality" "image" "SAST" "Secrets" "IaC"; do
+            jq -e --arg name "$name" --arg app "$EXPECTED_APP" \
+              '([.[] | select(.name == $name)] | length) == 1 and
+               ([.[] | select(
+                 .name == $name and .app.slug == $app and
+                 .status == "completed" and .conclusion == "success"
+               )] | length) == 1' \
+              <<<"$all_check_runs" >/dev/null || {
+                printf 'Protected check %s is missing, duplicated, unsuccessful, or from an unexpected app\n' "$name" >&2
+                jq -r --arg name "$name" \
+                  '.[] | select(.name == $name) | "  found: \(.name) app=\(.app.slug) \(.status)/\(.conclusion)"' \
+                  <<<"$all_check_runs" >&2
+                exit 1
+              }
+            printf 'protected check ok: %s\n' "$name"
+          done
+
       - uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: docker/setup-buildx-action@v3
+
       - name: Build and publish immutable candidate
         id: build
         uses: docker/build-push-action@v6
         with:
           context: reference-app
           push: true
-          tags: ghcr.io/${{ github.repository }}/reference-app:${{ github.sha }}
+          tags: ${{ env.IMAGE }}:${{ github.sha }}
           provenance: mode=max
           sbom: true
-      - name: Record candidate identity
+
+      # The digest the build reports is a claim. The registry is the record.
+      - name: Confirm the registry agrees with the reported digest
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
         run: |
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          docker buildx imagetools inspect "${IMAGE}@${DIGEST}" >/dev/null
           printf 'release_id=%s\nsource_revision=%s\nimage_digest=%s\n' \
-            '${{ inputs.release_id }}' '${{ github.sha }}' '${{ steps.build.outputs.digest }}'
+            '${{ inputs.release_id }}' "$GITHUB_SHA" "$DIGEST"
 
   staging:
     needs: candidate
     runs-on: ubuntu-latest
     environment: staging
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v6
-      # validate-offline.sh imports the reference app's dependencies, so the
-      # runner needs them installed before it runs. ci.yml already does this;
-      # delivery.yml did not, so the staging gate failed on every dispatch with
-      # "reference-app dependencies are not installed" and production was never
-      # reached. Same Python version and lockfile as ci.yml, deliberately.
+
+      # validate-offline.sh imports the reference app's packages, so the
+      # runner needs them. ci.yml installs them the same way.
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
       - name: Install reference-app dependencies
         run: pip install -r reference-app/requirements.lock
+
       - name: Validate staging handoff
         env:
           IMAGE_DIGEST: ${{ needs.candidate.outputs.digest }}
@@ -63,15 +140,122 @@ jobs:
           ./scripts/validate-offline.sh
           printf 'staging_candidate=%s\n' "$IMAGE_DIGEST"
 
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # The gate that matters: the exact digest being promoted has to start and
+      # answer its health contract. A digest that only parses proves nothing.
+      - name: Pull the candidate digest and probe its health contract
+        env:
+          DIGEST: ${{ needs.candidate.outputs.digest }}
+        run: |
+          docker pull "${IMAGE}@${DIGEST}"
+          container_id="$(docker run -d -p 127.0.0.1::8080 "${IMAGE}@${DIGEST}")"
+          trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
+          port="$(docker port "$container_id" 8080/tcp | awk -F: '{print $NF}')"
+          for _ in $(seq 1 20); do
+            if curl --fail --silent --show-error --max-time 5 \
+                "http://127.0.0.1:${port}/health"; then
+              printf '\nstaging_probe=pass digest=%s\n' "$DIGEST"
+              exit 0
+            fi
+            sleep 1
+          done
+          printf 'staging_probe=fail digest=%s\n' "$DIGEST" >&2
+          docker logs "$container_id"
+          exit 1
+
   production:
     needs: [candidate, staging]
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: write
+      packages: read
+      actions: read
     steps:
-      - name: Record approved promotion
+      # The marker names the digest production is currently running. Its
+      # absence is only acceptable on an explicit bootstrap, which establishes
+      # the marker but cannot report a previous state.
+      - name: Read the production marker
+        id: marker
         env:
-          IMAGE_DIGEST: ${{ needs.candidate.outputs.digest }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          [[ "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
-          printf 'promotion=approved image_digest=%s\n' "$IMAGE_DIGEST"
+          previous_digest=unavailable
+          if gh release view "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+               --json tagName >/dev/null 2>&1; then
+            gh release download "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+              --pattern release-evidence.json --output previous-evidence.json --clobber
+            previous_digest="$(jq -r '.digest' previous-evidence.json)"
+            [[ "$previous_digest" =~ ^sha256:[0-9a-f]{64}$ ]]
+          elif [[ "${{ inputs.bootstrap }}" != "true" ]]; then
+            printf 'No production marker exists. Re-dispatch with bootstrap=true to establish one.\n' >&2
+            exit 1
+          fi
+          printf 'previous_digest=%s\n' "$previous_digest" >> "$GITHUB_OUTPUT"
+          printf 'previous_digest=%s\n' "$previous_digest"
+
+      # The approver is read from the deployment record, never assumed from
+      # whoever dispatched the run.
+      - name: Record the approver from the deployment record
+        id: approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          approver="$(gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/approvals" \
+            --jq '[.[] | select(.state == "approved") | .user.login] | first // "unrecorded"')"
+          printf 'approver=%s\n' "$approver" >> "$GITHUB_OUTPUT"
+          printf 'approver=%s initiator=%s\n' "$approver" "$GITHUB_ACTOR"
+
+      - name: Write the release evidence and move the marker
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIGEST: ${{ needs.candidate.outputs.digest }}
+          PREVIOUS_DIGEST: ${{ steps.marker.outputs.previous_digest }}
+          APPROVER: ${{ steps.approval.outputs.approver }}
+          RELEASE_ID: ${{ inputs.release_id }}
+        run: |
+          [[ "$DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          jq -n \
+            --arg image "$IMAGE" \
+            --arg digest "$DIGEST" \
+            --arg commit "$GITHUB_SHA" \
+            --arg decision "Promote" \
+            --arg run_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --arg previous_digest "$PREVIOUS_DIGEST" \
+            --arg release_id "$RELEASE_ID" \
+            --arg initiator "$GITHUB_ACTOR" \
+            --arg approver "$APPROVER" \
+            '{image:$image, digest:$digest, commit:$commit, decision:$decision,
+              run_url:$run_url, previous_digest:$previous_digest,
+              release_id:$release_id, initiator:$initiator, approver:$approver}' \
+            > release-evidence.json
+          cat release-evidence.json
+
+          gh release create "$RELEASE_ID" --repo "$GITHUB_REPOSITORY" \
+            --title "$RELEASE_ID" \
+            --notes "Promoted ${DIGEST} from ${GITHUB_SHA}. Previous: ${PREVIOUS_DIGEST}." \
+            release-evidence.json
+
+          # Moving the marker is the last step, so a failure above never
+          # leaves the marker describing a release that was not recorded.
+          if gh release view "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+               --json tagName >/dev/null 2>&1; then
+            gh release delete-asset "$MARKER_TAG" release-evidence.json \
+              --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
+            gh release upload "$MARKER_TAG" release-evidence.json \
+              --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+              --title "Production marker" \
+              --notes "Points at the digest production is currently running." \
+              release-evidence.json
+          fi
+          printf 'promotion=approved image_digest=%s previous_digest=%s approver=%s\n' \
+            "$DIGEST" "$PREVIOUS_DIGEST" "$APPROVER"
           printf 'Update the production GitOps overlay by reviewed pull request.\n'

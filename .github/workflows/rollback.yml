@@ -1,8 +1,18 @@
 name: Rollback proposal
 
+# Chapter 6, Step 4. A rollback is a promotion in reverse and gets the same
+# treatment: the requested digest must appear in approved release evidence for
+# the expected image, the image must still pull and answer its health contract,
+# and only then may an independent reviewer move the marker. A digest that
+# merely parses is not a rollback target.
+
 on:
   workflow_dispatch:
     inputs:
+      approved_version:
+        description: Release identifier whose evidence approved this digest
+        required: true
+        type: string
       approved_digest:
         description: Previously accepted sha256 digest
         required: true
@@ -12,21 +22,134 @@ on:
         required: true
         type: string
 
-permissions:
-  contents: read
+permissions: {}
+
+concurrency:
+  group: delivery-production
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}/reference-app
+  MARKER_TAG: production-marker
 
 jobs:
-  validate:
+  staging:
     runs-on: ubuntu-latest
-    environment: production
+    environment: staging
+    permissions:
+      contents: read
+      packages: read
     steps:
       - name: Validate rollback identity
         env:
           APPROVED_DIGEST: ${{ inputs.approved_digest }}
           INCIDENT_ID: ${{ inputs.incident_id }}
+          APPROVED_VERSION: ${{ inputs.approved_version }}
         run: |
           [[ "$APPROVED_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
-          test -n "$INCIDENT_ID"
-          printf 'rollback=proposal-only digest=%s incident=%s\n' \
-            "$APPROVED_DIGEST" "$INCIDENT_ID"
+          [[ "$INCIDENT_ID" =~ ^[A-Za-z0-9._/-]{3,80}$ ]]
+          [[ "$APPROVED_VERSION" =~ ^[A-Za-z0-9._/-]{3,80}$ ]]
+
+      # The digest has to come from evidence this repository actually
+      # recorded, for this image, with a Promote decision. Anything else is an
+      # untested digest wearing a rollback label.
+      - name: Require the digest to appear in approved release evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APPROVED_DIGEST: ${{ inputs.approved_digest }}
+          APPROVED_VERSION: ${{ inputs.approved_version }}
+        run: |
+          gh release download "$APPROVED_VERSION" --repo "$GITHUB_REPOSITORY" \
+            --pattern release-evidence.json --output release-evidence.json --clobber
+          test "$(jq -r .image release-evidence.json)" = "$IMAGE"
+          test "$(jq -r .digest release-evidence.json)" = "$APPROVED_DIGEST"
+          test "$(jq -r .decision release-evidence.json)" = "Promote"
+          printf 'evidence_ok version=%s digest=%s\n' "$APPROVED_VERSION" "$APPROVED_DIGEST"
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull the approved digest and repeat the probe
+        env:
+          DIGEST: ${{ inputs.approved_digest }}
+        run: |
+          docker pull "${IMAGE}@${DIGEST}"
+          container_id="$(docker run -d -p 127.0.0.1::8080 "${IMAGE}@${DIGEST}")"
+          trap 'docker rm -f "$container_id" >/dev/null 2>&1 || true' EXIT
+          port="$(docker port "$container_id" 8080/tcp | awk -F: '{print $NF}')"
+          for _ in $(seq 1 20); do
+            if curl --fail --silent --show-error --max-time 5 \
+                "http://127.0.0.1:${port}/health"; then
+              printf '\nrollback_probe=pass digest=%s\n' "$DIGEST"
+              exit 0
+            fi
+            sleep 1
+          done
+          printf 'rollback_probe=fail digest=%s\n' "$DIGEST" >&2
+          docker logs "$container_id"
+          exit 1
+
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+      packages: read
+      actions: read
+    steps:
+      - name: Record the approver from the deployment record
+        id: approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          approver="$(gh api \
+            "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/approvals" \
+            --jq '[.[] | select(.state == "approved") | .user.login] | first // "unrecorded"')"
+          printf 'approver=%s\n' "$approver" >> "$GITHUB_OUTPUT"
+
+      - name: Move the marker to the approved digest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIGEST: ${{ inputs.approved_digest }}
+          APPROVED_VERSION: ${{ inputs.approved_version }}
+          INCIDENT_ID: ${{ inputs.incident_id }}
+          APPROVER: ${{ steps.approval.outputs.approver }}
+        run: |
+          replaced_digest=unavailable
+          if gh release view "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+               --json tagName >/dev/null 2>&1; then
+            gh release download "$MARKER_TAG" --repo "$GITHUB_REPOSITORY" \
+              --pattern release-evidence.json --output current-marker.json --clobber
+            replaced_digest="$(jq -r '.digest' current-marker.json)"
+          fi
+
+          jq -n \
+            --arg image "$IMAGE" \
+            --arg digest "$DIGEST" \
+            --arg decision "Rollback" \
+            --arg run_url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --arg previous_digest "$replaced_digest" \
+            --arg release_id "$APPROVED_VERSION" \
+            --arg incident "$INCIDENT_ID" \
+            --arg initiator "$GITHUB_ACTOR" \
+            --arg approver "$APPROVER" \
+            --arg commit "$GITHUB_SHA" \
+            '{image:$image, digest:$digest, commit:$commit, decision:$decision,
+              run_url:$run_url, previous_digest:$previous_digest,
+              release_id:$release_id, incident:$incident,
+              initiator:$initiator, approver:$approver}' \
+            > release-evidence.json
+          cat release-evidence.json
+
+          gh release delete-asset "$MARKER_TAG" release-evidence.json \
+            --repo "$GITHUB_REPOSITORY" --yes 2>/dev/null || true
+          gh release upload "$MARKER_TAG" release-evidence.json \
+            --repo "$GITHUB_REPOSITORY" --clobber
+
+          printf 'rollback=applied digest=%s replaced=%s incident=%s approver=%s\n' \
+            "$DIGEST" "$replaced_digest" "$INCIDENT_ID" "$APPROVER"
           printf 'Apply the known digest through an approved GitOps pull request.\n'
