@@ -11,5 +11,14 @@ patches:
       - op: replace
         path: /metadata/name
         value: reference-staging
+  # Chapter 10's fault switches. Named explicitly so that applying them is a
+  # decision, and so no other overlay inherits them by living in this tree.
+  # The target is selected by kind and name rather than by the patch's own
+  # metadata, because the namespace transformer above rewrites the base
+  # namespace and an identity match would depend on transformer ordering.
+  - path: ch10-lab-faults.yaml
+    target:
+      kind: Deployment
+      name: reference-app
 commonLabels:
   app.kubernetes.io/environment: staging
