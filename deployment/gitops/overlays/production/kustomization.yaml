@@ -7,7 +7,7 @@ resources:
   # Namespace is dropped just below rather than renamed: renaming it rendered the
   # base's REPLACE_WITH_OWNER_TOKEN into this environment, so the first Argo CD
   # sync overwrote whatever token the reader had applied here, and
-  # labs/ch09/02-apply-namespaces.sh then refused the namespace forever as an
+  # labs/gitops/02-apply-namespaces.sh then refused the namespace forever as an
   # ownership collision.
   - namespace.yaml
 patches:

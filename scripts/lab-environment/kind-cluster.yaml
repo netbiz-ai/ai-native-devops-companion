@@ -1,4 +1,4 @@
-# A minimal disposable cluster for the Chapter 8+ labs.
+# A minimal disposable cluster for the kubernetes lab+ labs.
 #
 # disableDefaultCNI is deliberate: create-cluster.sh installs Calico instead,
 # because kind's default plugin does not enforce the NetworkPolicy the labs

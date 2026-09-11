@@ -1,4 +1,4 @@
-# Chapter 10 fault injection. Staging only.
+# The observability lab fault injection. Staging only.
 #
 # This file is the single switch the chapter's "Break It Deliberately" section
 # asks you to flip. It is a separate file rather than an edit to the overlay's

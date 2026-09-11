@@ -1,6 +1,6 @@
 name: Delivery
 
-# Chapter 6 tells the reader to copy this file and audit it against the
+# The delivery lab tells the reader to copy this file and audit it against the
 # contract printed in the chapter. Everything the chapter names is enforced
 # here: default denial, a shared production concurrency group, protected check
 # verification bound to the dispatched commit, one registry push whose digest

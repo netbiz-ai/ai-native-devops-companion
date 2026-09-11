@@ -1,5 +1,7 @@
 # CAP-05 incident timeline
 
+run_id=capstone-acceptance-001
+
 Observed 2026-08-10T17:50:47Z on cluster kind-ch10-lab, namespace reference-incident.
 Controlled fault, injected and recovered by the chapter's own scripts.
 

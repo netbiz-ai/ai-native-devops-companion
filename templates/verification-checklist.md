@@ -1,7 +1,7 @@
 # AI Output Verification Checklist
 
 Copy this file to `evidence/verification-checklist.md` and fill it in per review.
-Chapter 1 prints an excerpt; this is the full form.
+The method lab prints an excerpt; this is the full form.
 
 ## Test results
 

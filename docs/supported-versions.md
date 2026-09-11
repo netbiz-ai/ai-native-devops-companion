@@ -1,6 +1,6 @@
 # Supported-version matrix
 
-Verified for the initial offline release:
+Verified for the current release's offline validation:
 
 | Tool | Supported baseline | Used for |
 |---|---|---|

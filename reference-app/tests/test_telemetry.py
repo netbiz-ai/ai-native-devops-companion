@@ -1,4 +1,4 @@
-"""Chapter 10's instrumentation, and the two fault gates its lab depends on.
+"""The observability lab's instrumentation, and the two fault gates its lab depends on.
 
 These tests assert the things the chapter asks a reader to observe: that a
 successful request carries a well-formed trace identifier, that the metric

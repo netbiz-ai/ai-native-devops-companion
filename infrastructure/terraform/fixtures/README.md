@@ -1,11 +1,11 @@
 # Terraform plan fixture
 
-Chapter 7 offers two tracks. The sandbox track runs `terraform plan` against an
+The infrastructure lab offers two tracks. The sandbox track runs `terraform plan` against an
 approved account you supply. The no-apply track reviews the fixture here
 instead, and proves review skill rather than deployability, convergence, or
 cleanup.
 
-Chapter 7 says not to use the fixture route until this repository states the
+The infrastructure lab says not to use the fixture route until this repository states the
 exact path, revision, sanitization review, and expected inventory. All four are
 below.
 

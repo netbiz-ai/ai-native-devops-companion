@@ -13,7 +13,7 @@ Taking pieces of this work into your own pipeline rather than working the
 book straight through? [docs/reusing-the-projects.md](docs/reusing-the-projects.md)
 maps each chapter to what it leaves behind that you can reuse.
 
-`docs/chapter-map.md` is the canonical contract between the book and this
+`docs/subject-map.md` is the canonical contract between the book and this
 repository: what each chapter starts from, carries in, produces, and how to
 validate it. Where the book and that map disagree, the map is correct.
 `docs/release-policy.md` states how this repository is versioned, supported,
@@ -69,16 +69,17 @@ obvious secret patterns.
 
 | Book area | Repository path | Baseline |
 |---|---|---|
-| Chapters 1–2: bounded AI work and prompt evaluation | You create `ai-native-workspace/` and `devops-prompt-library/`; this repository supplies neither | Offline |
-| Chapters 3–6: application, container, CI, delivery | `reference-app/`, `.github/workflows/` | Offline plus Docker/GitHub |
-| Chapter 7: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
-| Chapters 8–9: Kubernetes and GitOps | `deployment/` | Static; cluster is opt-in |
-| Chapters 10–13: telemetry, security, incidents, optimization | `observability/`, `security/`, `incidents/`, `optimization/` | Fixtures and templates |
-| Chapter 14: cited operations assistant | `operations-assistant/` | Offline |
-| Chapter 15: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
-| Chapter 16: connected acceptance path | `docs/capstone/`, `labs/ch16/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
+| Chapter 1: bounded AI work and prompt evaluation | You create `workspace/` with `devops-prompt-library/` inside it, outside this clone; this repository supplies neither | Offline |
+| Chapters 2 to 4: application, container, CI and delivery | `reference-app/`, `.github/workflows/` | Offline plus Docker/GitHub |
+| Chapter 5: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
+| The interlude: the disposable lab cluster | `labs/cluster/`, `scripts/lab-environment/` | Local kind cluster |
+| Chapters 6 and 7: Kubernetes and GitOps | `deployment/` | Static; cluster is opt-in |
+| Chapters 8 to 10: telemetry, security, incidents and capacity | `observability/`, `security/`, `incidents/`, `optimization/` | Fixtures and templates |
+| Chapter 11: cited operations assistant | `operations-assistant/` | Offline |
+| Chapter 12: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
+| Chapter 13: connected acceptance path | `docs/capstone/`, `labs/capstone/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
 
-See [docs/chapter-map.md](docs/chapter-map.md) for exact chapter handoffs.
+See [docs/subject-map.md](docs/subject-map.md) for exact chapter handoffs.
 
 ## Supported baseline
 
@@ -91,9 +92,9 @@ See [docs/chapter-map.md](docs/chapter-map.md) for exact chapter handoffs.
 Use the version matrix in `docs/supported-versions.md` and confirm current
 tool behavior before running version-sensitive commands.
 
-## What this initial release proves
+## What the offline validation proves
 
-The local release proves only that:
+The offline validation proves only that:
 
 - the reference app contract passes direct and real-HTTP tests;
 - the local retriever cites approved runbooks and refuses action requests;

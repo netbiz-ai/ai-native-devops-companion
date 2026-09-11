@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Remove the capstone's temporary resources and record what was removed.
 #
-# labs/ch16/04-run-cleanup.sh calls this and it did not exist, which left the
+# labs/capstone/04-run-cleanup.sh calls this and it did not exist, which left the
 # chapter's one Destructive command - the one that clears the cluster, registry
 # and cloud resources the capstone stood up - with nothing to run. It also left
 # CAP-07-cleanup with no way to become supported, because the cleanup evidence
@@ -12,8 +12,8 @@
 # anything it cannot identify as this book's: a cleanup script that guesses is
 # more dangerous than no cleanup script.
 #
-# Terraform and cloud resources are Chapter 7's, and are removed by
-# labs/ch07/07-destroy-lab.sh against the reader's own approved sandbox. This
+# Terraform and cloud resources are the infrastructure lab's, and are removed by
+# labs/infrastructure/07-destroy-lab.sh against the reader's own approved sandbox. This
 # script records whether that was done rather than doing it, because it has no
 # way to know which account is approved.
 set -euo pipefail
@@ -24,9 +24,19 @@ cd "$repo_root"
 evidence="${CAPSTONE_CLEANUP_EVIDENCE:-evidence/capstone/summary/cleanup.txt}"
 context="$(kubectl config current-context 2>/dev/null || echo "none")"
 
-# The lab namespaces, and nothing else. reference-dev is Chapter 8's,
-# staging and production Chapter 9's, incident Chapter 12's, observability
-# Chapter 10's, lab-source the disposable Git server, capstone-iac the
+# The teardown has to say which acceptance run it tore down. Without that, the
+# file it writes is indistinguishable from the one an earlier run left behind,
+# and the verifier cannot tell a current teardown from a retained one.
+run_id="${CAPSTONE_RUN_ID:-$(sed -n 's/^run_id:[[:space:]]*//p' \
+  docs/capstone/evidence-manifest.yaml 2>/dev/null | head -1)}"
+if [ -z "$run_id" ]; then
+  printf 'STOP: no acceptance run declared. Export CAPSTONE_RUN_ID before cleanup.\n' >&2
+  exit 1
+fi
+
+# The lab namespaces, and nothing else. reference-dev is the kubernetes lab's,
+# staging and production the gitops lab's, incident the incident lab's, observability
+# The observability lab's, lab-source the disposable Git server, capstone-iac the
 # capstone's Terraform-managed namespace - normally already destroyed by
 # `terraform -chdir=infrastructure/terraform/capstone destroy`, listed here
 # as a backstop so a skipped destroy still gets recorded and removed.
@@ -38,6 +48,11 @@ namespaces=(
   observability
   lab-source
   capstone-iac
+)
+# The Argo CD Applications this book's chapters create, and only those.
+applications=(
+  reference-staging
+  reference-production
 )
 images=(
   ai-native-devops/reference-service:baseline
@@ -71,6 +86,7 @@ mkdir -p "$(dirname "$evidence")"
 record() { printf '%s\n' "$1" | tee -a "$evidence"; }
 
 record "capstone cleanup"
+record "run_id: ${run_id}"
 record "context: ${context}"
 record "run_at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 record ""
@@ -88,9 +104,26 @@ done
 record ""
 record "argo cd applications and project"
 if kubectl get crd applications.argoproj.io >/dev/null 2>&1; then
-  for app in $(kubectl -n argocd get applications -o name 2>/dev/null); do
-    kubectl -n argocd delete "$app" --cascade=false >/dev/null 2>&1 \
-      && record "  deleted   ${app}" || record "  FAILED    ${app}"
+  # By name, like the namespaces. Deleting every Application the namespace
+  # happens to list makes the blast radius depend on who else shares the
+  # cluster, which is not something this script can know and not something the
+  # reader agreed to when they confirmed a context. Anything else present is
+  # recorded as left alone, so the narrowing is visible in the evidence rather
+  # than only in this comment.
+  for name in "${applications[@]}"; do
+    if kubectl -n argocd get "application/${name}" >/dev/null 2>&1; then
+      kubectl -n argocd delete "application/${name}" --cascade=false >/dev/null 2>&1 \
+        && record "  deleted   application.argoproj.io/${name}" \
+        || record "  FAILED    application.argoproj.io/${name}"
+    else
+      record "  absent    application.argoproj.io/${name}"
+    fi
+  done
+  for found in $(kubectl -n argocd get applications -o name 2>/dev/null); do
+    case " ${applications[*]} " in
+      *" ${found#application.argoproj.io/} "*) ;;
+      *) record "  left      ${found} (not this book's)" ;;
+    esac
   done
   if kubectl -n argocd get appproject ai-native-devops >/dev/null 2>&1; then
     kubectl -n argocd delete appproject ai-native-devops >/dev/null 2>&1 \
@@ -120,7 +153,7 @@ fi
 
 record ""
 record "not handled here"
-record "  cloud infrastructure: labs/ch07/07-destroy-lab.sh, against your own"
+record "  cloud infrastructure: labs/infrastructure/07-destroy-lab.sh, against your own"
 record "    approved sandbox. This script cannot know which account that is."
 record "  registry tags you pushed: remove them in your registry."
 record "  the cluster itself: delete it the way you created it."

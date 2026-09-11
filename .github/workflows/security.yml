@@ -85,16 +85,20 @@ jobs:
           # Chapter 12s fault is the same shape as Chapter 10s: a container
           # stanza carrying one environment variable. It was added without
           # this line and turned Security red from f149211 onward.
-          # The ch04 baseline is the book's deliberately insecure single-stage
-          # Dockerfile: it runs as root because that is the defect Chapter 4
+          # The container baseline is the book's deliberately insecure single-stage
+          # Dockerfile: it runs as root because that is the defect the container lab
           # measures and then fixes. The hardened result stays scanned, both as
-          # labs/ch04/config/03-dockerfile-final.dockerfile and as the live
-          # reference-app/Dockerfile, and both are clean. "Fixing" the baseline
-          # would erase the measurement the chapter is built on.
+          # labs/container/config/02-record-the-base-identity-and-build-the-final-ima.dockerfile
+          # and as the live reference-app/Dockerfile, and both are clean. "Fixing"
+          # the baseline would erase the measurement the chapter is built on.
+          #
+          # This path follows the lab file's name. The labs are generated from the
+          # printed headings, so a reworded heading renames the file and silently
+          # un-skips it; the symptom is this job going red on DS-0002 alone.
           skip-files: |
             deployment/gitops/overlays/staging/ch10-lab-faults.yaml
             deployment/gitops/overlays/incident/ch12-latency-fault.yaml
-            labs/ch04/config/02-dockerfile-baseline.dockerfile
+            labs/container/config/01-build-and-measure-a-baseline.dockerfile
 
   image:
     name: Image

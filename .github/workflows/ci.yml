@@ -23,10 +23,10 @@ jobs:
           python-version: "3.12"
       # Installed from the lock rather than requirements.txt so CI validates
       # the exact resolved set recorded in the repository, which is also the
-      # set Chapter 11's dependency scan reports against.
+      # set the security lab's dependency scan reports against.
       - name: Install reference-app dependencies
         run: pip install -r reference-app/requirements.lock
-      # Chapter 5 has the reader run this exact command and expects no errors,
+      # The ci lab has the reader run this exact command and expects no errors,
       # so nothing may reintroduce a lint error the chapter would then report.
       # The pin is read from requirements-dev.txt rather than repeated here:
       # two copies of a version drift, and the chapter's pin is the one that

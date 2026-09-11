@@ -33,6 +33,13 @@ class SettingsTests(unittest.TestCase):
             settings = Settings.from_environment()
         self.assertEqual(settings, Settings("demo", "test", "0.0.0.0", 9090))
 
+    def test_empty_host_fails(self) -> None:
+        with (
+            patch.dict(os.environ, {"APP_HOST": ""}, clear=True),
+            self.assertRaisesRegex(ValueError, "must not be empty"),
+        ):
+            Settings.from_environment()
+
     def test_non_integer_port_fails(self) -> None:
         with (
             patch.dict(os.environ, {"APP_PORT": "eight"}, clear=True),

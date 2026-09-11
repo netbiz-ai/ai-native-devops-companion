@@ -1,9 +1,9 @@
-# Chapter 12's incident environment.
+# The incident lab's incident environment.
 #
 # A separate namespace from staging, and separate on purpose. The incident lab
 # deliberately breaks the service it deploys, and a reader diagnosing an
 # outage should not be wondering whether the thing they just broke is also the
-# thing Chapter 10's telemetry lab is using.
+# thing the observability lab's telemetry lab is using.
 #
 # This overlay is the healthy baseline. The fault lives in ch12-latency-fault.yaml
 # and is not applied here: applying it is Step 2, and it is applied as its own

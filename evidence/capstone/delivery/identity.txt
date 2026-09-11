@@ -1,4 +1,4 @@
-criterion=CAP-01 observed_at=2026-08-10T17:50:47Z route=local-kind
+criterion=CAP-01 observed_at=2026-08-10T17:50:47Z route=local-kind run_id=capstone-acceptance-001
 scope=The identity chain below is the local lab route. It ties declaration to
 scope=registry to workload. It does NOT tie to a GHCR delivery digest, because
 scope=Argo CD reconciles this cluster from git://lab-git/repo.git, a lab-local

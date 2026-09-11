@@ -44,7 +44,7 @@ python3 -m compileall -q \
   operations-agent/src \
   scripts/validate_repo.py
 
-# From Chapter 10 the reference application has runtime dependencies, so its
+# From the observability lab the reference application has runtime dependencies, so its
 # tests cannot run against a bare interpreter. Say that plainly and name the
 # fix: the alternative is a ModuleNotFoundError inside a test loader, which
 # reads as a broken test suite rather than a missing install.
@@ -58,6 +58,12 @@ fi
 python3 -m unittest discover -s reference-app/tests -p 'test_*.py'
 python3 -m unittest discover -s operations-assistant/tests -p 'test_*.py'
 python3 -m unittest discover -s operations-agent/tests -p 'test_*.py'
+
+# The capstone verifier decides whether this repository's central claim holds,
+# so the thing worth testing offline is that it still refuses the evidence it
+# should. It runs against a throwaway fixture and needs no cluster.
+bash scripts/test-capstone-run-binding.sh
+
 python3 scripts/validate_repo.py
 
 printf 'offline_validation=pass\n'

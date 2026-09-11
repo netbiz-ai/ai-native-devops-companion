@@ -1,6 +1,6 @@
-"""Chapter 12's injected latency: the deployment-level fault the incident stages.
+"""The incident lab's injected latency: the deployment-level fault the incident stages.
 
-Chapter 10's delay is a client's choice, per request. This one is the
+The observability lab's delay is a client's choice, per request. This one is the
 service's condition, applied to everything including the readiness probe,
 because an incident a caller can opt out of is not an incident.
 """
@@ -38,7 +38,7 @@ class InjectedLatencySettingsTests(unittest.TestCase):
             self.assertEqual(Settings.from_environment().injected_latency_ms, 1500)
 
     def test_malformed_value_refuses_to_start(self) -> None:
-        # Deliberately unlike Chapter 10's header, which ignores nonsense. This
+        # Deliberately unlike the observability lab's header, which ignores nonsense. This
         # value arrives through a reviewed change; if it cannot be read, the
         # change being applied is not the change that was reviewed.
         with (

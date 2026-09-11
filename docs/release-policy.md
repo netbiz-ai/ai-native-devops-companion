@@ -19,17 +19,22 @@ Releases are tagged `vMAJOR.MINOR.PATCH`.
   chapter's path.
 - **PATCH** corrects defects, versions, or documentation.
 
-Tags are immutable. A tag is never moved or deleted once pushed; a mistake is
-corrected by a new tag.
+Tags are immutable from `v1.0.0` onward. A tag is never moved or deleted once
+pushed; a mistake is corrected by a new tag.
+
+`v1.0.0` is the first release of this repository in its published form. The
+development history that preceded it is not part of this repository and its
+pre-release tags do not resolve here, by design: what the book sends you to is
+the companion, not a record of how it was built.
 
 ## Per-chapter handoff tags
 
-Chapters refer to `chNN-start` and `chNN-complete` tags. These are immutable
+Chapters refer to `<subject>-start` and `<subject>-complete` tags. These are immutable
 markers of the state a chapter begins from and the state it produces. They are
 cut only from a state that has actually been executed and whose observed output
 matches what the chapter asserts.
 
-Tags that have not been cut are listed as gaps in `docs/chapter-map.md` rather
+Tags that have not been cut are listed as gaps in `docs/subject-map.md` rather
 than promised silently.
 
 ## Compatibility window
@@ -42,7 +47,8 @@ published, the previous edition's line moves to security-relevant corrections
 only, and its tags remain available so a reader working through the older
 printed book can still check out a state that matches it.
 
-Nothing here is deleted when it becomes old.
+That promise starts at `v1.0.0`. Nothing released under it is deleted when it
+becomes old.
 
 ## Errata
 
@@ -51,7 +57,7 @@ the code.
 
 The most useful report names the chapter, the step, what the book said would
 happen, and what happened instead. Where the book and
-`docs/chapter-map.md` disagree, the map is correct and the book is the defect.
+`docs/subject-map.md` disagree, the map is correct and the book is the defect.
 
 ## Update cadence
 
