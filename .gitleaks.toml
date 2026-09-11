@@ -1,0 +1,31 @@
+# Pinned Gitleaks configuration.
+#
+# Chapter 11 asks a reader to prove the secret gate works by committing a known
+# fixture to a disposable branch and watching the gate fail. That requires the
+# fixture to be detectable, which means this repository has to carry a value
+# that a secret scanner is supposed to find.
+#
+# The allowlist below resolves that, and its narrowness is the point the
+# chapter is making. It exempts one exact path - the fixture itself - and
+# nothing else. The reader copies the fixture to testdata/security/fake.env,
+# which is not exempt, so the gate fires on the copy exactly as it would on a
+# real credential. An allowlist covering `testdata/` or `*.env` would have
+# exempted the reader's test too, and the lab would have proved nothing while
+# appearing to pass.
+#
+# A waiver that is wider than the thing it waives is how scanners come to be
+# trusted and useless at the same time.
+
+title = "ai-native-devops-companion"
+
+[extend]
+# Inherit the upstream rule set rather than restating it. Detector identities
+# stay the ones Gitleaks documents, which is what makes "the recorded detector
+# identity" in a Security Finding Review record meaningful across versions.
+useDefault = true
+
+[allowlist]
+description = "The Chapter 11 secret-gate fixture, and only that file."
+paths = [
+  '''^testdata/security/gitleaks-fixture\.txt$''',
+]
