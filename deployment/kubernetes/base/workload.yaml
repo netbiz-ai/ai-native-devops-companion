@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reference-app
-  namespace: reference-dev
+  namespace: reference
   labels:
     app.kubernetes.io/name: reference-app
 spec:
@@ -30,6 +30,15 @@ spec:
                   fieldPath: metadata.namespace
             - name: APP_HOST
               value: "0.0.0.0"
+            # Points the application's OTLP exporter (HTTP protocol, so port
+            # 4318) at the lab Collector that observability/collector-deployment.yaml
+            # deploys. telemetry.py installs no exporter when this is unset, so
+            # without it the printed live-series checks can never see data.
+            # Declared here rather than set imperatively so that
+            # `kubectl apply -k deployment/gitops/overlays/staging/` governs the
+            # value and the chapter's restore step actually restores it.
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://otel-collector.observability.svc.cluster.local:4318"
           ports:
             - name: http
               containerPort: 8080

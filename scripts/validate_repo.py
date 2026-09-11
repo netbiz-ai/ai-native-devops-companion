@@ -25,23 +25,16 @@ REQUIRED = [
     "docs/decisions/adr-template.md",
     "docs/optimization/experiment-template.md",
     "queries/endpoint-ready.jsonpath",
-    "infrastructure/terraform/fixtures/ch07-dev-plan.txt",
-    "infrastructure/terraform/fixtures/README.md",
 ]
 JSON_FILES = [
     "observability/dashboard.json",
+    "devops-prompt-library/evals/cases/missing-file.json",
+    "devops-prompt-library/evals/cases/destructive-injection.json",
     "operations-assistant/evals/cases.json",
     "operations-agent/evals/cases.json",
     "operations-agent/policy/approval.schema.json",
     "patches/sync-policy.json",
 ]
-# Chapter 11 needs one detectable value in the repository so the reader can
-# prove the secret gate fires. Exempted by exact path and nowhere else, which
-# is the same narrowness .gitleaks.toml uses: the reader's copy of this file to
-# testdata/security/fake.env is not exempt, and both scanners catch it. An
-# exemption by directory or extension would have covered the reader's test too.
-SECRET_FIXTURES = frozenset({"testdata/security/gitleaks-fixture.txt"})
-
 SECRET_PATTERNS = {
     "AWS access key": re.compile("AKIA" + r"[0-9A-Z]{16}"),
     "private key": re.compile("BEGIN " + r"(?:RSA |EC |OPENSSH )?PRIVATE KEY"),
@@ -78,7 +71,7 @@ def main() -> int:
         if "\t" in text and path.suffix in {".yaml", ".yml"}:
             fail(f"tab indentation in YAML: {path.relative_to(ROOT)}")
         for label, pattern in SECRET_PATTERNS.items():
-            if pattern.search(text) and path.relative_to(ROOT).as_posix() not in SECRET_FIXTURES:
+            if pattern.search(text):
                 fail(f"{label} pattern in {path.relative_to(ROOT)}")
 
     workflow = (ROOT / ".github/workflows/security.yml").read_text(encoding="utf-8")

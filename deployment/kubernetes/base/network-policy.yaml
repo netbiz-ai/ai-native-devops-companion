@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: reference-app-default-deny
-  namespace: reference-dev
+  namespace: reference
 spec:
   podSelector:
     matchLabels:

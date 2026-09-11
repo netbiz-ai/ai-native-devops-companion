@@ -10,21 +10,21 @@ Report the difference through the errata channel named in
 
 | Chapter | Starting state | Carried in | Primary paths | Ending state | Validation command |
 |---:|---|---|---|---|---|
-| 1 | Empty workspace | Nothing | `workspace/`, which you create | A verified script with an observed success and failure path, and a recorded decision | The chapter's own syntax, success and failure runs |
-| 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/`, which you create | Reusable prompts with deterministic evaluation cases | The chapter's own artifact-presence block |
-| 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `cd reference-app && python3 -m unittest discover -s tests` |
+| 1 | Empty workspace | Nothing | `workspace/` | A verified script with an observed success and failure path, and a recorded decision | `./scripts/validate-offline.sh` |
+| 2 | Chapter 1 workspace | The verification checklist | `devops-prompt-library/` | Reusable prompts with deterministic evaluation cases | `./scripts/validate-offline.sh` |
+| 3 | Chapter 2 library | The prompt library | `reference-app/src`, `reference-app/tests` | `reference-app` serving `/`, `/health`, and `/ready` on port 8080 | `python3 -m pytest reference-app/tests` |
 | 4 | Chapter 3 service | `reference-app/src` | `reference-app/Dockerfile`, `reference-app/.dockerignore` | A non-root image measured against a single-stage baseline | The chapter's `docker build` and label assertions |
 | 5 | Chapter 4 image | The Dockerfile and tests | `.github/workflows/ci.yml` | Required checks enforced on `main` for one revision | `actionlint .github/workflows/ci.yml` |
 | 6 | Chapter 5 CI | The required check names | `.github/workflows/delivery.yml`, `.github/workflows/rollback.yml` | One immutable digest promoted through human approval, and a tested rollback | `actionlint .github/workflows/*.yml` |
-| 7 | Chapter 6 digest | The promoted digest | `infrastructure/terraform/`, fixture at `infrastructure/terraform/fixtures/` | A reviewed network foundation by the no-apply or the separately approved sandbox route | `terraform validate` |
-| 8 | Chapter 7 foundation, plus a separately supplied cluster | The promoted digest | `deployment/kubernetes/base`, `deployment/kubernetes/tests` | A hardened workload in `reference-dev` with policy behavior observed | `kubectl kustomize deployment/kubernetes/base` |
+| 7 | Chapter 6 digest | The promoted digest | `infrastructure/terraform/` | A reviewed network foundation by the no-apply or the separately approved sandbox route | `terraform validate` |
+| 8 | Chapter 7 foundation, plus a separately supplied cluster | The promoted digest | `deployment/kubernetes/base`, `deployment/kubernetes/tests` | A hardened workload in `reference-staging` with policy behavior observed | `kubectl kustomize deployment/kubernetes/base` |
 | 9 | Chapter 8 workload | `deployment/kubernetes/base`, unchanged | `deployment/gitops/argocd`, `deployment/gitops/overlays` | Staging reconciled automatically, production promoted deliberately | `kubectl kustomize deployment/gitops/overlays/staging` |
 | 10 | Chapter 9 GitOps path | The reconciled release identity | `observability/`, `scripts/ch10/` | A correlated signal, an owned alert, and a runbook | `scripts/ch10/validate.sh` |
 | 11 | Chapter 10 telemetry | The release identity | `security/`, CI jobs | Findings that carry a disposition and an owner | `./scripts/validate-offline.sh` |
 | 12 | Chapter 11 gates | The application and its telemetry | `incidents/`, `scripts/ch12/` | A controlled failure diagnosed and restored under human control | `scripts/ch12/validate.sh` |
 | 13 | Chapter 12 incident record | The incident evidence | `optimization/` | Comparable candidates and a retain-or-revert decision | `./scripts/validate-offline.sh` |
-| 14 | Chapter 12 sanitized summary | `incident-evidence/` | `operations-assistant/` | Cited read-only answers with tested refusals | `cd operations-assistant && python3 -m unittest discover -s tests` |
-| 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `cd operations-agent && python3 -m unittest discover -s tests` |
+| 14 | Chapter 12 sanitized summary | `incident-evidence/` | `operations-assistant/` | Cited read-only answers with tested refusals | `python3 -m pytest operations-assistant/tests` |
+| 15 | Chapter 14 assistant | The approved knowledge set | `operations-agent/` | Allowlisted reads, a bounded proposal, an audit record, and no mutation | `python3 -m pytest operations-agent/tests` |
 | 16 | Every prior chapter | The release identity and evidence manifest | `docs/capstone/`, `scripts/capstone-verify.sh` | CAP-01 to CAP-07 visible and evidence-linked | `scripts/capstone-verify.sh` |
 
 ## Canonical names
@@ -65,73 +65,38 @@ differences; a chapter naming the left-hand path means the right-hand file.
 
 ## Known gaps in this contract
 
-These are recorded rather than hidden. A gap here is something the book names
-that this repository does not supply; an artifact the reader is meant to write
-is listed in the section below instead, because calling it a gap told readers
-their lab was blocked when it was not.
+These are recorded rather than hidden, and each one blocks the chapter step
+that depends on it.
 
-- **Nothing in this repository is validated against a live cloud account.**
-  `scripts/validate-offline.sh` reports
-  `live_cloud_cluster_delivery_cleanup=not_evaluated`, and that is accurate.
-  The cluster work in Chapters 10 to 13 was verified on a local kind cluster.
-  Chapter 7's Terraform takes the no-apply route unless you supply and approve
-  your own sandbox.
-
-- **Chapter 6's delivery route now runs, and needs configuration you must
-  supply.** `delivery.yml` and `rollback.yml` implement the contract the
-  chapter audits against, and both were exercised end to end on 2026-08-10.
-  They require two repository environments, `staging` and `production`, with
-  deployment branches restricted to `main` and a required reviewer on
-  `production` who is not the person dispatching the run. Without them the
-  jobs will not gate, and with self-review permitted the chapter's independence
-  checkpoint is not met. Protected-check verification uses this repository's
-  real check names - `quality`, `image`, `SAST`, `Secrets` and `IaC` - and
-  refuses a commit whose checks are missing, duplicated, still running, or
-  from an unexpected app.
-
-## What the reader writes, and when
-
-These paths appear in chapters and are absent here by design. They are the
-reader's output, and a chapter that names one is telling you to create it, not
-reporting a missing file. Where one chapter reads another's output, the
-ordering is what matters.
-
-- `incident-evidence/checkout-summary.md` and
-  `incident-evidence/decision-boundaries.yml` - written in Chapter 12,
-  read as Chapter 14's starting state. Chapter 14 has no input until
-  Chapter 12 has been run.
-- `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
-  `docs/security/trace-review.md` - written in Chapter 11. The ruleset encodes
-  the bypass actors and required checks of one specific repository, so it
-  belongs to yours rather than to this one; `scripts/verify-security-ruleset.sh`
-  reads it and is supplied here.
-- `docs/decisions/adr-ch13-capacity.md` and
-  `docs/optimization/ch13-scaling-experiment.md` - written in Chapter 13 from
-  an executed experiment. The templates they are written from,
-  `docs/decisions/adr-template.md` and
-  `docs/optimization/experiment-template.md`, are supplied here.
-- `workspace/` - built in Chapter 1, in full: the task brief, the AI usage
-  policy, `samples/release-gate.sh`, the review record, and the filled
-  verification checklist. This repository carried a `workspace/` whose
-  `samples/release-gate.sh` took `pass|fail` while Chapter 1 runs it against an
-  artifact path, so the chapter's own success-path command failed against it.
-  The blank checklist to copy is `templates/verification-checklist.md`.
-- `devops-prompt-library/` - built in Chapter 2, starting from `mkdir`. The
-  chapter names `prompts/deployment-debug.md` and the `01-image-pull` and
-  `02-destructive-request` cases; a supplied tree under the same name used
-  different filenames and made that first `mkdir` fail in a fresh clone.
-- `reference-app/src/telemetry.py` - implemented in Chapter 10 against the
-  reviewed reference. It is absent from `ch10-start` for that reason, and
-  present from `ch10-complete` onward, including on `main`. Start the chapter
-  from the tag, not from `main`, or the exercise is already solved for you.
-
-## Handoff tags
-
-Chapters 10 to 13 name immutable `chNN-start` and `chNN-complete` tags, and
-all eight are cut: `ch10-start`, `ch10-complete`, `ch11-start`,
-`ch11-complete`, `ch12-start`, `ch12-complete`, `ch13-start`, `ch13-complete`.
-No other chapter refers to a handoff tag. Tags follow `docs/release-policy.md`:
-immutable, never moved, and named for the chapter state they capture.
+- **Per-chapter handoff tags do not exist.** The book refers to immutable
+  `chNN-start` and `chNN-complete` tags. This repository currently carries one
+  release tag. Treat any step requiring a `chNN-*` tag as blocked, exactly as
+  the chapter's own execution status says. When those tags are cut they will
+  follow `docs/release-policy.md`: immutable, never moved, and named for the
+  chapter state they capture.
+- **`incident-evidence/` is not populated.** Chapter 14 reads
+  `incident-evidence/checkout-summary.md` and
+  `incident-evidence/decision-boundaries.yml` as its starting state. Chapter 12
+  produces them, so a reader who has not run Chapter 12 has no input for
+  Chapter 14.
+- **Chapter 11's security documents are not written.** The chapter names
+  `docs/security/gate-policy.md`, `docs/security/security-ruleset.json`, and
+  `docs/security/trace-review.md`. `.github/workflows/security.yml` exists, but
+  those three do not. The first two are configuration this repository can carry;
+  the third records a review that has to be performed before it can be written.
+- **Chapter 13's measured outputs are not written.** `docs/decisions/adr-template.md`
+  and `docs/optimization/experiment-template.md` are now provided. The filled
+  documents the chapter also names, `docs/decisions/adr-ch13-capacity.md` and
+  `docs/optimization/ch13-scaling-experiment.md`, state measured results and are
+  only written from an executed experiment. `scripts/ch13/` does not exist.
+- **`reference-app/src/telemetry.py` is not provided.** Chapter 10 has the reader
+  implement it and then compare against the reviewed reference. That reference is
+  the content of `ch10-complete`, so it is deliberately absent from `main`.
+- **`observability/test-receiver.yaml` is not provided.** Chapter 10 names it as
+  the local collector target used before any cluster is involved.
+- **Environment overlays carry a kustomization only.** The namespace and
+  fault-injection files that Chapters 9 and 10 name under
+  `deployment/gitops/overlays/` are not yet in the repository.
 
 ## What the offline validator does not prove
 
