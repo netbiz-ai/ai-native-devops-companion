@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: reference-app
-  namespace: reference
+  namespace: reference-dev
   labels:
     app.kubernetes.io/name: reference-app
 spec:
@@ -21,6 +21,9 @@ spec:
           type: RuntimeDefault
       containers:
         - name: app
+          # The bare name kustomization.yaml's images: transformer matches on.
+          # A full reference here is not overridden - it silently wins, and the
+          # newName and digest the reader sets have no effect.
           image: reference-app
           imagePullPolicy: IfNotPresent
           env:

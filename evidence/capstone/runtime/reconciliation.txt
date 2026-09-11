@@ -1,0 +1,13 @@
+criterion=CAP-03 observed_at=2026-08-27T13:40:00Z route=local-kind
+run_id=capstone-acceptance-001
+iac_config=infrastructure/terraform/capstone backend=local kube_context=kind-ch10-lab
+applied=namespace/capstone-iac configmap/platform-contract
+baseline_plan=clean detailed_exitcode=0
+induced_drift=configmap/platform-contract labelled out of band
+drift_detected=yes detailed_exitcode=2
+reconciled=terraform apply removed the out-of-band change
+post_reconcile_plan=clean detailed_exitcode=0
+live_object=configmap/platform-contract uid=840523df-7ccf-4e1c-80dc-1c623a10a8d0
+declared_source_revision=ba008e6
+gitops_revision=reference-production=dad45c01faaa62b775e4232f53e04c2e11b05426 reference-staging=dad45c01faaa62b775e4232f53e04c2e11b05426
+agreement=state, declaration, and live object agree for run capstone-acceptance-001 on route local-kind

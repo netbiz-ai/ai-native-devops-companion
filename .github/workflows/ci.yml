@@ -17,8 +17,8 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
       # Installed from the lock rather than requirements.txt so CI validates
@@ -26,6 +26,15 @@ jobs:
       # set Chapter 11's dependency scan reports against.
       - name: Install reference-app dependencies
         run: pip install -r reference-app/requirements.lock
+      # Chapter 5 has the reader run this exact command and expects no errors,
+      # so nothing may reintroduce a lint error the chapter would then report.
+      # The pin is read from requirements-dev.txt rather than repeated here:
+      # two copies of a version drift, and the chapter's pin is the one that
+      # decides what "no lint errors" means.
+      - name: Install ruff at the pinned version
+        run: pip install "$(grep '^ruff==' reference-app/requirements-dev.txt)"
+      - name: Lint the reference application
+        run: cd reference-app && ruff check src tests
       - name: Validate offline baseline
         run: ./scripts/validate-offline.sh
 
@@ -33,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: quality
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Build reviewed image
         run: docker build -t reference-app:${{ github.sha }} reference-app
       - name: Run as non-root
@@ -44,7 +53,7 @@ jobs:
           container_id="$(docker run -d -p 127.0.0.1::8080 reference-app:${{ github.sha }})"
           trap 'docker rm -f "$container_id"' EXIT
           port="$(docker port "$container_id" 8080/tcp | awk -F: '{print $NF}')"
-          for attempt in $(seq 1 20); do
+          for _ in $(seq 1 20); do
             curl --fail --silent "http://127.0.0.1:${port}/health" && exit 0
             sleep 1
           done

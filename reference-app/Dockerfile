@@ -6,6 +6,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_HOST=0.0.0.0 \
     APP_PORT=8080
 
+# The base image lags the Alpine package repos between rebuilds, so pull the
+# patched OS packages at build time; the Security workflow's image scan gates
+# on fixed HIGH/CRITICAL CVEs (e.g. openssl CVE-2026-14456 in libcrypto3 and
+# libssl3, fixed in 3.5.8-r0 while the base image still carried 3.5.7-r0).
+RUN apk upgrade --no-cache
+
 RUN addgroup -S -g 10001 app && adduser -S -D -H -u 10001 -G app app
 
 WORKDIR /app

@@ -1,0 +1,11 @@
+criterion=CAP-07-cost observed_at=2026-08-10T17:50:47Z route=local-kind
+container_resource_bounds={"limits":{"cpu":"250m","memory":"128Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}
+replicas=2
+namespace_resourcequota_count=0
+capacity_experiment=scripts/ch13/run-experiment.sh
+capacity_result=baseline p95 5.1ms, candidate p95 5.9ms, delta 0.8ms, arms comparable
+capacity_target=both arms within the service target
+scope=This route runs on a local kind cluster and incurs no cloud spend, so the
+scope=bound demonstrated is the container resource limit and a measured capacity
+scope=comparison, not a cloud budget alarm. No namespace ResourceQuota exists,
+scope=so nothing caps aggregate consumption if replicas are raised.

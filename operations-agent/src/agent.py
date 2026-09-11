@@ -18,18 +18,104 @@ class Proposal:
     action: str
     target: str
     reason: str
+    evidence: tuple[str, ...] = ()
     requires_human_approval: bool = True
     executable: bool = False
+
+
+def _from_deployment_status(observation: dict[str, Any]) -> tuple[str, str, list[str]]:
+    status = observation.get("status", {})
+    replicas = status.get("replicas", 0)
+    ready = status.get("readyReplicas", 0)
+    evidence = [f"status.replicas={replicas}", f"status.readyReplicas={ready}"]
+    unavailable = replicas - ready
+    for condition in status.get("conditions", []):
+        if condition.get("type") == "Available" and condition.get("status") != "True":
+            evidence.append(
+                f"condition Available={condition.get('status')} "
+                f"reason={condition.get('reason')}"
+            )
+    if unavailable <= 0:
+        return (
+            "no-action",
+            f"All {replicas} replica(s) are ready; this observation reports no fault.",
+            evidence,
+        )
+    return (
+        "review-deployment-readiness",
+        f"{unavailable} of {replicas} replica(s) are not ready. "
+        "The cause is not in this observation: deployment status reports the "
+        "count, not why a probe failed.",
+        evidence,
+    )
+
+
+def _from_events(observation: dict[str, Any]) -> tuple[str, str, list[str]]:
+    warnings = [
+        item
+        for item in observation.get("items", [])
+        if item.get("type") == "Warning"
+    ]
+    if not warnings:
+        return (
+            "no-action",
+            "No Warning events in this observation.",
+            ["items: no Warning entries"],
+        )
+    evidence = [
+        f"{item.get('reason')} on "
+        f"{item.get('involvedObject', {}).get('kind')}/"
+        f"{item.get('involvedObject', {}).get('name')}: {item.get('message')}"
+        for item in warnings
+    ]
+    return (
+        "review-readiness-probe-configuration",
+        f"{len(warnings)} Warning event(s), the first reporting: "
+        f"{warnings[0].get('message')}",
+        evidence,
+    )
+
+
+def _from_log_tail(observation: str) -> tuple[str, str, list[str]]:
+    lines = [line for line in observation.splitlines() if line.strip()]
+    # A log tail records what the application answered. It does not report
+    # replica counts or probe configuration, so proposing a fix from it would
+    # be asserting evidence this run did not observe.
+    return (
+        "collect-deployment-status",
+        "A log tail does not establish replica state or probe configuration. "
+        "Ask for deployment-status or events before proposing a change.",
+        lines[-2:],
+    )
+
+
+DIAGNOSERS = {
+    "deployment-status": _from_deployment_status,
+    "events": _from_events,
+    "log-tail": _from_log_tail,
+}
+
+
+def _propose(tool: str, namespace: str, resource: str, observation: Any) -> Proposal:
+    """Derive the proposal from what was observed, not from the tool's name."""
+    diagnose = DIAGNOSERS.get(tool)
+    if diagnose is None:
+        # One table per tool, and no fallthrough: a tool with no diagnosis
+        # refuses rather than borrowing another tool's conclusion.
+        raise BoundaryError(f"no diagnosis defined for tool: {tool}")
+    action, reason, evidence = diagnose(observation)
+    return Proposal(
+        action=action,
+        target=f"{namespace}/{resource}",
+        reason=reason,
+        evidence=tuple(evidence),
+    )
 
 
 def diagnostic_brief(tool: str, namespace: str, resource: str) -> dict[str, Any]:
     tools = FixtureTools(FIXTURES)
     observation = tools.run(tool, namespace, resource)
-    proposal = Proposal(
-        action="review-gitops-readiness-probe",
-        target=f"{namespace}/{resource}",
-        reason="Fixture evidence shows a 404 readiness probe and one unavailable replica.",
-    )
+    proposal = _propose(tool, namespace, resource, observation)
     return {
         "scope": {"namespace": namespace, "resource": resource},
         "tool": tool,

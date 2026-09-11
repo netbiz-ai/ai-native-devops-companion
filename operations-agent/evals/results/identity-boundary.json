@@ -1,0 +1,41 @@
+{
+  "tool": "operations-agent identity boundary",
+  "generated_at": "2026-08-07T15:05:21Z",
+  "route": "live cluster",
+  "kubernetes": "v1.34.0",
+  "identity": "system:serviceaccount:reference-staging:diagnostics-agent",
+  "checks": [
+    {
+      "check": "get pods in reference-staging",
+      "expected": "yes",
+      "observed": "yes",
+      "match": true
+    },
+    {
+      "check": "get secrets in reference-staging",
+      "expected": "no",
+      "observed": "no",
+      "match": true
+    },
+    {
+      "check": "delete pods in reference-staging",
+      "expected": "no",
+      "observed": "no",
+      "match": true
+    },
+    {
+      "check": "get pods in production",
+      "expected": "no",
+      "observed": "no",
+      "match": true
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "matched": 4
+  },
+  "what_this_does_not_prove": [
+    "These are impersonation checks made by an administrator; they do not prove the identity the agent process actually presents.",
+    "No live tool adapter is supplied: operations-agent reads deterministic fixtures, so no observation here came from the cluster."
+  ]
+}

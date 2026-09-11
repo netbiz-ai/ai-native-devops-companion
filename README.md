@@ -3,6 +3,16 @@
 This repository is the cumulative project used by *AI-Native DevOps: A Hands-On
 Guide to Becoming an AI-Native DevOps Engineer* by Elvis Tafoh-Ngunjoh.
 
+**Start here:** new to the repository? [docs/getting-started.md](docs/getting-started.md)
+walks you through setup, prerequisites, and every chapter's labs step by step.
+Working with an AI coding agent? [AGENTS.md](AGENTS.md) carries its instructions,
+and [docs/running-labs-with-a-coding-agent.md](docs/running-labs-with-a-coding-agent.md)
+explains that way of working.
+
+Taking pieces of this work into your own pipeline rather than working the
+book straight through? [docs/reusing-the-projects.md](docs/reusing-the-projects.md)
+maps each chapter to what it leaves behind that you can reuse.
+
 `docs/chapter-map.md` is the canonical contract between the book and this
 repository: what each chapter starts from, carries in, produces, and how to
 validate it. Where the book and that map disagree, the map is correct.
@@ -31,9 +41,16 @@ results.
 ```bash
 git clone https://github.com/netbiz-ai/ai-native-devops-companion.git
 cd ai-native-devops-companion
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r reference-app/requirements.lock
 ./scripts/validate-offline.sh
 python3 reference-app/src/app.py
 ```
+
+The application binds port 8080, and the book's printed commands, the lab validators, and the `curl` checks below all assume that port.
+If something else already holds it, the run step fails with `OSError: [Errno 98] Address already in use`; free the port by stopping or moving whatever occupies it, and run the reference app on 8080 itself.
+The app does accept an `APP_PORT` override, but running the labs anywhere but 8080 means every later printed snippet needs hand-adjusting, so do not use it for the book's exercises.
 
 In another terminal:
 
@@ -52,14 +69,14 @@ obvious secret patterns.
 
 | Book area | Repository path | Baseline |
 |---|---|---|
-| Chapters 1–2: bounded AI work and prompt evaluation | `workspace/`, `devops-prompt-library/` | Offline |
+| Chapters 1–2: bounded AI work and prompt evaluation | You create `ai-native-workspace/` and `devops-prompt-library/`; this repository supplies neither | Offline |
 | Chapters 3–6: application, container, CI, delivery | `reference-app/`, `.github/workflows/` | Offline plus Docker/GitHub |
 | Chapter 7: Terraform network module | `infrastructure/terraform/` | Static; apply is opt-in |
 | Chapters 8–9: Kubernetes and GitOps | `deployment/` | Static; cluster is opt-in |
 | Chapters 10–13: telemetry, security, incidents, optimization | `observability/`, `security/`, `incidents/`, `optimization/` | Fixtures and templates |
 | Chapter 14: cited operations assistant | `operations-assistant/` | Offline |
 | Chapter 15: read-only diagnostics agent | `operations-agent/` | Offline fixture; live cluster opt-in |
-| Chapter 16: connected acceptance path | `docs/capstone/`, `scripts/capstone-verify.sh` | Offline design check; live result requires evidence |
+| Chapter 16: connected acceptance path | `docs/capstone/`, `labs/ch16/`, `infrastructure/terraform/capstone/` | Executed acceptance run; evidence retained under `evidence/capstone/` |
 
 See [docs/chapter-map.md](docs/chapter-map.md) for exact chapter handoffs.
 

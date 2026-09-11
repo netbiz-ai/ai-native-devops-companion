@@ -1,0 +1,32 @@
+# incident evidence
+phase=fault
+captured_at=2026-08-10T17:46:48Z
+namespace=reference-incident
+operator=authoros
+
+## deployment
+replicas=2 ready=2 image=reference-app:ch12
+injected_latency_ms=800
+
+## pods
+NAME                             READY   STATUS    RESTARTS   AGE    IP            NODE                     NOMINATED NODE   READINESS GATES
+reference-app-6c85f949c6-7msrs   1/1     Running   0          88s    10.244.0.68   ch10-lab-control-plane   <none>           <none>
+reference-app-6c85f949c6-s965s   1/1     Running   0          101s   10.244.0.67   ch10-lab-control-plane   <none>           <none>
+reference-client                 1/1     Running   0          82s    10.244.0.69   ch10-lab-control-plane   <none>           <none>
+
+## recent events
+88s         Normal    Created             pod/reference-app-6c85f949c6-7msrs    Created container: app
+88s         Normal    Scheduled           pod/reference-app-6c85f949c6-7msrs    Successfully assigned reference-incident/reference-app-6c85f949c6-7msrs to ch10-lab-control-plane
+88s         Normal    Killing             pod/reference-app-868674bfb8-j8gkq    Stopping container app
+88s         Normal    SuccessfulDelete    replicaset/reference-app-868674bfb8   Deleted pod: reference-app-868674bfb8-j8gkq
+88s         Normal    Pulled              pod/reference-app-6c85f949c6-7msrs    Container image "reference-app:ch12" already present on machine
+88s         Normal    ScalingReplicaSet   deployment/reference-app              Scaled down replica set reference-app-868674bfb8 from 2 to 1
+88s         Normal    ScalingReplicaSet   deployment/reference-app              Scaled up replica set reference-app-6c85f949c6 from 1 to 2
+87s         Normal    Started             pod/reference-app-6c85f949c6-7msrs    Started container app
+82s         Normal    Pulled              pod/reference-client                  Container image "python:3.12-alpine" already present on machine
+82s         Normal    Started             pod/reference-client                  Started container client
+82s         Normal    Created             pod/reference-client                  Created container: client
+82s         Normal    Scheduled           pod/reference-client                  Successfully assigned reference-incident/reference-client to ch10-lab-control-plane
+80s         Normal    Killing             pod/reference-app-868674bfb8-2jrtv    Stopping container app
+80s         Normal    ScalingReplicaSet   deployment/reference-app              Scaled down replica set reference-app-868674bfb8 from 1 to 0
+80s         Normal    SuccessfulDelete    replicaset/reference-app-868674bfb8   Deleted pod: reference-app-868674bfb8-2jrtv

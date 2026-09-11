@@ -4,17 +4,35 @@ metadata:
   name: ai-native-devops
   namespace: argocd
 spec:
+  # The project bounds which sources may be reconciled, so this list has to
+  # name the same repository as `spec.source.repoURL` in the applications.
+  # Change both together: a repoURL the project does not permit fails with
+  # "application repo ... is not permitted in project", which reports an
+  # application-level error for a project-level rule and reads as if the
+  # source were unreachable. Use ../lab-source/README.md's URL if you took
+  # that route.
   sourceRepos:
-    - https://github.com/netbiz-ai/ai-native-devops-companion.git
+    - git://lab-git.lab-source.svc.cluster.local/repo.git
   destinations:
     - server: https://kubernetes.default.svc
       namespace: reference-staging
     - server: https://kubernetes.default.svc
       namespace: reference-production
-  namespaceResourceWhitelist:
+  # Namespace is cluster-scoped. It was listed as a namespaced resource while
+  # clusterResourceWhitelist was empty, so the controller refused to create it
+  # and refused every namespaced kind besides, because none were listed. Every
+  # sync failed with "is not permitted in project".
+  clusterResourceWhitelist:
     - group: ""
       kind: Namespace
-  clusterResourceWhitelist: []
+  # Exactly what the overlays render, and nothing else.
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: networking.k8s.io
+      kind: NetworkPolicy
   namespaceResourceBlacklist:
     - group: rbac.authorization.k8s.io
       kind: "*"

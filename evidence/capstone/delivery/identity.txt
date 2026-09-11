@@ -1,0 +1,12 @@
+criterion=CAP-01 observed_at=2026-08-10T17:50:47Z route=local-kind
+scope=The identity chain below is the local lab route. It ties declaration to
+scope=registry to workload. It does NOT tie to a GHCR delivery digest, because
+scope=Argo CD reconciles this cluster from git://lab-git/repo.git, a lab-local
+scope=mirror, and the published companion carries a placeholder digest.
+workload_image=kind-registry:5000/reference-app@sha256:398773f0332fdcc30e26ddc40ec0a7314fa5ae3c900223b44fc3586dca4ac591
+gitops_declared_digest=sha256:398773f0332fdcc30e26ddc40ec0a7314fa5ae3c900223b44fc3586dca4ac591
+gitops_source=git://lab-git/repo.git
+argocd_revision=0a71eca8407159d5a4fdf0d895b0091ef9b86953
+argocd_state=Synced/Healthy
+declaration_matches_workload=true
+cluster=kind-ch10-lab kubernetes=v1.34.0

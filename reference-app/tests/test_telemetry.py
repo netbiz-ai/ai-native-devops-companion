@@ -18,8 +18,8 @@ from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-import telemetry  # noqa: E402
-from app import (  # noqa: E402
+import telemetry
+from app import (
     MAX_DELAY_MS,
     ApplicationServer,
     Settings,
@@ -73,9 +73,11 @@ class FaultGateTests(unittest.TestCase):
         for environment in ("production", "reference-production", "prod"):
             with self.subTest(environment=environment):
                 values = {"APP_ENV": environment, "CH10_FAULT_GATE_ENABLED": "true"}
-                with patch.dict(os.environ, values, clear=True):
-                    with self.assertRaisesRegex(ValueError, "staging-only"):
-                        Settings.from_environment()
+                with (
+                    patch.dict(os.environ, values, clear=True),
+                    self.assertRaisesRegex(ValueError, "staging-only"),
+                ):
+                    Settings.from_environment()
 
     def test_gate_is_allowed_in_staging(self) -> None:
         values = {"APP_ENV": "reference-staging", "CH10_FAULT_GATE_ENABLED": "true"}

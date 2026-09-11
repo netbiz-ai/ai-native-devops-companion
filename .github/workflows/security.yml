@@ -16,18 +16,18 @@ jobs:
     name: SAST
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: github/codeql-action/init@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: github/codeql-action/init@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
         with:
           languages: python
-      - uses: github/codeql-action/analyze@v4
+      - uses: github/codeql-action/analyze@ff2f1c621b7f889edc0d3c761ac2e6a3f8cdb0dd # v4.37.7
         with:
           # Private repositories without GitHub Advanced Security cannot upload
           # to code scanning, so retain the portable SARIF as run evidence.
           output: codeql-results
           upload: false
           upload-database: false
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: codeql-sarif-${{ github.sha }}
           path: codeql-results/*.sarif
@@ -38,20 +38,24 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/dependency-review-action@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
 
   secrets:
     name: Secrets
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
-      # gitleaks-action v2 requires a token to scan a pull request; without it
-      # the job fails before scanning. It only surfaced on this repository's
-      # first pull request.
-      - uses: gitleaks/gitleaks-action@v2
+      # gitleaks-action requires a token to scan a pull request; without it the
+      # job fails before scanning. It only surfaced on this repository's first
+      # pull request.
+      #
+      # v3 is the Node 24 runtime and nothing else: no input, output or
+      # behavioral change. It is not optional for long - Node 20 leaves
+      # GitHub-hosted runners on 2026-09-16, and v2 stops running then.
+      - uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -59,9 +63,12 @@ jobs:
     name: IaC
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      # v0.35.0 safe commit named in Aqua's March 2026 incident guidance.
-      - uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      # Descends from the v0.35.0 commit named in Aqua's March 2026 incident
+      # guidance - 13 commits ahead of it and none behind, so that commit is
+      # contained rather than bypassed. Check that before taking an update
+      # here: this pin answers an incident, not a version preference.
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
         with:
           scan-type: config
           scan-ref: .
@@ -75,16 +82,31 @@ jobs:
           # context here to satisfy the scanner would duplicate the base and
           # invite the two to drift apart, which is a worse outcome than this
           # line. Kustomize renders the patched result; scan that, not the patch.
-          skip-files: deployment/gitops/overlays/staging/ch10-lab-faults.yaml
+          # Chapter 12s fault is the same shape as Chapter 10s: a container
+          # stanza carrying one environment variable. It was added without
+          # this line and turned Security red from f149211 onward.
+          # The ch04 baseline is the book's deliberately insecure single-stage
+          # Dockerfile: it runs as root because that is the defect Chapter 4
+          # measures and then fixes. The hardened result stays scanned, both as
+          # labs/ch04/config/03-dockerfile-final.dockerfile and as the live
+          # reference-app/Dockerfile, and both are clean. "Fixing" the baseline
+          # would erase the measurement the chapter is built on.
+          skip-files: |
+            deployment/gitops/overlays/staging/ch10-lab-faults.yaml
+            deployment/gitops/overlays/incident/ch12-latency-fault.yaml
+            labs/ch04/config/02-dockerfile-baseline.dockerfile
 
   image:
     name: Image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - run: docker build -t reference-app:${{ github.sha }} reference-app
-      # v0.35.0 safe commit named in Aqua's March 2026 incident guidance.
-      - uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1
+      # Descends from the v0.35.0 commit named in Aqua's March 2026 incident
+      # guidance - 13 commits ahead of it and none behind, so that commit is
+      # contained rather than bypassed. Check that before taking an update
+      # here: this pin answers an incident, not a version preference.
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # 0.36.0
         with:
           image-ref: reference-app:${{ github.sha }}
           exit-code: "1"
